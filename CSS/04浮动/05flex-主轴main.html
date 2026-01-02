@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.container{
+				background-color: aliceblue;
+				width: 500px;
+				height: 500px;
+				display: flex;
+				/* flex-direction: row; */
+				/* flex-direction: row-reverse; */
+				/* flex-direction: column; */
+				/* flex-direction: column-reverse; */
+				
+				/* 水平方向:如果不想挤在盒子里,保持原来儿子的盒子大小采用换行正序wrap,逆序wrap-reverse */
+				/* flex-direction: row; */
+				/* flex-wrap: wrap; */
+				/* flex-wrap: wrap-reverse; */
+				/* flex-wrap: nowrap; */
+				
+				/* 垂直方向:如果不想挤在盒子里,保持原来儿子的盒子大小采用换行正序wrap,逆序wrap-reverse */
+				/* flex-direction: column; */
+				/* flex-wrap: wrap; */
+				/* flex-wrap: wrap-reverse; */
+				/* flex-wrap: nowrap; */
+				
+				/* 主轴方向上的排序 flex-start靠近主轴线开始;flex-end靠近主轴线尾端;center居中;space-between两端对齐，项目之间的间隔都相等;space-around每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍;space-evenly：所有间距（元素间、两端）完全相等*/
+				/* 水平 */
+				/* flex-direction: row; */
+				/* justify-content: flex-start; */
+				/* justify-content: flex-end; */
+				/* justify-content: center; */
+				/* justify-content: space-between; */
+				/* justify-content: space-around; */
+				/* justify-content: space-evenly; */
+				
+				
+				/* 垂直 */
+				/* flex-direction: column; */
+				/* justify-content: flex-start; */
+				/* justify-content: flex-end; */
+				/* justify-content: center; */
+				/* justify-content: space-between; */
+				/* justify-content: space-around; */
+				/* justify-content: space-evenly; */
+				
+				/* 水平换行分布 */
+				/* flex-direction: row; */
+				/* flex-wrap: wrap; */
+				/* justify-content: flex-start; */
+				/* justify-content: flex-end; */
+				/* justify-content: center; */
+				/* justify-content: space-between; */
+				/* justify-content: space-around; */
+				/* justify-content: space-evenly; */
+				
+				/* 垂直换行分布 */
+				/* flex-direction: column; 
+				flex-wrap: wrap; */
+				/* justify-content: flex-start; */
+				/* justify-content: flex-end; */
+				/* justify-content: center; */
+				/* justify-content: space-between; */
+				/* justify-content: space-around; */
+				/* justify-content: space-evenly; */
+			}
+			.item{
+				width: 100px;
+				height: 100px;
+			}
+			#item1{
+				background-color: antiquewhite;
+			}
+			#item2{
+				background-color: aqua;
+			}
+			#item3{
+				background-color: darkblue;
+			}
+			#item4{
+				background-color: gainsboro;
+			}
+			#item5{
+				background-color: brown;
+			}
+			#item6{
+				background-color: gray;
+			}
+			#item7{
+				background-color: mediumblue;
+			}
+			#item8{
+				background-color: khaki;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<!-- div.container>div.item#item${$}*8 -->
+		<div class="container">
+			<div class="item" id="item1">1</div>
+			<div class="item" id="item2">2</div>
+			<div class="item" id="item3">3</div>
+			<div class="item" id="item4">4</div>
+			<div class="item" id="item5">5</div>
+			<div class="item" id="item6">6</div>
+			<div class="item" id="item7">7</div>
+			<div class="item" id="item8">8</div>
+		</div>
+	</body>
+</html>

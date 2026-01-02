@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.container{
+				background-color: aliceblue;
+				width: 500px;
+				height: 500px;
+				display: flex;
+				
+				/* 交叉轴中间 */
+				/* align-items: center; */
+				/* align-items: flex-start; */
+				/* align-items:flex-end; */
+				
+				/* 项目的第一行文字的基线对齐 */
+				/* align-items: baseline; */
+				/* align-items: stretch(auto); */
+				
+				flex-wrap: wrap;
+				/* align-content: flex-start; */
+				/* align-content: flex-end; */
+				/* align-content: center; */
+				/* align-content: space-between; */
+				/* align-content: space-around; */
+				
+				/* 项目不设置高度,填充整个 */
+				/* align-content: stretch; */
+				
+				
+			}
+			.item{
+				width: 100px;
+				height: 100px;
+			}
+			#item1{
+				background-color: antiquewhite;
+			}
+			#item2{
+				background-color: aqua;
+				order: 1;
+			}
+			#item3{
+				background-color: darkblue;
+			}
+			#item4{
+				background-color: gainsboro;
+			}
+			#item5{
+				background-color: brown;
+			}
+			#item6{
+				background-color: gray;
+			}
+			#item7{
+				background-color: mediumblue;
+			}
+			#item8{
+				background-color: khaki;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<!-- div.container>div.item#item${$}*8 -->
+		<div class="container">
+			<div class="item" id="item1">1</div>
+			<div class="item" id="item2">2</div>
+			<div class="item" id="item3">3</div>
+			<div class="item" id="item4">4</div>
+			<div class="item" id="item5">5</div>
+			<div class="item" id="item6">6</div>
+			<div class="item" id="item7">7</div>
+			<div class="item" id="item8">8</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.box{
+				width: 400px;
+				height: 400px;
+				background-color: pink;
+				background-image: url(../../img/1.jpg);
+				
+				/* 不让复制 */
+				background-repeat: no-repeat;
+				
+				/* 图片放大 */
+				/* background-size: 300px; */
+				/* background-size: 50%; */
+				
+				/* 如果图的宽或高与盒子的尺寸相同了，另一个方向停止缩放，-- 导致盒子可能有留白 */
+				/* background-size: contain; */
+				
+				/* 保证宽或高和盒子尺寸完全相同，导致图片显示不全 */
+				background-size: cover;
+				
+				/* 在工作中，图的比例和盒子的比例都是相同的，contain和cover效果完全相同*/
+				
+				
+				
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			
+		</div>
+	</body>
+</html>

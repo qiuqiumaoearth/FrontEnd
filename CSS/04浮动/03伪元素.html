@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.father{
+				width: 200px;
+				height: 100px;
+				background-color: pink;
+				line-height: 100px;
+				text-align: center;
+			}
+			.father::before{
+				content:"祝大家";
+			}
+			.father::after{
+				content:"快乐";
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 伪元素 通过css创建标签,装饰性的不重要的小图 -->
+		
+		<!-- 找父级,在这个父级里面创建子级标签 -->
+		
+		<div class = "father">元旦</div>
+		<!-- 祝大家元旦快乐 -->
+	</body>
+</html>

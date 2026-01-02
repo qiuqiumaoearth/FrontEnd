@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			div{
+				width: 200px;
+				height: 200px;
+			}
+			.one{
+				position: absolute;
+				left: 20px;
+				top: 50px;
+				z-index: 2;
+			
+				background-color: pink;
+			}
+			.two{
+				position: absolute;
+				left: 50px;
+				top: 100px;
+				
+				background-color: skyblue;
+			}
+			/* 
+			默认情况下,定位的盒子后来者居上
+			z-index:整数;取值越大,显示顺序越靠上,z-index的默认值是0
+			*/
+		</style>
+	</head>
+	<body>
+		<div class="one">one</div>
+		<div class="two">two</div>
+		
+	</body>
+</html>

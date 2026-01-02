@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.box{
+				width: 200px;
+				height: 200px;
+				background-color: pink;
+				
+				/* 宽度200，悬停的时候宽度600，花费2秒 */
+				/* transition: width 1s, background-color 2s; */
+				
+				/* 如果变化的属性多，直接写all，表示所有 */
+				transition: all 1s;
+			}
+			
+			.box:hover{
+				width: 600px;
+				height: 600px;
+				background-color: aqua;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			
+		</div>
+	</body>
+</html>

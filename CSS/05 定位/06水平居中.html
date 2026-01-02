@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			
+			/* 方案一,用flex */
+			/* .father{
+				width: 400px;
+				height: 400px;
+				background-color: pink;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+			}
+			.son{
+				width: 200px;
+				height: 100px;
+				background-color: blue;
+			} */
+			
+			/* 方案二,用子绝父相 */
+			/* .father{
+				width: 400px;
+				height: 400px;
+				background-color: pink;
+				position: relative;
+
+
+			}
+			.son{
+				width: 200px;
+				height: 100px;
+				background-color: blue;
+				position: absolute;
+				left: calc(50% - 100px);
+			} */
+			
+			.father{
+				width: 400px;
+				height: 400px;
+				background-color: pink;
+				position: relative;
+			
+			
+			}
+			.son{
+				width: 200px;
+				height: 100px;
+				background-color: blue;
+				position: absolute;
+				left: calc(50% - 100px);
+			}
+			
+			
+			
+			
+		</style>
+	</head>
+	<body>
+		<div class="father">
+			<div class="son">
+				
+			</div>
+		</div>
+	</body>
+</html>
