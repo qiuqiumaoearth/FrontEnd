@@ -1,0 +1,122 @@
+/* 清除默认样式的代码 */
+
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* 设置网页统一字体大小、行高、字体系列相关的属性 */
+body {
+    font: 16px/1.5 sans-serif;
+    color: #333;
+    background-color: #fff;
+}
+
+/* 去除列表默认样式 */
+ul,
+ol {
+    list-style: none;
+
+}
+/* 去除默认的倾斜效果 */
+em,
+i {
+    font-style: normal;
+}
+
+/* 去除a标签默认下划线,并设置默认文字颜色 */
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+a:hover {
+    /* color: #5eb69c !important; */
+}
+
+/* 设置img的垂直对齐方式为居中对齐,去除img默认下间隙 */
+img {
+    vertical-align: middle;
+    border: none;
+}
+
+/* 去除input默认样式 */
+input {
+    padding: 0;
+    border: none;
+    outline: none;
+    color: #333;
+
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* - Chrome ≤56,
+   - Safari 5-10.0
+   - iOS Safari 4.2-10.2
+   - Opera 15-43
+   - Opera Mobile >12
+   - Android Browser 2.1-4.4.4
+   - Samsung Internet
+   - UC Browser for Android
+   - QQ Browser */
+   
+   
+::-webkit-input-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* Firefox 4-18 */
+:-moz-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* Firefox 19-50 */
+::-moz-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* - Internet Explorer 10–11
+   - Internet Explorer Mobile 10-11 */
+:-ms-input-placeholder {
+    color: #ccc !important;
+    font-weight: 400 !important;
+}
+
+/* Edge (also supports ::-webkit-input-placeholder) */
+::-ms-input-placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+/* CSS Working Draft */
+::placeholder {
+    color: #ccc;
+    font-weight: 400;
+}
+
+.float-left {
+    float: left;
+}
+
+.min-width {
+    min-width: 1240px;
+}
+
+.drift {
+    transition: .3s;
+}
+
+.drift:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .3);
+    transform: translateY(-5px);
+}

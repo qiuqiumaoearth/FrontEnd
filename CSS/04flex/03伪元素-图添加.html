@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			div{
+				display: flex;
+				flex-direction: row;
+				line-height: 200px;
+				
+				width: 500px;
+				height: 500px;
+				background-color: green;
+				font-size: 50px;
+			}
+			
+			div span{
+				margin-left: 50px;
+			}
+			
+			/* 伪元素 */
+			div::before{
+				content: "";
+				display: block;
+				width:200px;
+				height: 200px;
+				background-color: pink;
+				background-image: url(../../img/1.jpg);
+			}
+		</style>
+	</head>
+	<body>
+		<div >
+			<span>你好风景</span>
+			
+		</div>
+	</body>
+</html>

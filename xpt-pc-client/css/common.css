@@ -1,0 +1,334 @@
+/* 各个页面相同的样式表:头,尾部 */
+
+/* 版心 */
+.wrapper{
+	width: 1240px;
+	margin: 0 auto;
+}
+
+/* 快捷导航 */
+.shortcut{
+	height: 52px;
+	background-color: #333;
+}
+
+.shortcut .wrapper{
+	height: 52px;
+	/* background-color: pink; */
+	flex-direction: row;
+	align-content: center;
+
+}
+
+.shortcut .wrapper ul{
+	display:flex;
+	flex-direction: row;
+	justify-self: flex-end;
+	align-content: center;
+}
+
+.shortcut .wrapper ul li{
+	width: 100px;
+	height: 19px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	/* background-color: yellow; */
+	/* 属于方便观察，但是又不会破坏布局 */
+	/* outline:1px solid #000; */
+	border-right: 1px solid #666;
+}
+
+.shortcut .wrapper ul li:last-child{
+	width: 120px;
+	border: none;
+}
+
+.shortcut .wrapper ul li:last-child a{
+	padding-left: 5px;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+.shortcut .wrapper ul li:last-child a img{
+	position: absolute;
+	top: 40px;
+	display: none;
+	z-index: 999;
+	
+}
+
+.shortcut .wrapper ul li:last-child a:hover img{
+	display: block;
+	
+}
+
+
+.shortcut .wrapper ul li:last-child::before{
+	padding-left: 10px;
+	content: "📱";
+	
+}
+
+
+.shortcut .wrapper ul li a{
+	/* width: 100px; */
+	height: 14px;
+	color: #dcdcdc;
+	
+	/* background-color: antiquewhite; */
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 0 16px;
+}
+
+/* 头部 */
+.header{
+	margin: 30px auto;
+	height: 80px;
+	/* background-color: pink; */
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+
+.logo{
+	width: 200px;
+	height: 80px;
+	/* background-color: skyblue; */
+}
+
+/* logo搜索引擎优化做法 */
+.logo h1{
+	width: 200px;
+	height: 80px;
+}
+
+.logo h1 a{
+	display: block;
+	width: 200px;
+	height: 80px;
+	/* background-color: palevioletred; */
+	background-image: url(../images/logo.png);
+	background-size:contain;
+	/* 目的:让h1里面的字看不见 */
+	font-size: 0;
+}
+
+
+.nav{
+	flex:1;
+	height: 80px;
+	/* background-color: #0f0; */
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	margin: 0 20px;
+}
+
+.nav a{
+	font-size: 20px;
+	color: #333;
+	/* background-color: #aaaaff; */
+	line-height: 80px;
+	padding-bottom: 8px;
+}
+
+.nav a:hover{
+	color: #27ba9b;
+	border-bottom: 2px solid #27ba9b;
+}
+
+.search{
+	
+	width: 172px;
+	height: 30px;
+	background-color: #c290d5;
+	border-bottom: 2px solid #e7e7e7;
+	position: relative;
+	margin-right: 10px;
+}
+
+.search input{
+	padding-left: 30px;
+	width: 172px;
+	height: 28px;
+	font-size: 18px;
+}
+
+.search input::placeholder{
+	font-size: 14px;
+}
+
+.search span{
+	
+	display:inline-block;
+	width: 23px;
+	height: 23px;
+	/* background-color: black; */
+	background-image: url(../images/sprites.png);
+	background-position: -79px -69px;
+	
+	position: absolute;
+	left: 3px;
+	top: 3px;
+	
+	/* z-index: 99; */
+}
+
+
+.car{
+	display: block;
+	width: 23px;
+	height: 23px;
+	/* background-color: #ffaa00; */
+	margin: 0 10px;
+	background-image: url(../images/sprites.png);
+	background-position: -119px -69px;
+	position: relative;
+}
+
+.car span{
+	
+	width: 20px;
+	height: 15px;
+	background-color: #e26237;
+	border-radius: 8px;
+	
+	position: absolute;
+	left: 13px;
+	top: -3px;
+	
+	text-align: center;
+	line-height: 15px;
+	
+	font-size: 13px;
+	color: #fff;
+}
+
+.footer{
+	width: 100%;
+	height: 342px;
+	background-color: #333;
+	
+}
+
+.footer .wrapper{
+	
+	width: 1393px;
+	height: 342px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/* background-color: #c290d5; */
+	
+}
+
+.footer .top{
+
+	padding-top:59px;
+	padding-left:135px ;
+	padding-right:135px ;
+	height: 175px;
+	/* background-color: skyblue; */
+	border-bottom: 1px solid #434343;
+	
+}
+
+.footer .top ul {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	/* background-color: #aaaa7f; */
+}
+
+
+.footer .top ul li{
+	
+	/* outline: 1px solid #fff; */
+	width: 200px;
+	height: 60px;
+	/* background-color: skyblue; */
+	
+	margin: 0 60px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	
+	
+}
+
+
+
+.footer .top ul li span{
+	
+	width: 150px;
+	height: 50px;
+	/* background-color: black; */
+	/* outline: 1px solid #fff; */
+	text-align: center;
+	line-height: 50px;
+	position: relative;
+	font-size: 30px;
+	color: #fff;
+	
+}
+
+
+
+.footer .top ul li span:first-child{
+	width: 62px;
+	height: 60px;
+	background-image: url(../images/sprites.png);
+}
+
+
+.footer .top ul li .one{
+	
+	background-position: 1px 1px; */	
+}
+
+.footer .top ul li .two{
+	background-position: -64px 1px; */	
+}
+
+.footer .top ul li .three{
+	background-position: -130px 1px; */	
+}
+
+.footer .wrapper .bottom{
+	color: #fff;
+	font-size: 14px;
+	display: block;
+	width: 600px;
+	height: 48px;
+	margin-top: 20px;
+	/* background-color: skyblue; */
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-content:space-between;
+}
+
+.footer .wrapper .bottom a{
+	
+	display: block;
+	color: #fff;
+	/* width: 70px; */
+	height: 20px;
+	padding: 0 12px;
+	/* background-color: yellow; */
+	/* outline: 1px solid black; */
+	border-right: 1px solid #666;
+}
+
+.footer .wrapper .bottom :nth-last-child(2){
+	border: none;
+}
