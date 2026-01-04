@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.box{
+				width: 300px;
+				height: 200px;
+				background-color: pink;
+				margin: 100px auto;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				overflow: hidden;
+			}
+			
+			.box img{
+				width: 50px;
+				transition: all 0.5s;
+			}
+			
+			/* .box:hover img{
+				width: 300px;
+				height: 200px;
+			} */
+			
+			/* 四周 */
+			.box:hover img{
+				transform: scale(6);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<img src="https://picsum.photos/50/50?random=1" alt="">
+		</div>
+	</body>
+</html>
