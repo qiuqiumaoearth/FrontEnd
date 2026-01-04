@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			a{
+				text-decoration: none;
+				color: white;
+			}
+			
+			.box{
+
+			}
+			
+			.box ul{
+				width: 300px;
+				height: 100px;
+				margin: 50px auto;
+				padding: 0;
+				display: flex;
+				flex-direction: row;
+			}
+			
+			.box ul li{
+				
+				position: relative;
+				/* width: 300px;
+				height: 100px; */
+				width: 100px;
+				display: flex;
+				flex-direction: column;
+				/* outline: 1px solid black; */
+				/* background-color: aquamarine; */
+				
+				transition: all 0.5s;
+				
+				/* 转换3D效果 */
+				transform-style: preserve-3d;
+				
+				/* 视距可见 */
+				/* perspective: 1000px; */
+				
+				/* 为了看到橙色和绿色的位置 */
+				/* transform: rotatex(-20deg) rotateY(30deg); */
+				
+				
+			}
+			
+			.box ul li a{
+				display: block;
+				width: 100px;
+				height: 50px;
+				text-align: center;
+				line-height: 50px;
+				
+				
+				
+			}
+		
+			
+			.box ul li a:first-child{
+				background-color: green;
+				transform: translateY(50%);
+			}
+			
+			.box ul li a:last-child{
+				position: absolute;
+				left: 0;
+				background-color: orange;
+				transform: rotateX(90deg) translateY(-50%);
+				
+				
+			}
+			
+			
+			.box ul li:hover{
+				transform: rotateX(-90deg);
+			}
+			
+			
+			
+			
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<ul>
+				<li>
+					<a href="">首页</a>
+					<a href="">Index</a>
+				</li>
+				<li>
+					<a href="">登录</a>
+					<a href="">Login</a>
+				</li>
+				<li>
+					<a href="">注册</a>
+					<a href="">Register</a>
+				</li>
+	
+			</ul>
+			
+		</div>
+	</body>
+</html>

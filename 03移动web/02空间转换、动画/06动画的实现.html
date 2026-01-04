@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			div{
+				width: 100px;
+				height: 100px;
+				background-color: pink;
+				
+				/* 动画时间 5s ; infinite 重复 ; alternate 来来回回*/
+				animation: change 5s infinite alternate;
+			}
+			
+			/* @keyframes 动画名称*/
+			@keyframes change {
+				0% {
+					transform: translate(0);
+				}
+				
+				50%{
+					transform: rotate(180deg);
+				}
+				
+				100% {
+					transform: translate(600px);
+				}
+			
+			
+			
+				
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div></div>
+	</body>
+</html>

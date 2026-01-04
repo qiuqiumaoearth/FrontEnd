@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.box{
+				width: 300px;
+				margin: 100px auto;
+			}
+			
+			img{
+				width: 300px;
+				transition: all 2s;
+			}
+			
+			.box{
+				/* 透视效果:近大远小,近实远虚 */
+				perspective: 1000px;
+			}
+			
+			.box img:hover{
+				
+				/* 和水平旋转差不多 */
+				/* transform: rotateZ(360deg); */
+				
+				/* 沿着X轴旋转 */
+				/* transform: rotateX(60deg); */
+				
+				/* 沿着Y轴旋转 */
+				transform: rotateY(50deg);
+				
+			}
+			
+			
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<img src="https://picsum.photos/300/400?random=1" alt="" />
+		</div>
+	</body>
+</html>

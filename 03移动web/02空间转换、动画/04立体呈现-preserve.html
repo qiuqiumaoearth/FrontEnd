@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.cube{
+				position: relative;
+				margin: 100px auto;
+				
+				width: 200px;
+				height: 200px;
+				background-color: pink;
+				transition: all 2s;
+				
+				/* 视距 */
+				perspective: 1000px;
+				
+				transform-style:preserve-3d;
+				
+				
+			}
+			
+			.cube div{
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 200px;
+				height: 200px;
+			}
+			
+			.font{
+				background-color: orange;
+				transform: translateZ(100px);
+			}
+			
+			.back{
+				background-color: green;
+				transform: translateZ(-100px);
+			}
+			
+			.cube:hover{
+				  transform: rotatey(89deg);
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="cube">
+			<div class="font">前面</div>
+			<div class="back">后面</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			.box{
+				width: 200px;
+				height: 100px;
+				background-color: pink;
+				/* animation: one 1s; */
+				
+				/* animation:动画名称 动画时长 速度曲线 延迟时间 重复次数 动画方向 执行完毕时状态; */
+				/* linear匀速运动 */
+				/* animation: one 2s linear; */
+				
+				/* steps:分步动画  将动画分为5步  配合精灵图使用,实现精灵动画*/
+				/* animation: one 5s steps(5); */
+				
+				/* 如果有两个时间值,第一个时间表示动画时长,第二个时间表示延迟时间 */
+				/* animation: one 2s 2s; */
+				
+				/* 重复次数,infinite:无限循环 */
+				/* animation: one 2s 3; */
+				/* animation: one 2s infinite; */
+				
+				/* 运动方向, alternate反向*/
+				/* animation: one 2s infinite alternate; */
+				
+				/*  执行完毕时状态; forwards结束状态;backwards开始状态(默认)*/
+				/* animation: one 2s forwards; */
+				
+				
+			}
+			
+			/* 动画一:宽度从200变化到800 */
+			@keyframes one {
+				from{
+					width: 200px;
+				}
+				to{
+					width: 800px;
+				}
+				
+			}
+			
+			
+			/* 动画二:从200*100变化到300*300 变化到800*500 */
+			/* 百分比:表示的意思是动画时长的百分比 */
+			/* @keyframes two {
+				0%{
+					width: 200px;
+					height: 100px;
+				}
+				20%{
+					width: 300px;
+					height: 300px;
+				}
+				100%{
+					width: 800px;
+					height: 500px;
+					/* background-color: #fff; */
+				}
+			} */
+			
+		</style>
+	</head>
+	<body>
+		<div class="box"></div>
+	</body>
+</html>
