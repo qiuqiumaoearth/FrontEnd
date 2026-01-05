@@ -167,8 +167,25 @@
   - 语法：导入@import"文件路径";
   - 提示:如果是less文件可以省略后缀
 
+    > @import  './base.less';
+    >
 
+    > @import './base';
+    >
+- less - 导出
 
+  - 写法:在less文件的第一行添加 // out:存储URL
+  - 提示:文件夹后面添加
+
+    > // out: ./index.css    导出当前文件并且取名为index.css名字
+    >
+
+    > //out: ./css/      导出到某个文件中
+    >
+- less - 禁止导出
+
+  - 写法:在less文件第一行添加 :  `//out:false`
+  - 就不会生成对应的css文件
 
 
 
