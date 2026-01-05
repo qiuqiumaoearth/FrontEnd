@@ -1,0 +1,20 @@
+.father{
+    width: 400px;
+    height: 400px;
+    background: #ccc;
+    .child{
+        width: 200px;
+        height: 200px;
+        background: orange;
+        a{
+            color: red;
+            font-size: 20px;
+            // &表示当前选择器
+            &:hover{
+                background: yellow;
+            }
+        }
+
+       
+    }
+}

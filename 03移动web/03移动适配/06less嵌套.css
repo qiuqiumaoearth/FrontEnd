@@ -1,0 +1,17 @@
+.father {
+  width: 400px;
+  height: 400px;
+  background: #ccc;
+}
+.father .child {
+  width: 200px;
+  height: 200px;
+  background: orange;
+}
+.father .child a {
+  color: red;
+  font-size: 20px;
+}
+.father .child a:hover {
+  background: yellow;
+}
