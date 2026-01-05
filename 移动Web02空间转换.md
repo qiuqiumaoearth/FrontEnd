@@ -30,6 +30,41 @@
 	- transform:scale3d(x,y,z)
 ***
 # 动画 -- animation
+- 多组动画
+	```html
+	<style>
+		.box{
+			position: relative;
+			margin: 100px auto;
+			width: 140px;
+			height: 140px;
+			/* background-color: pink; */
+			overflow: hidden;
+			
+			/* border: 1px solid black; */
+			
+			background-image: url(../../img/donghuatu.png);
+			animation:
+			 run 1s steps(12) infinite,
+			 move 5s forwards
+			 ;
+			
+		}
+		
+		/* 当动画的开始状态样式跟盒子默认样式相同,可以省略动画开始状态 */
+		@keyframes run {
+			/* from{background-position: 0 0;} */
+			to{background-position: -1680px 0;}
+		}
+		
+		@keyframes move {
+			/* 0%{transform: translate(0);} */
+			100%{transform: translate(800px);}
+		}
+		
+	</style>
+	```
+
 - animation:动画名称 动画时长 速度曲线 延迟时间 重复次数 动画方向 执行完毕时状态;
 	|属性|作用|取值|
 	|:---:|:---:|:---:|
@@ -41,9 +76,6 @@
 	|animation-iteration-count|重复次数|infinite为无限循环|
 	|animation-direction|动画执行方向|alternate为反向|
 	|animation-play-state|暂停动画|paused为暂停,通常配合:hover使用|
-
-
-
 	- 速度曲线 :linear匀速运动 /steps:分步动画  将动画分为5步  配合精灵图使用,实现精灵动画
 	> 动画名称和动画时长必须赋值  
 	> 取值不分延后顺序  
@@ -114,4 +146,5 @@
 		
 	</style>
 	```
-
+- 无缝动画原理:复制开头图片到结尾位置(图片累加宽度=区域宽度)
+	- eg:走马灯效果
