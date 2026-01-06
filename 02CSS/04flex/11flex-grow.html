@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			
+			.box{
+				width: 1000px;
+				/* height: 100px; */
+				background-color: yellow;
+				display: flex;
+			}
+			
+			.box div{
+				width: 100px;
+				height: 100px;
+				background-color: #fff;
+				/* flex-grow: 1; */
+			}
+			
+			div:nth-child(odd){
+				background-color: pink;
+				flex-grow: 2;
+			}
+			
+			div:nth-child(2n){
+				background-color: green;
+				flex-grow: 1;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</body>
+</html>

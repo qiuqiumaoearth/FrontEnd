@@ -59,3 +59,21 @@
 - 元素整体透明度 -- opacity  
 	- 让某元素整体(包括内容一起变透明，比如文字，子元素
 	- 属性值：0-1之间，0完全透明，1完全不透明
+
+- 让图片等比例占盒子：盒子可能不满
+	```less
+	img{
+		height: 100%;
+		object-fit: cover;
+		
+	}
+	```
+- 字体图标优先用i标签
+	```html
+	<div class="title">
+		<!-- 标题 -->
+		<h4>酷我排行榜</h4>
+		<a href="">更多<i class="iconfont icon-right"></i></a>
+	</div>
+	```
+

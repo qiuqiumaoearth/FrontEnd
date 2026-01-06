@@ -94,11 +94,46 @@
   - 计算68px是多少个rem?(设计稿适配375px视口)
   - n*37.5=68
   - 得到n,也就是rem单位的尺寸
+	```html
+	<!DOCTYPE html>
+	<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<style>
+			/* 68*29的盒子 */
+			.box{
+				width: 1.813rem;
+				height:0.7733rem;
+				background-color: pink;
+			}
+			
+			/* 可以不用引入.js文件，直接利用vw来设置 */
+			/* html{
+				font-size: 10vw;
+			}
+			 */
+
+			
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			
+			<script src="flexible.js"></script>
+		</div>
+	</body>
+	</html>
+	```
+
+
+
 
 ---
 
 # less:是css预处理器,less文件的后缀名是.less
-
+- 现在不用less,原生css也可以嵌套和有变量
 - 浏览器不识别less代码,目前阶段,网页要引入对应的css文件
 - vscode插件: eady less,保存less文件后自动生成对应的css文件
 - 注释:
@@ -106,13 +141,10 @@
   - 单行注释 → //注释内容(快捷键:ctrl+/)
   - 块注释 → /* 注释内容 */(快捷键:shift+alt+a)
 - less - 运算
-
   - 加、减、乘直接书写计算表达式
   - 除法需要添加小括号
 - less - 嵌套
-
   - &表示当前选择器,代码写到谁的大括号里面就表示谁 → 不会生成后代选择器
-
     - 应用：配合hover伪类或者nth-child结构伪类使用
   - 快速生成后代选择器
 
@@ -168,20 +200,16 @@
   - 提示:如果是less文件可以省略后缀
 
     > @import  './base.less';
-    >
-
     > @import './base';
-    >
+	
 - less - 导出
 
   - 写法:在less文件的第一行添加 // out:存储URL
   - 提示:文件夹后面添加
 
     > // out: ./index.css    导出当前文件并且取名为index.css名字
-    >
-
     > //out: ./css/      导出到某个文件中
-    >
+	> 
 - less - 禁止导出
 
   - 写法:在less文件第一行添加 :  `//out:false`
