@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			
+			@media (max-width:768px) {
+				.left{
+					display: none;
+				}
+			}
+			
+			.box{
+				display: flex;
+				flex-direction: row;
+				
+				
+			}
+			
+			.left{
+				width: 300px;
+				height: 500px;
+				background-color: pink;
+			}
+			
+			.main{
+				flex:1;
+				background-color: blue;
+				color: #fff;
+			}
+			
+			
+		</style>
+	</head>
+	<body>
+		<!-- 网页宽度小于等于768px则隐藏左侧区域 -->
+		<div class="box">
+			<div class ="left">left</div>
+			<div class="main">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem aliquam doloremque voluptas eaque minima dolorum saepe ipsum optio tenetur quisquam ratione, in labore rem laudantium, minus odit, placeat debitis corrupti.</div>
+		</div>
+		
+	</body>
+</html>

@@ -215,6 +215,17 @@
   - 写法:在less文件第一行添加 :  `//out:false`
   - 就不会生成对应的css文件
 
+- less直接导入
+	
+	```html
+	<link rel="stylesheet/less" type="text/css" href="./less/index.less" />
+	<!-- href后面改成自己用的文件名 -->
+	 
+	<!-- 把less直接变为css，不需要less，变成css再导入less -->
+	<!-- 因为这个过程慢，而hx检测到文件改变比较快，所以需要你每次改了less，还需要刷新一下才能看到效果 -->
+	<script src="https://cdn.jsdelivr.net/npm/less@4.1.3/dist/less.min.js"></script>
+	```
+
 
 
 

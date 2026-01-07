@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- 引入浏览器前面的icon -->
+	<link rel="shortcut icon" href="favicon.ico" type="imge/x-icon">
+	
+	<!-- 层叠性：自己的css要 层叠框架 的 -->
+	<link rel="stylesheet" href="Bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="Bootstrap/font/bootstrap-icons.css" />
+	<!-- <link rel="stylesheet" href="css/index.css" /> -->
+	<link rel="stylesheet/less" type="text/css" href="./less/index.less" />
+	 
+	<!-- 把less直接变为css，不需要less，变成css再导入less -->
+	<!-- 因为这个过程慢，而hx检测到文件改变比较快，所以需要你每次改了less，还需要刷新一下才能看到效果 -->
+	<script src="https://cdn.jsdelivr.net/npm/less@4.1.3/dist/less.min.js"></script>
+	<title>腾讯全端</title>
+</head>
+
+
+<body>
+	<!-- 导航 -->
+	<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+	  <div class="container">
+	    <a class="navbar-brand" href="#"><img src="./assets/images/logo.png" alt="" /></a>
+	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	      <span class="navbar-toggler-icon"></span>
+	    </button>
+	    <div class="collapse navbar-collapse" id="navbarNav">
+	      <ul class="navbar-nav">
+	        <li class="nav-item">
+	          <a class="nav-link " href="#">首页</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" href="#">博客</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" href="#">Github</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" href="#">TWeb Cont</a>
+	        </li>
+			<li class="nav-item">
+			  <a class="nav-link" href="#" >SuperStart</a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link"  href="#" >Web前端导航</a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link"  href="#" >关于</a>
+			</li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+	
+	<!-- 轮播图 -->
+	<div id="carouselExampleIndicators" class="carousel slide">
+	  <div class="carousel-indicators">
+	    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+	    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+	    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+		<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+	  </div>
+	  <div class="carousel-inner">
+	    <div class="carousel-item active">
+	      <!-- <img src="..." class="d-block w-100" alt="..."> -->
+	    </div>
+	    <div class="carousel-item">
+	      <!-- <img src="..." class="d-block w-100" alt="..."> -->
+	    </div>
+	    <div class="carousel-item">
+	      <!-- <img src="..." class="d-block w-100" alt="..."> -->
+	    </div>
+		<div class="carousel-item">
+		  <!-- <img src="..." class="d-block w-100" alt="..."> -->
+		</div>
+	  </div>
+	  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Previous</span>
+	  </button>
+	  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Next</span>
+	  </button>
+	</div>
+	
+	<!-- 开源项目 -->
+	<div class="project container">
+		<div class="title">
+			<h2>OpenSource / 开源项目</h2>
+			<p>种类众多的开源项目，让你爱不释手</p>
+		</div>
+		
+		<div class="content">
+			<div class="row">
+				<div class="col-lg-3 col-md-6"><a href="#">1</a></div>
+				<div class="col-lg-3 col-md-6"><a href="#">2</a></div>
+				<div class="col-lg-3 col-md-6"><a href="#">3</a></div>
+				<div class="col-lg-3 col-md-6"><a href="#">4</a></div>
+				
+				
+			</div>
+			
+		</div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+<script src="Bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
