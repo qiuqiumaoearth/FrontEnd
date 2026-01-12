@@ -47,3 +47,55 @@
 
 	</script>
 	```
+- 数组最大值：Math.max(...数组名)
+- 数组最小值：Math.min(...数组名)
+- 操作数组(增,删,改,查)
+	- 作用，参数，参数如果是回调函数，回调函数的参数，返回值，是否改变原数组
+	- 数组添加新的元素(尾:push;头:unshift)
+		- arr.push(新增的内容) -- 将一个或者多个元素添加在数组末尾,并返回该数组的新长度
+		```html
+		<script>
+		let arr = [1,2,3,4,5]
+
+		console.log(arr.push(90,100));//返回的是7;新数组的长度
+		console.log(arr);//返回的是新数组,[1,2,3,4,5,90,100]
+		</script>
+		```
+		- arr.unshift(新增的内容) -- 将一个或者多个元素添加在数组开头,并返回该数组的新长度
+	
+	- 删除数组中的数据
+		- arr.pop() -- 从数组中删除最后一个元素,并返回该元素(无参数)
+		
+		```html
+		<script>
+			let a = ['yellow','pink','blue']
+			console.log(a.pop()); //返回blue
+			console.log(a) //数组['yellow','pink']
+		</script>
+		```
+		- arr.shift() -- 从数组中删除第一个元素,并返回该元素(无参数)
+		- arr.splice(start,deleteCount) -- (两个参数)
+			- start起始位置:指定修改的开始位置(从0计数)
+			- deleteCount表示要移除的数组元素的个数,可选的,如果省略则默认从指定的起始位置删除到最后
+			- 返回被删除的元素
+- 数组排序
+	- arr.sort() 默认是升序排
+	
+	```html
+	<script>
+		let arr = [2,1,7,5,8]
+		// 1.升序排列
+		arr.sort(function(a,b){
+			return a-b
+		})
+		console.log('升序排列'+ arr); //升序排列1,2,5,7,8
+		
+		// 2.降序排列
+		arr.sort(function(a,b){
+			return b-a
+		})
+		console.log('降序排列'+arr); //降序排列8,7,5,2,1
+		
+	</script>
+	```
+

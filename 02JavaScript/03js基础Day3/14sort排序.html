@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	<script>
+		let arr = [2,1,7,5,8]
+		// 1.升序排列
+		arr.sort(function(a,b){
+			return a-b
+		})
+		console.log('升序排列'+ arr); //升序排列1,2,5,7,8
+		
+		// 2.降序排列
+		arr.sort(function(a,b){
+			return b-a
+		})
+		console.log('降序排列'+arr); //降序排列8,7,5,2,1
+		
+	</script>
+	</body>
+</html>
