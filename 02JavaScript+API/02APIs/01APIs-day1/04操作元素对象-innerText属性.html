@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="box">我是文字内容</div>
+		<script>
+			//1.获取元素
+			const box = document.querySelector('.box')
+			// 2.修改文字内容,对象.innerText属性
+			console.log(box.innerText)
+			box.innerText = '我是一个盒子'
+			box.innerHTML = '<b>我是</b>'
+			
+		</script>
+	</body>
+</html>
