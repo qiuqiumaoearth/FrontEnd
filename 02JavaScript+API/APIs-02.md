@@ -75,6 +75,25 @@
     - focus:获得焦点
     - blur:失去焦点
     - input:用户输入事件
+    - change:当输入框改变内容的时候触发
   - 键盘事件:键盘触发
     - keydown:键盘按下触发
+
+    ```html
+    <body>
+      <input type="text" name="" id="">
+      <script>
+          let inp = document.querySelector('input')
+          inp.addEventListener('keydown', function (e) {
+              // let f = e
+              console.log(e) //判断输入的是那个键
+          })
+
+          inp.addEventListener('input', function () {
+            console.log(inp.value)  //打印输入框中的内容
+        })
+      </script>
+    </body>
+    ```
+
     - keyup:键盘抬起触发

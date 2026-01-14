@@ -116,7 +116,7 @@
   </div>
   <script>
     // 1. 初始数据
-    const sliderData = [
+    const data = [
       { url: '素材/images/slider01.jpg', title: '对人类来说会不会太超前了？', color: 'rgb(100, 67, 68)' },
       { url: '素材/images/slider02.jpg', title: '开启剑与雪的黑暗传说！', color: 'rgb(43, 35, 26)' },
       { url: '素材/images/slider03.jpg', title: '真正的jo厨出现了！', color: 'rgb(36, 31, 33)' },
@@ -126,38 +126,69 @@
       { url: '素材/images/slider07.jpg', title: '一站式解决你的电脑配置问题！！！', color: 'rgb(53, 29, 25)' },
       { url: '素材/images/slider08.jpg', title: '谁不想和小猫咪贴贴呢！', color: 'rgb(99, 72, 114)' },
     ]
+    //获取元素
+    const img = document.querySelector('.slider-wrapper img')
+    const p = document.querySelector('.slider-footer p')
+    const bgc = document.querySelector('.slider-footer')
 
-    let i = 0;
+    let i = 0 // 控制播放图片的张数
 
-    //每隔一秒切换一个图片
-    function changeImg() {
-      const index = i % sliderData.length
-      const activData = sliderData[index]
-
-      //4.修改img的src属性
-      const sliderImg = document.querySelector('.slider-wrapper img');
-      sliderImg.src = activData.url;
-
-      // 5.修改p里面的文字
-      const sliderP = document.querySelector('.slider-footer p');
-      sliderP.textContent = activData.title;
-
-      // 6.修改footer的背景颜色
-      const sliderFooter = document.querySelector('.slider-footer');
-      sliderFooter.style.backgroundColor = activData.color;
-
-      // 先删除以前的active,让现在的有
-      document.querySelector('.slider-indicator .active').classList.remove('active')
-
-      // 7.再添加现在的
-      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active');
+    // 右侧按钮点击，变量++，如果大于等于8，则复原0
+    const next = document.querySelector('.next')
+    //注册点击事件
+    next.addEventListener('click', function () {
 
       i++;
+      toggle()
+
+    })
+
+    //左侧按钮点击，变量--，如果小于0，则变为7
+    const prev = document.querySelector('.prev')
+    prev.addEventListener('click', function () {
+
+      i--;
+      i = i < 0 ? data.length - 1 : i; //当前的对应的坐标
+      toggle()
+
+    })
+
+    //声明一个函数用来复用
+    function toggle() {
+      let index = i % data.length;
+      console.log(index)
+      //渲染对应的数据
+      img.src = data[index].url
+      p.innerHTML = data[index].title
+      bgc.style.background = data[index].color
+      //小圆点,先删除之前的,再添加当前的i
+
+      document.querySelector('.slider-indicator li.active').classList.remove('active')
+      document.querySelector(`.slider-indicator li:nth-child(${index + 1})`).classList.add('active')
 
     }
+    //不按键的时候,定时器
 
-    let timer = setInterval(changeImg, 1000)
+    let timerId = setInterval(function () {
+      //利用js自动调用点击事件
+      next.click()
+    }, 1000)
 
+    //先关再开
+    //鼠标经过
+    const slider = document.querySelector('.slider')
+    //注册事件
+    slider.addEventListener('mouseenter', function () {
+      clearInterval(timerId)
+    })
+
+    //鼠标离开
+    slider.addEventListener('mouseleave', function () {
+      timerId = setInterval(function () {
+        //利用js自动调用点击事件
+        next.click()
+      }, 1000)
+    })
   </script>
 </body>
 
