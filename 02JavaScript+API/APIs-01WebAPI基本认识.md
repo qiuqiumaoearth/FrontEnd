@@ -101,6 +101,61 @@
 ***
 # 操作元素属性
 - 操作元素常用属性
+	- 通过js设置/修改标签元素属性，比如通过src换照片
+	- 最常见的属性比如：href，title，src等
+	- 语法：```对象.属性 = 值 ```
+	```html
+	<body>
+		<img src="./素材/images/1.webp" alt="">
+	</body>
+	<script>
+		//1.获取图片元素
+		const img = document.querySelector('img')
+		//2.修改图片对象属性
+		img.src = './素材/images/2.webp'
+		
+	</script>
+	```
+
 - 操作元素样式属性
+	- 通过style属性操作CSS
+	```html
+	<script>
+		// 1,获取元素
+		const box = document.querySelector('.box')
+		// 2.修改样式属性,对象.style.样式属性='值',别忘了单位
+		box.style.width = '500px'
+		box.style.backgroundColor = 'green' //有-的,用小驼峰
+		
+	</script>
+	```
+	- 操作类名(className)操作CSS
+		- 语法: 元素.className = 'css类名'
+		
+	- 通过classList操作类控制CSS
 - 操作表单元素属性
 - 自定义属性
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
