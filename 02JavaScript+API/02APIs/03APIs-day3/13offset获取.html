@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      background-color: pink;
+      margin: 100px;
+    }
+
+    p {
+      width: 100px;
+      height: 100px;
+      background-color: purple;
+      margin: 50px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="box">
+    <p>你好</p>
+  </div>
+  <script>
+    const box = document.querySelector('.box')
+    const p = document.querySelector('p')
+
+    // console.log(box.offsetLeft); 
+    console.log(p.offsetLeft);  //父级有position:relative,那么就是相对于父亲的
+
+  </script>
+
+</body>
+
+</html>

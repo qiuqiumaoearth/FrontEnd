@@ -1,9 +1,12 @@
-(function flexible (window, document) {
+(function flexible(window, document) {
+  //获取html
   var docEl = document.documentElement
+
+  //获取当前的页面,一倍图还是其他
   var dpr = window.devicePixelRatio || 1
 
   // adjust body font size
-  function setBodyFontSize () {
+  function setBodyFontSize() {
     if (document.body) {
       document.body.style.fontSize = (12 * dpr) + 'px'
     }
@@ -14,7 +17,7 @@
   setBodyFontSize();
 
   // set 1rem = viewWidth / 10
-  function setRemUnit () {
+  function setRemUnit() {
     var rem = docEl.clientWidth / 10
     docEl.style.fontSize = rem + 'px'
   }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      height: 5000px;
+    }
+
+    div {
+      display: none;
+      margin: 200px;
+      overflow: scroll;
+      width: 200px;
+      height: 200px;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt debitis quas amet facilis quisquam repudiandae
+    ex. Impedit, nemo. Saepe, adipisci quae? Tempora sit aliquid eveniet porro delectus sequi molestiae non?
+    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet dolor, doloremque deserunt magnam distinctio eum,
+    reprehenderit facere, repudiandae dicta similique quisquam? Facilis porro, explicabo aliquam quae assumenda quam
+    voluptas voluptates?
+  </div>
+
+  <script>
+    //页面滚动事件
+    const div = document.querySelector('div')
+    window.addEventListener('scroll', function () {
+      //当滑动页面的时候，控制台就会打印(我滚了!)
+      // console.log('我滚了！');
+      //找body的话是document.body
+      //找html的话是document.documentElement
+      // console.log(document.documentElement.scrollTop);
+
+      //给i赋值,获取当前页面向下滚动的高度
+      const i = document.documentElement.scrollTop
+      //当向下滚动100px的时候,显示div
+      if (i >= 100) {
+        div.style.display = 'block'
+      } else {
+        div.style.display = 'none'
+      }
+
+
+
+    })
+
+    // div.addEventListener('scroll', function () {
+    //   // console.log(111);
+    //   console.log(div.scrollTop);
+    // })
+  </script>
+
+</body>
+
+</html>

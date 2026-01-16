@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .tx {
+      display: inline-block;
+      height: 200px;
+      background-color: pink;
+      padding: 10px;
+      border: 20px solid red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tx">1234567</div>
+
+  <script>
+    const tx = document.querySelector('.tx')
+    console.log(tx.clientWidth); //包含padding值,不包含boeder值
+
+    //resize 浏览器窗口大小发生变化的时候触发的事件
+    window.addEventListener('resize', function () {
+      console.log(1);
+    })
+
+
+  </script>
+</body>
+
+</html>
