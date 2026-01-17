@@ -285,6 +285,43 @@
   </body>
   ```
 
+  ```html
+      <style>
+      input[value] {
+        color: red;
+      }
+
+      div[data-name] {
+        width: 10px;
+        height: 20px;
+        border: 1px solid black;
+      }
+
+      div[data-name=yy] {
+        background-color: yellow;
+      }
+    </style>
+  </head>
+
+  <body>
+    <input type="text" value="" data-id="0" data-name="andy">
+    <input type="tetx">
+    <div data-name="yy"></div>
+    <div data-name="ww"></div>
+    <script>
+      const inp = document.querySelector('input[value]')
+
+      //自定义属性里面所有的
+      console.log(inp.dataset);  //DOMStringMap {id: '0', name: 'andy'}
+
+      //选择某一个自定义属性,同时后面可以加=,给这个id属性赋值
+      console.log(inp.dataset.id);
+
+
+    </script>
+  </body>
+  ```
+
 ---
 
 # 定时器-间歇函数

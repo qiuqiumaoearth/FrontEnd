@@ -1251,17 +1251,70 @@
       list.addEventListener('click', function (e) {
         //排他思想
         //先获取
-        const old = document.querySelector('.xtx-elevator-list .active')
-        if (old) old.classList.remove('active')
-        //当前元素天见active
-        e.target.classList.add('active')
+        if (e.target.tagName === 'A' && e.target.dataset.name) {
+
+          const old = document.querySelector('.xtx-elevator-list .active')
+          if (old) old.classList.remove('active')
+          //当前元素天见active
+          e.target.classList.add('active')
+
+          //根据data-name后面的，选出大盒子，比如：data-name = 'new' 对应的大盒子是 <!-- 新鲜好物 --><div class="xtx_goods_new xtx_panel">
+          //console.log(document.querySelector(`.xtx_goods_${e.target.dataset.name}`).offsetTop)
+
+          //拿到大盒子的offsetTop值给页面的document.documentElement.scrollTop
+          const top = document.querySelector(`.xtx_goods_${e.target.dataset.name}`).offsetTop
+          document.documentElement.scrollTop = top
+
+        }
       }
       )
+
+
+    })();
+
+
+    //页面滚动,可以根据大盒子选小盒子 添加active
+    (function () {
+      //页面滚动
+      window.addEventListener('scroll', function () {
+        // 1,先移出active这个类
+        const old = document.querySelector('.xtx-elevator-list .active')
+        if (old) old.classList.remove('active')
+        //当页面的scrolltop大于等于大盒子的scrolltop的时候,给侧导航的小盒子添加上对应的active
+
+        //获取四个大盒子
+        const gnew = document.querySelector('.xtx_goods_new') //关键字不能作为变量名
+        const gpopular = document.querySelector('.xtx_goods_popular')
+        const gbrand = document.querySelector('.xtx_goods_brand')
+        const gtopic = document.querySelector('.xtx_goods_topic')
+        const n = document.documentElement.scrollTop   // 页面的卷去高度
+
+
+        if (n >= gnew.offsetTop && n < gpopular.offsetTop) {
+          document.querySelector('[data-name=new]').classList.add('active')
+
+        } else if (n >= gpopular.offsetTop && n < gbrand.offsetTop) {
+          document.querySelector('[data-name="popular"]').classList.add('active')
+
+        } else if (n >= gbrand.offsetTop && n < gtopic.offsetTop) {
+          document.querySelector('[data-name="brand"]').classList.add('active')
+
+        } else if (n >= gtopic.offsetTop) {
+          document.querySelector('[data-name="topic"]').classList.add('active')
+
+        }
+
+
+      })
+
+
 
 
 
 
     })();
+
+
 
 
   </script>

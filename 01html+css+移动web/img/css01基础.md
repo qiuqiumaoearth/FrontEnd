@@ -3,32 +3,38 @@
 - 选择器，就是选择(匹配)html里标签
 - 三种书写位置
   - 行内式：标签内，作为标签的一个属性
+
     ```html{}
     <div style="color: yellow; font-size: 50px; background-color: black; width: 200px;">行内css</div>
     ```
+
   - 内嵌式：网页head内，在style标签中，title标签下面
+
     ```html{}
     <style>
-    	p{
-    		color: red;
-    		font-size: 24px;
-    	}
-    	h1{
-    		/* px 像素 */
-    		color: aqua;
-    		font-size: 24px;
-    		background-color: red;
-    		width: 48px;
-    		height: 48px;
-    	}
+     p{
+      color: red;
+      font-size: 24px;
+     }
+     h1{
+      /* px 像素 */
+      color: aqua;
+      font-size: 24px;
+      background-color: red;
+      width: 48px;
+      height: 48px;
+     }
     </style>
     ```
+
   - 外联式--项目：外部引入.css文件中；用link标签在网页中引入
+
     ```html{}
 
     <!-- 关系：样式表 -->
     <link rel="stylesheet" href="style.css" />
     ```
+
 - 注释:ctrl+?
 
 ---
@@ -41,17 +47,17 @@
   - 用.+分类名--快速创建
 
   ```html
-  	<head>
-  	<meta charset="utf-8">
-  	<title></title>
-  	<style>
-  		.ys{
-  			color: red;
-  		}
-  	</style>
+   <head>
+   <meta charset="utf-8">
+   <title></title>
+   <style>
+    .ys{
+     color: red;
+    }
+   </style>
   </head>
   <body>
-  	<div class="ys">你好</div>
+   <div class="ys">你好</div>
   </body>
   ```
 
@@ -63,18 +69,18 @@
   - 一个网页里，id是不能重复的,相当于身份证号，只能用一次
 
   ```html
-  	<head>
-  	<meta charset="utf-8">
-  	<title></title>
-  			<style>
-  			#mu{
-  				background-color: aqua;
-  			}
-  		</style>
-  	</head>
-  	<body>
-  		<div id="mu">目录</div>
-  	</body>
+   <head>
+   <meta charset="utf-8">
+   <title></title>
+     <style>
+     #mu{
+      background-color: aqua;
+     }
+    </style>
+   </head>
+   <body>
+    <div id="mu">目录</div>
+   </body>
   ```
 
 ---
@@ -85,21 +91,49 @@
 
   ```html
   <head>
-  	<meta charset="utf-8">
-  	<title></title>
-  	<style>
-  		*{
-  			color: red;
-  		}
-  	</style>
+   <meta charset="utf-8">
+   <title></title>
+   <style>
+    *{
+     color: red;
+    }
+   </style>
   </head>
   <body>
-  	<div>目录</div>
-  	<a href="#">链接</a>
-  	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
-  	<div>测试</div>
+   <div>目录</div>
+   <a href="#">链接</a>
+   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+   <div>测试</div>
   </body>
   ```
+
+- 属性选择器
+
+```html
+  <style>
+    input[value] {
+      color: red;
+    }
+
+    div[data-name] {
+      width: 10px;
+      height: 20px;
+      border: 1px solid black;
+    }
+
+    div[data-name=yy] {
+      background-color: yellow;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="text" value="">
+  <input type="tetx">
+  <div data-name="yy"></div>
+  <div data-name="ww"></div>
+</body>
+```
 
 ---
 
@@ -109,9 +143,9 @@
 
 ---
 
-# font 复合属性 
+# font 复合属性
 
-* 取值 font：style weight size/line-height family;
+- 取值 font：style weight size/line-height family;
 
 |     说明     |     属性名     |                                取值                                |
 | :----------: | :-------------: | :----------------------------------------------------------------: |
@@ -130,7 +164,7 @@
 ```html
 <head>
 .a{
-	font-family: "宋体","黑体",serif;
+ font-family: "宋体","黑体",serif;
 }
 </head>
 ```
@@ -150,8 +184,8 @@
 
 ---
 
-# 标签居中：margin：0 auto;
+# 标签居中：margin：0 auto
 
-# 内容居中：text-align:center;
+# 内容居中：text-align:center
 
 - 快捷键：w50+h50   让后按tab

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div class="dad">11
+    <div class="baby">222</div>
+  </div>
+  <script>
+    const baby = document.querySelector('.baby');
+    const dad = document.querySelector('.dad');
+    console.log(baby);  //返回dom对象 <div class="baby">222</div>
+    console.log(baby.parentNode); //返回父节点 <div class="dad">11 <div class="baby">222</div></div>
+
+  </script>
+</body>
+
+
+</html>

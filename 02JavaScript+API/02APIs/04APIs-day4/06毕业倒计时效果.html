@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const end = +new Date('2026-01-30 08:30:00'); // 记录结束时间
+
+    //定时器
+    setInterval(function () {
+
+    })
+    setInterval(() => {
+      const now = +new Date();
+      const duration = end - now; // 计算耗时
+      const seconds = Math.floor((duration / 1000) % 60);
+      const minutes = Math.floor((duration / (1000 * 60)) % 60);
+      const hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+      const days = Math.floor(duration / (1000 * 60 * 60 * 24));
+      document.body.innerHTML = `距离2026年1月30日08:30:00还有${days}天${hours}小时${minutes}分钟${seconds}秒`;
+    }, 1000);
+
+  </script>
+</body>
+
+</html>
