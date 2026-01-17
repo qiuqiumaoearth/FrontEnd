@@ -1179,9 +1179,9 @@ console.log(Date.now());
 
 ## 查找节点
 
-### 父节点查找
+### 父节点查找:子.parNode
 
-- 子元素..parentNode
+- 子元素.parentNode
 - 返回最近一级的父节点,找不到就返回为null
 
 ```html
@@ -1194,7 +1194,7 @@ console.log(Date.now());
   </script>
 ```
 
-### 子节点查找
+### 子节点查找:父.children
 
 - childNodes
   - 获得所有子节点,包括文本节点(空格,换行),注释节点等等
@@ -1212,7 +1212,7 @@ console.log(Date.now());
   </script>
 ```
 
-### 兄弟关系查找
+### 兄弟关系查找:preES/nexES
 
 - 下一个兄弟节点:`li2.previousElementSibling`
 - 上一个兄弟节点:`i2.nextElementSibling`
@@ -1229,3 +1229,87 @@ console.log(Date.now());
 
 - 创建一个新节点
 - 把创建的新的节点放入到指定的元素内部
+
+### 创建节点 doc.create
+
+- `const li4 = document.createElement('li')`
+
+### 追加元素 appChil/inBef
+
+- 插入到父元素的最后一个子元素
+- `父元素.appendChild(要插入的元素)`
+- `父元素.insertBefore(要插入的元素,在那个元素前面)`
+
+```js
+  <script>
+    //创建节点
+    const ul = document.querySelector('ul')
+    const li4 = document.createElement('li')
+    const li0 = document.createElement('li')
+    //插入节点
+    ul.appendChild(li4)
+    li4.innerText = '新增的节点'
+
+    ul.insertBefore(li0, ul.children[2])
+    li0.innerText = '插入到数组第二个前面的节点'
+
+  </script>
+```
+
+### 克隆节点 clonN
+
+- `元素.cloneNode(布尔值)`
+- 若为true,则代表克隆时会包含后代一起克隆
+- 若为false,则代表克隆时不包含后代节点
+- 默认false
+
+```html
+  <script>
+    const ul = document.querySelector('ul')
+    const ul2 = ul.cloneNode(true) //带着后代一起被克隆
+    console.log(ul2);
+    document.body.appendChild(ul2) 
+
+    const ul3 = ul.cloneNode(false) //只克隆自身
+    console.log(ul3);
+    document.body.appendChild(ul3)
+
+    ul.appendChild(ul.children[0].cloneNode(true)) // 复制第一个li节点和里面值
+
+    ul.appendChild(ul.children[0].cloneNode(false)) // 复制第一个li节点无值
+  </script>
+```
+
+## 删除节点
+
+- 在js原生DOM操作里面,要删除元素必须通过父元素删除
+- 语法:`父元素.removeChild(要删除的元素)`
+- 如不存在父子关系则删除不成功
+- 删除节点和隐藏节点(dispaly:none/visibility:none)有区别
+  - 隐藏节点还是存在的,但是删除,则从html中删除节点
+
+```html
+  <script>
+    const ul = document.querySelector('ul')
+    ul.removeChild(ul.children[2]) // 删除第三个li节点
+    console.log(ul);
+  </script>
+```
+
+---
+
+# M端事件
+
+- M端就是手机移动端
+
+## 触屏事件(touch)
+
+- Android和IOS都有
+- touch对象代表一个触摸点,触摸点可能是一根手指,一根触摸笔
+- 触屏事件可以响应用户手指(或者触控笔)对屏幕或则和触控板的操作
+
+|触屏touch事件|说明|
+|:---|:---|
+|touchstart|手指触摸到一个DOM元素时触发|
+|touchmove|手指在一个DOM元素上滑动时触发|
+|touchend|手指从一个DOM元素上移开时触发|
