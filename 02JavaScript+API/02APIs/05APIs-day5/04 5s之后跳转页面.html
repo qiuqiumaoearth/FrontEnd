@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: pink;
+      margin: 200px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box"></div>
+  <script>
+
+    const box = document.querySelector('.box');
+
+    let i = 5;
+    box.innerHTML = `${i}秒后跳转页面`;
+
+    box.addEventListener('click', () => {
+      location.href = "https://www.baidu.com";
+    });
+
+    setInterval(() => {
+      box.innerHTML = `${i--}秒后跳转页面`;
+      if (i === 0) {
+        clearInterval(this);
+        box.style.display = 'none';
+        location.href = "https://www.baidu.com";
+      }
+
+    }, 1000);
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

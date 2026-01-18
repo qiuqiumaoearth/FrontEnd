@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    //检测userAgent信息
+    const userAgent = navigator.userAgent;
+    const android = userAgent.match(/(Android);?[\s\/]+([\d.]+)?/);
+    const ipad = userAgent.match(/(iPad).*OS\s([\d_]+)/);
+    const iphone = !ipad && userAgent.match(/(iPhone\sOS)\s([\d_]+)/);
+
+    //验证是否为Android设备或者pc设备
+    if (android || iphone || ipad) {
+      console.log("移动端设备");
+    } else {
+      console.log("pc端设备");
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1461,6 +1461,68 @@ console.log(Date.now());
 
 - `location`的数据类型是对象,拆分并保存url地址的各个组成部分
 
+```js
+  <script>
+    console.log(window.location);
+
+    //利用js的方式跳转页面
+    console.log(location.href); //获取当前页面的完整URL地址
+    console.log(location.search); //获取问号后面的参数
+    // 以后获取表单账户和密码的时候可以使用
+    location.href = "https://www.baidu.com";
+  </script>
+```
+
+### 常用的属性
+
+- href:获取当前页面的完整URL地址
+- search:获取问号后面的参数
+  - 以后获取表单账户和密码的时候可以使用
+- hash:获取地址中的哈希值,符号`#`后面的部分
+  - 经常用于不刷新页面,显示不同页面,比如网易云音乐
+  - `https://music.163.com/#/friend`
+- reload:刷新当前页面,传入参数true时,表示强制刷新
+
+  ```js
+    location.reload(true)
+  ```
+
 ## navigator对象
 
-## history对象
+- 该对象记录了浏览器自身的相关信息
+
+```html
+  <script>
+    //检测userAgent信息
+    const userAgent = navigator.userAgent;
+    const android = userAgent.match(/(Android);?[\s\/]+([\d.]+)?/);
+    const ipad = userAgent.match(/(iPad).*OS\s([\d_]+)/);
+    const iphone = !ipad && userAgent.match(/(iPhone\sOS)\s([\d_]+)/);
+
+    //验证是否为Android设备或者pc设备
+    if (android || iphone || ipad) {
+      console.log("移动端设备");
+    } else {
+      console.log("pc端设备");
+    }
+
+  </script> 
+```
+
+## history对象.go()
+
+- 主要管理历史记录,该对象与浏览器地址栏操作相对应,如前进,后退,历史记录
+
+### 常用属性和方法
+
+- back():可以后退功能
+- forward():前进功能
+- go(参数):前进后退功能,参数:如果是1(前进一个页面),如果是-1(后退一个页面)
+
+# 本地存储
+
+## 本地存储介绍
+
+## 本地存储分类
+
+## 存储复杂数据类型
