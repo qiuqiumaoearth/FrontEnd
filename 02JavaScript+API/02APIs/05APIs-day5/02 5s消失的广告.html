@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: pink;
+      margin: 200px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <script>
+
+    const box = document.querySelector('.box');
+
+    let i = 5;
+    box.innerHTML = `${i}秒后广告消失`;
+    setInterval(() => {
+      box.innerHTML = `${i--}秒后广告消失`;
+      if (i < 0) {
+        box.style.display = 'none';
+        alert('广告已关闭');
+        clearInterval(this);
+        i = 5;
+      }
+
+    }, 1000);
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

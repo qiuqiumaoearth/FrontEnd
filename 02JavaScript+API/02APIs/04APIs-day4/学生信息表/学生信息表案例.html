@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>学生信息管理</title>
+  <link rel="stylesheet" href="css/index.css" />
+</head>
+
+<body>
+  <h1>新增学员</h1>
+
+  <!-- form表单注册提交事件,阻止默认行为 -->
+  <form class="info" autocomplete="off">
+    姓名：<input type="text" class="uname" name="uname" />
+    年龄：<input type="text" class="age" name="age" />
+    性别:
+    <select name="gender" class="gender">
+      <option value="男">男</option>
+      <option value="女">女</option>
+    </select>
+    薪资：<input type="text" class="salary" name="salary" />
+    就业城市：<select name="city" class="city">
+      <option value="北京">北京</option>
+      <option value="上海">上海</option>
+      <option value="广州">广州</option>
+      <option value="深圳">深圳</option>
+      <option value="曹县">曹县</option>
+    </select>
+    <button class="add">录入</button>
+  </form>
+
+  <h1>就业榜</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>学号</th>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+        <th>薪资</th>
+        <th>就业城市</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 
+        <tr>
+          <td>1001</td>
+          <td>欧阳霸天</td>
+          <td>19</td>
+          <td>男</td>
+          <td>15000</td>
+          <td>上海</td>
+          <td>
+            <a href="javascript:">删除</a>
+          </td>
+        </tr> 
+        -->
+    </tbody>
+  </table>
+  <script>
+    const arr = [];
+    //1. 点击模块
+    //1.1 表单提交事件
+    const infoForm = document.querySelector(".info");
+    const tbody = document.querySelector("tbody");
+    infoForm.addEventListener("submit", function (e) {
+      //阻止默认行为,不跳转
+      e.preventDefault();
+
+      //获取所有带有name属相的表单元素
+      const items = document.querySelectorAll("[name]");
+
+      //表单验证
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].value === "") {
+          //光标放在第一个未填写的输入框
+          items[i].focus(); //聚焦输入框
+          return alert("请填写完整信息");
+        }
+      }
+
+      //1.2 获取用户输入的数据
+      const uname = this.uname.value;
+      const age = this.age.value;
+      const gender = this.gender.value;
+      const salary = this.salary.value;
+      const city = this.city.value;
+      //1.3 将数据存储到数组中
+      const obj = {
+        stuId: arr.length + 1001,
+        uname,
+        age,
+        gender,
+        salary,
+        city,
+      };
+      arr.push(obj); //对象追加到数组中
+      console.log(arr);
+
+      //获取页面清空
+      this.reset();
+      //清空tbody中的数据
+      tbody.innerHTML = "";
+      //调用渲染函数
+      render();
+
+
+    });
+
+    //渲染函数:因为增加和删除都需要渲染
+    function render() {
+      for (let i = 0; i < arr.length; i++) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${arr[i].stuId}</td>
+          <td>${arr[i].uname}</td>
+          <td>${arr[i].age}</td>
+          <td>${arr[i].gender}</td>
+          <td>${arr[i].salary}</td>
+          <td>${arr[i].city}</td> 
+          <td>
+            <a href="javascript:" data-index="${i}">删除</a>
+          </td>`
+        tbody.appendChild(tr);
+      }
+    }
+
+    //2. 删除模块
+    tbody.addEventListener("click", function (e) {
+      //2.1 判断是否点击的是删除按钮
+      if (e.target.tagName === "A") {
+        //2.2 获取当前点击的行索引
+        const index = e.target.dataset.index;
+        //2.3 删除数组中对应的数据
+        arr.splice(index, 1);
+        //2.4 清空tbody中的数据
+        tbody.innerHTML = "";
+        //2.5 重新渲染
+        render();
+      }
+    });
+
+
+
+
+  </script>
+</body>
+
+</html>

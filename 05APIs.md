@@ -65,7 +65,7 @@ console.dir(div);
 </body>
 ```
 
-## 选择匹配的的多个元素d.qA
+## 选择匹配的的多个元素d.qAll
 
 - 语法:`document.querySelectorAll('css选择器')`
 - 参数:包含一个或多个有效的CSS选择器字符串
@@ -78,7 +78,7 @@ console.dir(div);
 document.querySelectorAll('ul li')
 ```
 
-## 其他获取DOM元素方d.gE
+## 其他获取DOM元素方d.gEle
 
 ```js
 // 根据 id获取一个元素
@@ -334,7 +334,7 @@ document.getElementsByClassName('w')
 
 ---
 
-# 定时器-间歇函数
+# 定时器-间歇函数setInterval
 
 ## 使用场景
 
@@ -522,7 +522,8 @@ document.getElementsByClassName('w')
 ```
 
 - keyup:键盘抬起触发
-  ------------------
+
+  ---
 
 # 获取事件对象e
 
@@ -562,6 +563,45 @@ document.getElementsByClassName('w')
     console.log(str.trim())
     //去除字符串左右两边的空格
 </script>
+```
+
+# 事件清空/重置 reset()
+
+- html 里面的 input属性-reset重置
+- 提交:submit
+
+```js
+  <script>
+    const arr = [];
+    //1. 点击模块
+    //1.1 表单提交事件
+    const infoForm = document.querySelector(".info");
+    infoForm.addEventListener("submit", function (e) {
+      //阻止默认行为,不跳转
+      e.preventDefault();
+      //1.2 获取用户输入的数据
+      const uname = this.uname.value;
+      const age = this.age.value;
+      const gender = this.gender.value;
+      const salary = this.salary.value;
+      const city = this.city.value;
+      //1.3 将数据存储到数组中
+      const obj = {
+        stuId: arr.length + 1001,
+        uname,
+        age,
+        gender,
+        salary,
+        city,
+      };
+      arr.push(obj); //对象追加到数组中
+      console.log(arr);
+
+      //获取页面清空
+      this.reset();
+    });
+
+  </script>
 ```
 
 ---
@@ -1313,3 +1353,114 @@ console.log(Date.now());
 |touchstart|手指触摸到一个DOM元素时触发|
 |touchmove|手指在一个DOM元素上滑动时触发|
 |touchend|手指从一个DOM元素上移开时触发|
+
+```html
+  <script>
+    const box = document.querySelector('.box');
+    //1.触摸
+    box.addEventListener('touchstart', () => {
+      console.log('触摸开始');
+    });
+
+    //3.移动
+    box.addEventListener('touchmove', () => {
+      console.log('触摸移动');
+    });
+
+    //2.离开
+    box.addEventListener('touchend', () => {
+      console.log('触摸结束');
+    });
+  </script>
+```
+
+# js插件-swiper
+
+- [官网](<https://swiper.com.cn/>)
+- Swiper 基础演示 [在线演示](<https://swiper.com.cn/demo/index.html>)
+- 基本使用流程 [Swiper 使用方法](<https://swiper.com.cn/usage/index.html>)
+- 查看API文档 [配置插件](<https://swiper.com.cn/api/index.html>)
+
+---
+
+# Window对象
+
+## BOM(浏览器对象模型)
+
+![bom对象](img/bom对象.png)
+
+- DOM(文档对象模型)
+- window是一个全局对象,js中顶级对象
+- 像document,alter(),console.log()都是window的属性,基本BOM属性和方法都是window的
+- 所有通过var定义在全局作用域中的变量,函数都会变成window对象的属性和方法
+- window对象下的属性和方法调用的时候可以省略window
+
+## 定时器-延时函数-setTimeout
+
+- js内置的一个用来让代码延迟执行的函数
+- 语法 `setTimeout(回调函数,等待的毫秒数)`
+- setTimeout 仅仅执行一次
+- 清除延迟函数 `clearTimeout`
+
+```html
+  <script>
+    let timer = setTimeout(() => {
+      console.log('2秒到了');
+    }, 2000);
+
+    clearTimeout(timer);
+    console.log('定时器被清除');
+
+  </script>
+```
+
+### 两种定时器对比:执行次数
+
+- 延时函数:执行一次
+- 间歇函数:每隔一段时间就执行一次,除非手动清除
+
+## JS执行机制
+
+- js语言特点:单线程 -- 同一时间只能做一件事
+- 单线程意味,所有任务需要排队,前一个任务结束,才会执行后一个任务
+  - 造成问题:如果js执行的时间过长,这样就会造成页面的渲染不连贯,导致页面显然加载阻塞
+- 为了解决这个问题,利用多核CPU的计算能力
+- HTML5提出Web Worker 标准,允许js脚本创建多个线程(推到浏览器),于是js出现了同步和异步
+
+### 同步和异步
+
+- 同步:前一个任务结束后再执行后一个任务,程序的执行顺序与任务的排列顺序是一致的、同步的
+- 异步:在做一件事情的同时,还可以去处理其他事情
+- 本质区别:在流水线上各个流程的执行顺序不同
+
+### 同步任务
+
+- 主线程上执行,形成一个执行栈
+![执行栈](img/执行栈.jpg)
+
+### 异步任务
+
+- js的异步是通过回调函数实现的
+- 异步任务有以下三种类型
+  1. 普通时间:如`click`、`resize`
+  2. 资源加载,如`load`、`error`
+  3. 定时器,包括`setInterval`、`setTimeout`
+- 异步任务相关添加到任务队列中(任务队列也称为消息队列)
+![任务队列](img/任务队列.jpg)
+
+### 事件循环
+
+1. 先执行执行栈中的同步任务
+2. 异步任务放入任务队列中
+3. 一旦执行栈中的所有同步任务执行完毕,系统就会按次序读取任务队列中的异步任务,于是被读取的异步任务结束等待状态,进入执行栈,开始执行
+![事件循环](img/事件循环.jpg)
+
+- 由于主线程不断的重复获得任务,执行任务,再获取任务,再执行,所以这种机制被称为事件循环(event loop)
+
+## location对象
+
+- `location`的数据类型是对象,拆分并保存url地址的各个组成部分
+
+## navigator对象
+
+## history对象
