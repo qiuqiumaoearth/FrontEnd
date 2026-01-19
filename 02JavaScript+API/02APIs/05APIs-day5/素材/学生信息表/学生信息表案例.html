@@ -40,37 +40,139 @@
         <th>性别</th>
         <th>薪资</th>
         <th>就业城市</th>
+        <th>操作录入时间</th>
         <th>操作</th>
       </tr>
     </thead>
     <tbody>
-      <!-- 
-        <tr>
-          <td>1001</td>
-          <td>欧阳霸天</td>
-          <td>19</td>
-          <td>男</td>
-          <td>15000</td>
-          <td>上海</td>
-          <td>
-            <a href="javascript:">删除</a>
-          </td>
-        </tr> 
-        -->
+
+      <!-- <tr>
+        <td>1001</td>
+        <td>欧阳霸天</td>
+        <td>19</td>
+        <td>男</td>
+        <td>15000</td>
+        <td>上海</td>
+        <td>2024-06-01 10:00:00</td>
+        <td>
+          <a href="javascript:">删除</a>
+        </td>
+      </tr> -->
+
     </tbody>
   </table>
   <script>
-  // 参考数据
-      // const initData = [
-      //   {
-      //     stuId: 1001,
-      //     uname: '欧阳霸天',
-      //     age: 19,
-      //     gender: '男',
-      //     salary: '20000',
-      //     city: '上海',
-      //   }
-      // ]
+    // 参考数据
+    // const initData = [
+    //   {
+    //     stuId: 1001,
+    //     uname: '欧阳霸天',
+    //     age: 19,
+    //     gender: '男',
+    //     salary: '20000',
+    //     city: '上海',
+    //     time: '2024-06-01 10:00:00'
+    //   }
+    // ]
+    const tbody = document.querySelector('tbody');
+    // 存储到本地数据
+    // localStorage.setItem('data', JSON.stringify(initData));
+    // 取出本地数据
+    const data = JSON.parse(localStorage.getItem('data')) || [];
+    // console.log(data);
+
+    // 渲染数据到表格
+    function render() {
+      //1.利用map遍历数组,返回对应的tr数组
+      const trArray = data.map(function (els, index) {
+
+        return `
+            <tr>
+        <td>${els.stuId}</td>
+        <td>${els.uname}</td>
+        <td>${els.age}</td>
+        <td>${els.gender}</td>
+        <td>${els.salary}</td>
+        <td>${els.city}</td>
+        <td>${els.time}</td>
+        <td>
+          <a href="javascript:" data-id="${index}">删除</a>
+        </td>
+      </tr>
+      `
+      })
+
+      console.log(trArray);
+      tbody.innerHTML = trArray.join('');
+    }
+    render();
+
+    //增加业务
+    const info = document.querySelector('.info');
+    info.addEventListener('submit', function (e) {
+
+      //阻止默认行为
+      e.preventDefault();
+      //获取表单数据
+      const uname = info.uname.value;
+      const age = info.age.value;
+      const gender = info.gender.value;
+      const salary = info.salary.value;
+      const city = info.city.value;
+
+      // 非空判断
+      if (!uname || !age || !salary) {
+        //聚焦到空的输入框
+        alert('请填写完整信息')
+        return info[!uname ? 'uname' : !age ? 'age' : 'salary'].focus();
+      }
+
+      //生成学号
+      const stuId = data.length ? data[data.length - 1].stuId + 1 : 1001;
+      //生成时间
+      const time = new Date().toLocaleString();
+      //封装成对象
+      const obj = {
+        stuId,
+        uname,
+        age,
+        gender,
+        salary,
+        city,
+        time
+      }
+      //添加到数据中
+      data.push(obj);
+      //存储到本地
+      localStorage.setItem('data', JSON.stringify(data));
+      //重新渲染
+      render();
+      //清空表单
+      info.reset();
+    })
+
+    //删除业务
+    tbody.addEventListener('click', function (e) {
+      //判断是否点击的是删除按钮
+      if (e.target.tagName === 'A') {
+        //获取学号
+        const index = e.target.dataset.id;
+
+        //添加确认框
+        if (!confirm('确认删除吗?')) {
+          return;
+        }
+
+        //删除对应数据
+        data.splice(index, 1);
+        //存储到本地
+        localStorage.setItem('data', JSON.stringify(data));
+        //重新渲染
+        render();
+      }
+    })
+
+
   </script>
 </body>
 

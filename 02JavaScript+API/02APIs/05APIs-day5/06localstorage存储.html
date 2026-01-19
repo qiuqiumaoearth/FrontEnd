@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    localStorage.setItem("name", "zhangsan"); // 存储姓名
+    localStorage.setItem("age", "18"); // 存储年龄
+
+    // 读取数据
+    const name = localStorage.getItem("name");
+    const age = localStorage.getItem("age");
+    console.log(`姓名: ${name}, 年龄: ${age}`);
+
+    // 删除数据
+    localStorage.removeItem("age"); // 删除年龄
+    localStorage.clear(); // 清除所有数据
+  </script>
+</body>
+
+</html>

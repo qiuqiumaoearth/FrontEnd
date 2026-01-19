@@ -1457,7 +1457,7 @@ console.log(Date.now());
 
 - 由于主线程不断的重复获得任务,执行任务,再获取任务,再执行,所以这种机制被称为事件循环(event loop)
 
-## location对象
+## location对象 - http相关
 
 - `location`的数据类型是对象,拆分并保存url地址的各个组成部分
 
@@ -1487,7 +1487,7 @@ console.log(Date.now());
     location.reload(true)
   ```
 
-## navigator对象
+## navigator对象 - 设备信息
 
 - 该对象记录了浏览器自身的相关信息
 
@@ -1509,7 +1509,7 @@ console.log(Date.now());
   </script> 
 ```
 
-## history对象.go()
+## history对象.go() - 页面前后
 
 - 主要管理历史记录,该对象与浏览器地址栏操作相对应,如前进,后退,历史记录
 
@@ -1519,10 +1519,139 @@ console.log(Date.now());
 - forward():前进功能
 - go(参数):前进后退功能,参数:如果是1(前进一个页面),如果是-1(后退一个页面)
 
+## confirm() - 确认框
+
+- 弹出一个包含提示文本、确认按钮、取消按钮的对话框
+- 核心作用是获取用户的 “确认 / 取消” 选择
+- 是前端中最基础的用户交互确认方式之一
+
+```js
+// 语法：window.confirm(提示文本)，window可省略
+const result = confirm(message);
+```
+
+- 参数：message（字符串），显示在弹窗中的提示文本。
+- 返回值：布尔值（Boolean）
+  - 用户点击「确认」→ 返回 true
+  - 用户点击「取消」/ 关闭弹窗 → 返回 false
+
+```html
+<body>
+  <script>
+    const isDelete = confirm("你确定要删除吗？");
+    if (isDelete) {
+      alert("删除成功");
+    } else {
+      alert("取消删除");
+    }
+  </script>
+</body>
+```
+
 # 本地存储
 
 ## 本地存储介绍
 
+1. 数据存储在用户浏览器中
+2. 设置，读取方便，页面刷新不丢失数据
+3. 容量较大，sessionStorage 和 localStorage约5M左右
+
 ## 本地存储分类
 
+- 都是和地址绑定,而且是顶层地址
+- 本地存储只能存储字符串数据类型
+- 关闭浏览器会关闭会话,但关闭会话不一定会关闭浏览器
+
+### localStorage:永久本地
+
+- 作用:可以将数据永久存储在本地(用户的电脑),除非手动删除,否则关闭页面也会存在
+- 特性:可以多窗口(页面)共享(同一浏览器可以共享)
+- 以键值对的形式存储使用
+- 只能存储字符串,获取也是得到字符串
+
+- 语法
+存储数据:`localStorage.setltem(key,value)`
+获取数据:`localStorage.getltem(key)`
+删除数据:`localStorage.removeItem(key)`
+
+```js
+  <script>
+    localStorage.setItem("name", "zhangsan"); // 存储姓名
+    localStorage.setItem("age", "18"); // 存储年龄
+
+    // 读取数据
+    const name = localStorage.getItem("name");
+    const age = localStorage.getItem("age");
+    console.log(`姓名: ${name}, 年龄: ${age}`);
+
+    // 删除数据
+    localStorage.removeItem("age"); // 删除年龄
+    localStorage.clear(); // 清除所有数据
+  </script>
+```
+
+### sessionStorage:会话窗口
+
+- 特性:生命周期为关闭浏览器窗口,生命周期是关闭会话
+- 在同一个窗口(页面)下数据可以共享
+- 同一会话下数据可以共享
+- 以键值对的形式存储使用
+- 使用语法和`localStorage`一样
+
 ## 存储复杂数据类型
+
+- 本地存储只能存储字符串类型(简单数据类型),无法存储发杂数据类型
+- 将复杂数据类型转换成JSON字符串,存储到本地
+- json序列化,这是JSON方法
+
+1. 变成JSON对象
+语法:`localStorage.setItem("obj", JSON.stringify(obj))`
+
+2. 转回对象
+语法:`JSON.parse(localStorage.getItem("obj"))`
+
+```html
+ <script>
+    const obj = {
+      name: "Alice",
+      age: 30,
+    };
+
+    localStorage.setItem("obj", JSON.stringify(obj));
+
+    //取
+    console.log(localStorage.getItem("obj")); // "{"name":"Alice","age":30}"
+
+    // 转回对象
+    const parsedObj = JSON.parse(localStorage.getItem("obj"));
+    console.log(parsedObj); // {name: "Alice", age: 30}
+  </script>
+```
+
+### JSON对象
+
+- 属性和值都有引号,而且引号一定是双引号
+- 变成JSON对象语法:`JSON.stringify(复杂数据类型)`
+- 转回语法:`JSON.parse(JSON字符串)`
+
+---
+
+# 正则表达式
+
+## 介绍
+
+- 正则表达式是用于匹配字符串中字符组合的模式
+- 在js中,正则表达式也是对象
+- 通常用来查找,替换那些符合正则表达式的文本,许多语言都支持正则表达式,但是不同语言的正则略有不同
+- 正则表达式在js中的使用场景
+  - 验证浏览器自身的相关信息(比如之前的验证手机型号:navigator)
+  - 验证表单:用户表单只能输入英文字母,数字或者下划线,昵称输入框中可以输入中文(匹配)
+    - 用户名:`/^[a-z0-9_-]{3,16}$/`
+  - 过滤页面内容中的一些敏感词(替换)
+  - 从字符串中获取我们想要的特定部分(提取:`location`的数据类型是对象,拆分并保存url地址的各个组成部分)
+
+## 语法
+
+## 元字符
+
+## 修饰符

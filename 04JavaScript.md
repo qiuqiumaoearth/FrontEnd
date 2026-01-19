@@ -719,6 +719,155 @@ fn() //函数名
 (function(){console.log(11)}());
 ```
 
+### 箭头函数和普通函数
+
+#### 核心概念与基础定义
+
+- 普通函数：使用 function 关键字定义，是 JavaScript 中最基础的函数形式，分为声明式和表达式两种：
+
+```javascript
+  // 函数声明
+  function add(a, b) {
+    return a + b;
+  }
+
+  // 函数表达式
+  const add = function(a, b) {
+    return a + b;
+  };
+ ```
+
+- 箭头函数（ES6 新增）：使用 => 语法定义，是普通函数的简化写法，本质是函数表达式：
+
+```javascript
+  const add = (a, b) => {
+    return a + b;
+  };
+
+  // 简化版（单返回语句可省略{}和return）
+  const add = (a, b) => a + b;
+```
+
+#### 核心区别（重点）- this指向
+
+1. this 指向（最核心差异）
+
+- 普通函数：this 指向调用该函数的对象，不同调用方式会改变 this：
+
+```javascript
+const obj = {
+  name: "张三",
+  sayHi: function() {
+    console.log(this.name); // this指向obj，输出：张三
+  }
+};
+obj.sayHi();
+
+const fn = obj.sayHi;
+fn(); // this指向全局对象（浏览器中是window），输出：undefined
+```
+
+- 箭头函数：this 指向定义时所在的作用域的 this（不会绑定自己的 this），且无法被改变：
+
+```javascript
+const obj = {
+  name: "张三",
+  sayHi: () => {
+    console.log(this.name); // this指向全局对象，输出：undefined
+  },
+  sayHello: function() {
+    const innerFn = () => {
+      console.log(this.name); // this继承sayHello的this（指向obj），输出：张三
+    };
+    innerFn();
+  }
+};
+obj.sayHi();
+obj.sayHello();
+```
+
+1. 构造函数能力
+
+- 普通函数：可以作为构造函数，使用 new 关键字创建实例：
+
+```javascript
+function Person(name) {
+  this.name = name;
+}
+const p = new Person("李四");
+console.log(p.name); // 输出：李四
+```
+
+- 箭头函数：不能作为构造函数，使用 new 会报错：
+
+```javascript
+const Person = (name) => {
+  this.name = name;
+};
+const p = new Person("李四"); // 报错：Person is not a constructor
+```
+
+1. arguments 对象
+
+- 普通函数：内部有 arguments 对象，存储传入的所有参数：
+
+```javascript
+function fn() {
+  console.log(arguments); // 输出：[1, 2, 3]
+}
+fn(1, 2, 3);
+```
+
+- 箭头函数：没有 arguments 对象，如需获取所有参数，可使用剩余参数 ...args：
+
+```javascript
+const fn = (...args) => {
+  console.log(args); // 输出：[1, 2, 3]
+  // console.log(arguments); // 报错：arguments is not defined
+};
+fn(1, 2, 3);
+```
+
+1. 写法灵活性
+
+- 普通函数：写法固定，必须带 function 关键字，即使只有一行代码也需写完整结构。
+- 箭头函数：支持多种简化写法：
+
+```javascript
+// 单个参数可省略括号
+const double = num => num * 2;
+
+// 无参数需写括号
+const sayHello = () => console.log("Hello");
+
+// 多语句需加{}和return
+const sum = (a, b) => {
+  const result = a + b;
+  return result;
+};
+```
+
+#### 使用场景建议
+
+- 优先用箭头函数：
+  - 回调函数（如数组的 map/filter/forEach）：简化代码，避免 this 指向问题；
+  - 简短的工具函数（如计算、判断）：写法简洁；
+  - 闭包中需要继承外部 this 的场景。
+
+- 优先用普通函数：
+  - 构造函数（创建实例）；
+  - 对象方法（需要 this 指向对象本身）；
+  - 需要使用 arguments 对象的场景；
+  - 函数体复杂、多行逻辑的场景（可读性更高）。
+
+#### 总结
+
+- this 指向是箭头函数和普通函数最核心的区别：
+  - 普通函数 this 指向调用者
+  - 箭头函数 this 继承定义时的作用域
+    - 箭头函数不能作为构造函数、无 arguments 对象，但写法更简洁；  
+- 实际开发中，根据是否需要绑定 this、是否要作为构造函数来选择使用哪种函数。
+  
 ---
 
 ### array 数组
@@ -758,61 +907,116 @@ fn() //函数名
 
 - 数组最大值：Math.max(...数组名)
 - 数组最小值：Math.min(...数组名)
-- 操作数组(增,删,改,查)
 
-  - 作用，参数，参数如果是回调函数，回调函数的参数，返回值，是否改变原数组
-  - 数组添加新的元素(尾:push;头:unshift)
-  - arr.push(新增的内容) -- 将一个或者多个元素添加在数组末尾,并返回该数组的新长度
+#### 操作数组(增,删,改,查)
 
-    ```html
-      <script>
-        let arr = [1,2,3,4,5]
-
-        console.log(arr.push(90,100));//返回的是7;新数组的长度
-        console.log(arr);//返回的是新数组,[1,2,3,4,5,90,100]
-      </script>
-    ```
-
-  - arr.unshift(新增的内容) -- 将一个或者多个元素添加在数组开头,并返回该数组的新长度
-  - 删除数组中的数据
-
-    - arr.pop() -- 从数组中删除最后一个元素,并返回该元素(无参数)
-
-    ```html
-      <script>
-        let a = ['yellow','pink','blue']
-        console.log(a.pop()); //返回blue
-        console.log(a) //数组['yellow','pink']
-      </script>
-    ```
-
-  - arr.shift() -- 从数组中删除第一个元素,并返回该元素(无参数)
-  - arr.splice(start,deleteCount) -- (两个参数)
-
-    - start起始位置:指定修改的开始位置(从0计数)
-    - deleteCount表示要移除的数组元素的个数,可选的,如果省略则默认从指定的起始位置删除到最后
-    - 返回被删除的元素
-- 数组排序
-
-  - arr.sort() 默认是升序排
+- 作用，参数，参数如果是回调函数，回调函数的参数，返回值，是否改变原数组
+- 数组添加新的元素(尾:push;头:unshift)
+- arr.push(新增的内容) -- 将一个或者多个元素添加在数组末尾,并返回该数组的新长度
 
   ```html
-  <script>
-    let arr = [2,1,7,5,8]
-    // 1.升序排列
-    arr.sort(function(a,b){
-      return a-b
-    })
-    console.log('升序排列'+ arr); //升序排列1,2,5,7,8
+    <script>
+      let arr = [1,2,3,4,5]
 
-    // 2.降序排列
-    arr.sort(function(a,b){
-      return b-a
+      console.log(arr.push(90,100));//返回的是7;新数组的长度
+      console.log(arr);//返回的是新数组,[1,2,3,4,5,90,100]
+    </script>
+  ```
+
+- arr.unshift(新增的内容) -- 将一个或者多个元素添加在数组开头,并返回该数组的新长度
+- 删除数组中的数据
+
+  - arr.pop() -- 从数组中删除最后一个元素,并返回该元素(无参数)
+
+  ```html
+    <script>
+      let a = ['yellow','pink','blue']
+      console.log(a.pop()); //返回blue
+      console.log(a) //数组['yellow','pink']
+    </script>
+  ```
+
+- arr.shift() -- 从数组中删除第一个元素,并返回该元素(无参数)
+- arr.splice(start,deleteCount) -- (两个参数)
+
+  - start起始位置:指定修改的开始位置(从0计数)
+  - deleteCount表示要移除的数组元素的个数,可选的,如果省略则默认从指定的起始位置删除到最后
+  - 返回被删除的元素
+
+#### 数组排序
+
+- arr.sort() 默认是升序排
+
+```html
+<script>
+  let arr = [2,1,7,5,8]
+  // 1.升序排列
+  arr.sort(function(a,b){
+    return a-b
+  })
+  console.log('升序排列'+ arr); //升序排列1,2,5,7,8
+
+  // 2.降序排列
+  arr.sort(function(a,b){
+    return b-a
+  })
+  console.log('降序排列'+arr); //降序排列8,7,5,2,1
+
+</script>
+```
+
+#### map方法
+
+- 遍历数组处理数据,并且返回新的数组
+- map是对数组进行二次处理并返回新数组
+
+```html
+  <script>
+    const arr = [1, 2, 3, 4, 5];
+
+    //map((当前元素, 当前索引, 原数组) => { ... })
+    const newArr = arr.map((item, index, array) => {
+      console.log('item:', item);
+      console.log('index:', index);
+      console.log('array:', array);
+      return item * 2;
+    });
+
+    console.log('newArr:', newArr);
+  </script>
+```
+
+```js
+  <script>
+    const arr = ['pink', 'blue', 'green'];
+
+    //map((当前元素, 当前索引, 原数组) => { ... })
+    const newArr = arr.map(function (ele, index) {
+      console.log('当前元素:', ele);
+      console.log('当前索引:', index);
+      return ele + '颜色'
     })
-    console.log('降序排列'+arr); //降序排列8,7,5,2,1
+
+    console.log(newArr);
 
   </script>
-  ```
+```
+
+#### join方法
+
+- join()将数组中的所有元素转换成一个字符串
+
+```js
+ <script>
+    const arr = ['red', 'yellow', 'blue'];
+    //join(分隔符)
+    console.log(arr.join(''));//redyellowblue
+  </script>
+```
+
+- 参数
+  - 数组元素是通过参数里面指定的分隔符进行分隔的
+  - 空字符串(''),则所有元素之间都没有任何字符
 
 ---
 

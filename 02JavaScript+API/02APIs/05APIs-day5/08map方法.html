@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const arr = ['pink', 'blue', 'green'];
+
+    //map((当前元素, 当前索引, 原数组) => { ... })
+    const newArr = arr.map(function (ele, index) {
+      console.log('当前元素:', ele);
+      console.log('当前索引:', index);
+      return ele + '颜色'
+    })
+
+    console.log(newArr.join(', ')); //pink颜色, blue颜色, green颜色
+
+  </script>
+</body>
+
+</html>
