@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const str = '哈今天很开心,我在学习前端'
+    const reg2 = /前端$/  // 字符串是否以"前端"结尾
+    console.log(reg2.test(str));// true
+    console.log(`是否以天开头${/^天/.test(str)}`);// false,不是以天开头
+    console.log(/^哈$/.test('哈'));// true,精确匹配,里面只能有一个哈
+  </script>
+</body>
+
+</html>

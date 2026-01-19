@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <textarea name="" id="" cols="100" rows="10"></textarea>
+  <button>发布</button>
+  <div></div>
+  <script>
+    const tx = document.querySelector('textarea');
+    const btn = document.querySelector('button');
+    const div = document.querySelector('div');
+
+    btn.addEventListener('click', function () {
+      const val = tx.value;
+      // 创建一个正则表达式，匹配敏感词汇
+      const req = /哈哈|不如|不好|差劲/ig;
+      // |是或者的意思，匹配其中一个即可
+
+      // 使用replace方法将敏感词汇替换为***
+      const newVal = val.replace(req, '***');
+      div.innerText = newVal;
+      tx.value = '';
+    });
+  </script>
+</body>
+
+</html>

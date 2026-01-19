@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    //只要字符串中包含[]中的字符就匹配成功
+    console.log(/[abc]/.test('andy'));// true, 字符串中包含a或b或c
+
+    console.log(/^[a-z]$*/.test('opp'));// true, 字符串只包含小写字母
+    // ^表示开头，$表示结尾，a-z表示小写字母，*表示前面的字符可以出现0次或多次
+
+    console.log(/^[a-zA-Z0-9]{3,6}$/.test('opp'));
+    // true, 字符串只包含大小写字母和数字，且长度在3-6之间
+
+    //腾讯qq号，5-12位数字，且第一位不能为0,第二位-最后一位可以是0-9的数字
+    console.log(/^[1-9][0-9]{4,11}$/.test('12345678901'));// true
+  </script>
+</body>
+
+</html>

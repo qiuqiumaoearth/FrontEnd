@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    console.log(/^哈*$/.test('哈哈哈哈'));
+    // true, 哈可以出现0次或多次
+
+    console.log(/^哈{5,9}$/.test('哈哈哈哈哈'));
+    // true, 哈出现5到9次
+  </script>
+</body>
+
+</html>

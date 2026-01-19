@@ -200,6 +200,25 @@
     </div>
   </div>
   <script>
+    // 发送验证码
+    const codeBtn = document.querySelector('.code');
+    let isSending = false; // 是否正在发送验证码,通过一个变量来控制  节流阀
+    codeBtn.addEventListener('click', function () {
+      if (isSending) return; // 如果正在发送，直接返回
+      isSending = true; // 设置为正在发送
+      let countdown = 5; // 倒计时5秒
+      codeBtn.textContent = `重新发送(${countdown}s)`;
+      const timer = setInterval(function () {
+        countdown--;
+        if (countdown <= 0) {
+          clearInterval(timer);
+          codeBtn.textContent = '发送验证码';
+          isSending = false; // 重置发送状态
+        } else {
+          codeBtn.textContent = `重新发送(${countdown}s)`;
+        }
+      }, 1000);
+    });
 
 
   </script>
