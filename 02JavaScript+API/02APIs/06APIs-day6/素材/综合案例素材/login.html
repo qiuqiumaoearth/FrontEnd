@@ -52,7 +52,7 @@
               <a class="fl" href="./forget.html">忘记密码？</a>
               <a class="fr" href="./register.html">免费注册</a>
             </div>
-          </div>
+          </div>ico
           <div class="tab-pane" style="display: none;">
             <img class="code" src="./images/code.png" alt="">
           </div>
@@ -77,6 +77,45 @@
     </div>
   </div>
   <script>
+    const tabNav = document.querySelector('.tab-nav');
+    tabNav.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        console.log(111);
+        tabNav.querySelector('.active').classList.remove('active');
+        e.target.classList.add('active');
+
+        const id = e.target.dataset.id;
+        const tabPanes = document.querySelectorAll('.tab-pane');
+
+        for (let i = 0; i < tabPanes.length; i++) {
+          tabPanes[i].style.display = i.toString() === id ? 'block' : 'none';
+        }
+
+      }
+
+    });
+
+    //点击提交表单
+    const form = document.querySelector('form');
+    const agree = document.querySelector('input[name="agree"]');
+
+    //获取用户名输入框
+    const username = document.querySelector('input[name="username"]');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); //阻止表单默认提交行为
+      if (!agree.checked) {
+        alert('请同意服务条款');
+        return;
+      }
+
+      localStorage.setItem('xtx-uname', username.value);
+      alert('登录成功');
+      window.location.href = './index.html';
+
+    });
+
+
 
   </script>
 </body>

@@ -208,6 +208,9 @@ document.getElementsByClassName('w')
 
   //切换一个类
   元素.classList.toggle('类名')
+
+  //看是否包含这个类
+  元素.classList.contains('类名') //返回true/false
   ```
 
   ```js
@@ -1412,6 +1415,24 @@ console.log(Date.now());
     console.log('定时器被清除');
 
   </script>
+```
+
+```js
+  //消除多次使用定时器的bug
+  let timeID = 0;
+
+  //显示函数
+  function show() {
+    clearTimeout(timeID);
+    large.style.display = 'block';
+  }
+
+  //隐藏函数
+  function hide() {
+    timeID = setTimeout(function () {
+      large.style.display = 'none';
+    }, 200);
+  }
 ```
 
 ### 两种定时器对比:执行次数

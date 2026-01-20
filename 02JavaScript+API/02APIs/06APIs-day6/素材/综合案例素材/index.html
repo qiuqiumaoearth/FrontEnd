@@ -1219,8 +1219,33 @@
   </div>
 
   <script>
+    //第一步获取第一个小li
+    const li1 = document.querySelector('.xtx_navs li:first-child');
+    const li2 = li1.nextElementSibling;
+
+    //做个渲染函数
+    function render() {
+      //读取本地存储
+      const uname = localStorage.getItem('xtx-uname')
+      if (uname) {
+        li1.innerHTML = `<a href="javascript:;"><i class = 'iconfont icon-user'>欢迎，${uname}</i></a>`;
+        li2.innerHTML = `<a href="javascript:;" class="logout">退出登录</a>`;
+      } else {
+        li1.innerHTML = `<a href="login.html">请先登录</a>`;
+        li2.innerHTML = `<a href="register.html">免费注册</a>`;
+      }
+    }
 
 
+    render();
+
+    //退出登录功能
+    li2.addEventListener('click', function () {
+      //删除本地存储
+      localStorage.removeItem('xtx-uname');
+      //重新渲染页面
+      render();
+    })
   </script>
 </body>
 

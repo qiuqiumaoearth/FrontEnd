@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS 点击切换滑块导航</title>
+  <style>
+    /* --- 页面居中布局 --- */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f0f4f8;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* --- CSS 变量配置 --- */
+    :root {
+      --nav-width: 600px;
+      /* 导航总宽度 */
+      --nav-height: 60px;
+      /* 导航高度 */
+      --item-count: 5;
+      /* 菜单项数量 (改这里要同步改下面的calc) */
+      --slider-color: #4a90e2;
+      /* 滑块颜色 */
+      --slider-shadow: rgba(74, 144, 226, 0.6);
+      /* 孤影颜色 */
+      --text-default: #666;
+      /* 默认文字颜色 */
+      --text-active: #fff;
+      /* 选中文字颜色 */
+      --gap: 5px;
+      /* 容器内边距 */
+    }
+
+    /* --- 导航栏容器 --- */
+    .navbar {
+      position: relative;
+      width: var(--nav-width);
+      height: var(--nav-height);
+      background: #fff;
+      border-radius: 50px;
+      /* 大圆角 */
+      padding: var(--gap);
+      /* 内缩一点，更有质感 */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      display: flex;
+      /* Flex布局让子元素横排 */
+      box-sizing: border-box;
+      /* 让padding算在宽度内 */
+    }
+
+    /* --- 第一步：隐藏所有的单选框 --- */
+    .navbar input[type="radio"] {
+      display: none;
+    }
+
+    /* --- 第二步：菜单项 (Label) --- */
+    .nav-item {
+      flex: 1;
+      /* 自动平分宽度 */
+      position: relative;
+      z-index: 2;
+      /* 层级比滑块高，为了显示文字 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      color: var(--text-default);
+      font-weight: 600;
+      font-size: 16px;
+      transition: color 0.3s ease;
+      user-select: none;
+      /* 防止双击选中文字 */
+      border-radius: 50px;
+      /* 解决点击会有蓝色背景闪烁的问题 */
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* --- 第三步：滑块本体 (Slider) --- */
+    .slider {
+      position: absolute;
+      top: var(--gap);
+      bottom: var(--gap);
+      left: var(--gap);
+      /* 初始位置 */
+
+      /* 宽度计算：(100% - 2倍padding) / 数量 */
+      width: calc((100% - var(--gap) * 2) / var(--item-count));
+
+      background: var(--slider-color);
+      border-radius: 50px;
+      /* 胶囊形状 */
+      z-index: 1;
+      /* 在文字下面 */
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      /* 带回弹效果的动画 */
+
+      /* 孤影效果：左右两侧有淡淡的投影 */
+      box-shadow: 0 5px 15px var(--slider-shadow);
+    }
+
+    /* --- 第四步：核心逻辑 (点击 Input 改变 Slider 位置) --- */
+
+    /* 原理：
+           input:checked ~ .slider 表示：当 input 被选中时，
+           找到它后面的 .slider 兄弟元素，并修改样式。
+           
+           计算公式：
+           translateX( 100% * (N-1) )
+           这里的 100% 是相对于滑块自身的宽度
+        */
+
+    /* 第1个选中 -> 移动 0% */
+    #tab-1:checked~.slider {
+      transform: translateX(0%);
+    }
+
+    /* 第2个选中 -> 移动 100% (即1个滑块的身位) */
+    #tab-2:checked~.slider {
+      transform: translateX(100%);
+    }
+
+    /* 第3个选中 -> 移动 200% */
+    #tab-3:checked~.slider {
+      transform: translateX(200%);
+    }
+
+    /* 第4个选中 -> 移动 300% */
+    #tab-4:checked~.slider {
+      transform: translateX(300%);
+    }
+
+    /* 第5个选中 -> 移动 400% */
+    #tab-5:checked~.slider {
+      transform: translateX(400%);
+    }
+
+    /* --- 第五步：文字颜色高亮逻辑 --- */
+
+    /* 解释：input:checked + label 
+           因为HTML里不仅把 input 放前面了，还把 label 紧跟在 input 后面
+           所以可以用 + 选择器直接变色
+        */
+    .navbar input:checked+.nav-item {
+      color: var(--text-active);
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <input type="radio" name="nav" id="tab-1" checked>
+    <label for="tab-1" class="nav-item">首页</label>
+
+    <input type="radio" name="nav" id="tab-2">
+    <label for="tab-2" class="nav-item">产品</label>
+
+    <input type="radio" name="nav" id="tab-3">
+    <label for="tab-3" class="nav-item">服务</label>
+
+    <input type="radio" name="nav" id="tab-4">
+    <label for="tab-4" class="nav-item">动态</label>
+
+    <input type="radio" name="nav" id="tab-5">
+    <label for="tab-5" class="nav-item">关于</label>
+
+    <div class="slider"></div>
+  </nav>
+
+</body>
+
+</html>
