@@ -1156,6 +1156,45 @@ const sum = (a, b) => {
 |   7   | 赋值运算符 |       =       |
 |   8   | 逗号运算符 |       ,       |
 
+## 展开/扩展运算符(...)
+
+- 展开运算符(...)将一个数组展开
+- 求数组的最大值,合并数组
+
+```html
+<script>
+    console.log(...[1, 2, 3]); //1 2 3
+
+    arr1 = [1, 2, 3]
+    arr2 = [4, 5, 6]
+
+    arr3 = [...arr1, ...arr2]
+    console.log(arr3); //[1,2,3,4,5,6]
+    console.log(Math.max(...arr2)); //6
+    
+  </script>
+```
+
+- 合并对象
+
+```html
+  <script>
+    const obj1 = {
+      uname: 'mao',
+      age: '2',
+    }
+
+    const obj2 = {
+      color: 'pink',
+      ting: 'mm'
+    }
+
+    const obj = { ...obj1, ...obj2 }
+    console.log(obj);
+
+  </script>
+```
+
 ---
 
 # 程序三大流程控制语句
@@ -1431,7 +1470,9 @@ switch(数据){
   - 全局变量一般不会回收(关闭页面回收)
   - 一般情况下局部变量的值,不用了,会被自动回收掉
 
-- 内存泄漏:程序分配的内存由于某种原因程序而未释放或无法释放叫做内存泄漏
+#### 内存泄漏
+
+- 程序分配的内存由于某种原因程序而未释放或无法释放叫做内存泄漏
 
 ### 算法说明
 
@@ -1466,6 +1507,183 @@ switch(数据){
 2. 就是从根部(在js中就是全局对象)出发定时扫描内存中的对象,凡是能从根部到达的对象,都是还需要使用的
 3. 那些无法由根部出发触及到的对象被标记为不再使用,稍后进行回收
 
-## 闭包
+## 闭包(Closure)
+
+- 概念:一个函数堆周围状态的引用捆绑砸死一起,内层函数中访问其外层函数的作用域
+- 闭包 = 内层函数 + 外层函数的变量
+- 闭包作用:封闭数据,提供操作,外部也可以访问函数内部的变量
+- 闭包应用:实现数据私有
+- 闭包的问题:内存泄漏
+- func内部的变量外部拿不到，里面写个方法，外部调用这个方法就能拿到内部变量
+
+```html
+  <script>
+    let i = 0
+    function fn() {
+      i++
+      console.log('函数被调用', i, '次');
+    }
+    fn()
+    //这里i是全局变量,很容易被修改
+
+    //闭包的应用:统计函数被调用的次数
+    //这里的i是function里面的局部变量,无法从外部修改
+    function bn() {
+      let i = 0
+      function tj() {
+        i++
+        console.log(`闭包情况下统计函数被调用了${i}次`);
+      }
+      return tj
+    }
+    const count = bn()
+
+  </script>
+```
 
 ## 变量提升
+
+- 变量提升:允许var声明变量在声明之前即被访问
+- 所以ES6引入块级作用域,用let/const声明变量
+
+- 注意:
+  - let/const：也会被提升，但处于 “暂时性死区（TDZ）”，在声明前访问会直接报错，不会返回 undefined。
+  - 变量var声明之前即被访问,变量值未undefined
+  - 变量提升出现在当前(相同)作用域当中
+
+1. 把所有var声明的变量提升到当前作用域前面
+2. 只提升声明,不提升赋值,相当于给var = undefined
+
+- undefined和null的区别
+  - undefined 表示没有赋值
+  - null表示赋值了,但是内容为空
+
+```html
+  <script>
+    console.log(num + '件'); //undefined件
+    var num = 10
+    console.log(num); //10
+  </script>
+```
+
+# 函数进阶
+
+## 函数提升
+
+1. 会把所有函数声明提升到当前作用域最前面
+2. 只提升函数声明,不提升函数调用
+3. 函数表达式必须先声明,后调用,否则报错
+
+```html
+  <script>
+    
+    fn()
+    function fn(){
+       console.log(111);
+    }
+
+    fun() //报错
+    var fun = function(){
+      console.log('函数表达式');
+    }
+
+  </script>
+```
+
+## 函数参数
+
+### 动态参数arguments
+
+- arguments 是函数内部内置的未数组变量,它包含了调用函数时传入的所有实参
+- arguments 只存在于普通函数中,箭头函数没有
+- 伪数组(无法使用pop,之类的)
+
+```html
+  <script>
+    function fn() {
+      let sum = 0
+      console.log(arguments);
+      for (let i = 0; i < arguments.length; i++) {
+        sum += arguments[i]
+      }
+      console.log(sum);
+    }
+
+    fn(1, 2, 3, 4, 5)
+  </script>
+```
+
+### 剩余参数
+
+- 扩展运算符(...):就是把展开的合起来，或者把合起来的展开
+- ...置于最末函数形参之前,用于获取多余的实参
+- 借助...获取的剩余参数,是个真数组
+- 获取多余的实参
+
+```html
+<script>
+    function fn(a, b, ...arr) {
+      console.log(arr);
+    }
+    fn(1, 2, 3, 4)// [3,4]
+    fn(1, 2)//[]
+
+    console.log(...[1, 2, 3]); //1 2 3
+
+    console.log(fn.length); //返回函数的参数,a,b 两个
+    //除了剩余参数，默认值之前的参数数量
+    //如果形参b= 1,那么fn.length就是1(就是a)
+
+    arr1 = [1, 2, 3]
+    arr2 = [4, 5, 6]
+
+    arr3 = [...arr1, ...arr2]
+    console.log(arr3); //[1,2,3,4,5,6]
+
+  </script>
+```
+
+## 箭头函数
+
+- 使用场景:适用于那些本来需要匿名函数的地方
+
+### 基本语法
+
+```html
+  <script>
+
+    //1.基本函数
+    const fun1 = function () {
+      console.log('fun1');
+    }
+    fun1()
+
+    //2.箭头函数
+    const fun2 = () => {
+      console.log('fun2');
+    }
+    fun2()
+
+    //3.只有一个形参的时候,可以省略()
+    const fun3 = x => {
+      console.log(x);
+    }
+    fun3(2)
+
+    //4.只有一行代码的时候可以省略{}
+    const fun4 = y => console.log(y);
+    fun4(44)
+
+    //5.箭头函数可以直接返回一个对象
+    const fun5 = (uname) => ({ name: uname })
+    console.log(fun5('maomao')); //{name: 'maomao'} {键名:键值}
+
+  </script>
+```
+
+### 箭头函数参数
+
+- 普通函数有arguments动态参数和剩余参数
+- 箭头函数没有arguments动态参数,有剩余参数(...arr)
+
+### 箭头函数this

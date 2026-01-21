@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    //1.基本函数
+    const fun1 = function () {
+      console.log('fun1');
+    }
+    fun1()
+
+    //2.箭头函数
+    const fun2 = () => {
+      console.log('fun2');
+    }
+    fun2()
+
+    //3.只有一个形参的时候,可以省略()
+    const fun3 = x => {
+      console.log(x);
+    }
+    fun3(2)
+
+    //4.只有一行代码的时候可以省略{}
+    const fun4 = y => console.log(y);
+    fun4(44)
+
+    //5.箭头函数可以直接返回一个对象
+    const fun5 = (uname) => ({ name: uname })
+    console.log(fun5('maomao')); //{name: 'maomao'} {键名:键值}
+
+  </script>
+</body>
+
+</html>

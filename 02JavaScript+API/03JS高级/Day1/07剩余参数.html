@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function fn(a, b, ...arr) {
+      console.log(arr);
+    }
+    fn(1, 2, 3, 4)// [3,4]
+    fn(1, 2)//[]
+
+    console.log(fn.length); //返回函数的参数,a,b 两个
+    //除了剩余参数，默认值之前的参数数量
+    //如果形参b= 1,那么fn.length就是1(就是a)
+
+    console.log(...[1, 2, 3]); //1 2 3
+    arr1 = [1, 2, 3]
+    arr2 = [4, 5, 6]
+
+    arr3 = [...arr1, ...arr2]
+    console.log(arr3); //[1,2,3,4,5,6]
+
+
+
+  </script>
+</body>
+
+</html>
