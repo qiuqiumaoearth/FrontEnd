@@ -10,6 +10,56 @@
 <body>
   <script>
 
+    //以前this的指向:谁调用的这个函数,this就指向谁
+    console.log(this);//window
+
+    //1.普通函数
+    function fn1() {
+      console.log(this); //window
+    }
+    fn1()
+
+    //2.对象方法里面的this
+    const obj1 = {
+      name: 'amy',
+      sayHi: function () {
+        console.log(this); //obj
+      }
+    }
+    obj1.sayHi()
+
+    //箭头函数的this 是上一层作用域的this
+    //1.普通函数
+    const fn2 = () => {
+      console.log(this); // window
+    }
+    fn2()
+
+    //2.对象方法的箭头函数 this
+    const obj2 = {
+      uname: 'pink',
+      sayHi: () => {
+        console.log(this); //this 指向wendow
+      }
+    }
+
+    obj2.sayHi()
+
+    const obj3 = {
+      uname: 'maomao',
+      sayHi: function () {
+        let i = 0
+        console.log('function的', this); //obj
+        const count = () => {
+          console.log('function里面的箭头函数', this); //obj
+        }
+        count()
+      }
+    }
+
+    obj3.sayHi()
+
+
   </script>
 </body>
 

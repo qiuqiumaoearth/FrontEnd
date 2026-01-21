@@ -984,9 +984,10 @@ const sum = (a, b) => {
 </script>
 ```
 
-#### map方法
+#### map方法 +-
 
-- 遍历数组处理数据,并且返回新的数组
+- 遍历数组处理数据,并且==返回新的数组==
+- 要有return
 - map是对数组进行二次处理并返回新数组
 
 ```html
@@ -1036,6 +1037,31 @@ const sum = (a, b) => {
 - 参数
   - 数组元素是通过参数里面指定的分隔符进行分隔的
   - 空字符串(''),则所有元素之间都没有任何字符
+
+#### forEach 方法
+
+- forEach()方法用于调用数组的每个元素,并将元素传递给回调函数
+- 只遍历,不返回,不中断
+- 语法:
+
+```js
+被遍历的数组.forEach(function(当前数组元素,当前元素的索引号){
+  //函数体
+})
+```
+
+#### 筛选数组filter方法 >=<
+
+- filter()方法创建一个新数组,新数组中的元素是通过检查指定数组中符合条件的所有元素
+- 主要使用场景:筛选数组符合条件的元素,并返回筛选之后元素的新数组
+
+```html
+  <script>
+    const arr = [1, 2, 3, 4, 5]
+    const newArr = arr.filter(item => item >= 3)
+    console.log(newArr);
+  </script>
+```
 
 ---
 
@@ -1687,3 +1713,236 @@ switch(数据){
 - 箭头函数没有arguments动态参数,有剩余参数(...arr)
 
 ### 箭头函数this
+
+- 箭头函数不会创建自己的this,它只会从自己作用域链的上一层沿用this
+- 普通函数的this,是谁调用this就指向谁
+- 事件回调箭头函数使用this时,this为全局的window,DOM事件回调不推荐使用箭头函数
+
+```html
+  <script>
+
+    //以前this的指向:谁调用的这个函数,this就指向谁
+    console.log(this);//window
+
+    //1.普通函数
+    function fn1() {
+      console.log(this); //window
+    }
+    fn1()
+
+    //2.对象方法里面的this
+    const obj1 = {
+      name: 'amy',
+      sayHi: function () {
+        console.log(this); //obj
+      }
+    }
+    obj1.sayHi()
+
+    //箭头函数的this 是上一层作用域的this
+    //1.普通函数
+    const fn2 = () => {
+      console.log(this); // window
+    }
+    fn2()
+
+    //2.对象方法的箭头函数 this
+    const obj2 = {
+      uname: 'pink',
+      sayHi: () => {
+        console.log(this); //this 指向wendow
+      }
+    }
+
+    obj2.sayHi()
+
+    const obj3 = {
+      uname: 'maomao',
+      sayHi: function () {
+        let i = 0
+        console.log('function的', this); //obj
+        const count = () => {
+          console.log('function里面的箭头函数', this); //obj
+        }
+        count()
+      }
+    }
+
+    obj3.sayHi()
+
+
+  </script>
+```
+
+# 解构赋值
+
+- 解构赋值，就是一种模仿赋值，被赋值的模仿赋值的
+
+## 数组解构
+
+- 是将数组的单元值快速批量赋值给一系列变量的简洁语法
+- 如果变量多,单元值少,多余的变量就是:undefined
+
+```html
+  <script>
+    const [max, min, avg] = [100, 60, 80]
+    console.log(max); //100
+
+    let a = 1, b = 2;
+    [a, b] = [b, a]
+    //{[a, b] = [b, a]}或者加大括号
+    console.log({ a, b });
+
+    const [f, ...c] = [1, 2, 3, 4, 5]
+    console.log(c); //[2,3,4,5]
+    console.log(f); //1
+
+    const [q,w, ,e] = [1,2,3,4]
+    //q = 1 ; w = 2 ;e = 4
+
+    const [h, j, [k, l]] = [1, 2, [6, 7]]
+    console.log({ h, j, k, l });
+
+    //默认值：当数组对应位置无值（或为 undefined）时，使用默认值
+    const [x = 0, y = 0] = [5];
+    console.log(x); // 5（有值，用原值）
+    console.log(y); // 0（无值，用默认值）
+
+  </script>
+```
+
+- 必须加分号:立即执行函数(function(){})();
+
+## 对象解构
+
+- 对象属性的值将赋值给==与属性名相同的变量==
+- 注意解构的变量名不要和外面的变量名冲突,否则报错
+- 对象中找不到与变量名一致的属性时变量值为undefined
+- 旧名字:新名字
+- 对象里，键、值相同可以省略,所有age实际上是age:age
+
+```html
+  <script>
+    const user = {
+      uname: 'zhangsan',
+      age: 17
+    }
+
+    const { uname:name, age } = user
+
+    //对象解构的变量名,可以重新改名 
+    console.log(name);
+    console.log(age);
+  </script>
+```
+
+- 多级解构
+
+```html
+  <script>
+    const pig = {
+      name: '佩奇',
+      family: {
+        mother: 'mama',
+        father: 'baba',
+        brother: 'qiaozhi'
+      },
+      age: 19
+    }
+
+    const { name, family: { mother, father, brother }, age } = pig
+    console.log(brother); //qiaozhi
+  </script>
+  ```
+
+  ```js
+  function render2({ data: myData }) {
+      // 要求将 获取过来的 data数据 更名为 myData
+      // 内部处理
+    }
+  render2(msg)
+  ```
+
+# 深入对象
+
+## 创建对象三种方式
+
+### 利用对象字面量创建对象
+
+```js
+const a = {
+  name:'pink
+}
+```
+
+### 利用new Object创建对象
+
+```js
+const obj = new Object({ uname: 'pink' })
+obj.age = 18
+console.log(obj);
+```
+
+### 利用构造函数创建对象
+
+- 使用场景:常规的{...}语法,允许创建一个对象
+
+```js
+  function Pig(name, age, gender) {
+    this.name = name
+    this.age = age
+    this.gender = gender
+  }
+
+  const Pappa = new Pig('佩奇', '18', '女')
+  const Dad = new Pig('猪爸爸', '35', '男')
+
+  console.log(Pappa);
+```
+
+## 构造函数
+
+- 构造函数:用来初始化对象,快速创建多个类似的对象
+- 它们的命名以大写字母开头
+- 它们只能由'new'操作符来执行
+- ==使用new关键字==调用函数的行为被称为==实例化==
+- 实例化构造函数时没有参数时可以省略()
+- 构造函数内部无需写return,==返回值即为新创建的对象==,return返回的值无效
+- `new Object()` 和 `new Date()` 都是实例化构造函数
+
+### 实例化执行的过程
+
+1. 创建新对象
+2. 构造函数this指向新对象
+3. 执行构造函数代码,修改this,添加新的属性
+4. 返回新对象
+
+## 实例成员&静态成员
+
+### 实例成员
+
+- 通过构造函数创建的对象称为实例对象
+- ==实例对象==中的属性和方法称为==实例成员==(实例属性和实例方法)
+
+1. 为构造函数传入参数,创建结构相同但==值不同==的对象
+2. 构造函数创建的实例对象==彼此独立==互不影响
+
+```html
+ <script>
+    //实例成员
+    function Pig(name) {
+      this.name = name
+    }
+
+    const Peiqi = new Pig('佩奇')
+
+    Peiqi.age = '19' //实例属相
+    Peiqi.sayHi = () => {
+      console.log('hi~');
+    } //实例对象
+
+    console.log(Peiqi);
+  </script>
+```
+
+### 静态成员
