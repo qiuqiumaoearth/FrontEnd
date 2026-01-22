@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function Pig(name) {
+      this.name = name
+    }
+
+    Pig.eye = 2 //静态属性
+    Pig.sayHi = function () {
+      console.log(this);  //指向pig
+    }
+
+    Pig.sayHi() //静态方法
+
+  </script>
+</body>
+
+</html>

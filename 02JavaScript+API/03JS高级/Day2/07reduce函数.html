@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    //数组reduce方法
+    // arr.reduce(function(上一次值,当前值){},初始值)
+    const a = [1, 2, 3, 4]
+
+    //没有初始值
+    const total1 = a.reduce(function (pre, current) {
+      return pre + current
+    })
+    console.log(total1); //10
+
+    //有初始值
+    const total2 = a.reduce(function (pre, current) {
+      return pre + current
+    }, 12)
+    console.log(total2);//22
+
+    //箭头函数
+    const total3 = a.reduce((pre, current) => pre + current, 13)
+    console.log(total3); //23
+
+  </script>
+</body>
+
+</html>

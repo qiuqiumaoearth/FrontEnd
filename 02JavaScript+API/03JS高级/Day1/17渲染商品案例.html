@@ -121,19 +121,36 @@
       },
     ]
 
-    let str = ''
+    // let str = ''
 
-    //遍历数据
-    goodsList.forEach(({ name, price, picture }) => {
-      // console.log(item);
-      str += `
-        <div class="item">
-        <img src="${picture}" alt="">
-        <p class="name">${name}</p>
-        <p class="price">${price}</p>
-        </div>
-      `
-    })
+    // //遍历数据
+    // goodsList.forEach(({ name, price, picture }) => {
+    //   // console.log(item);
+    //   str += `
+    //     <div class="item">
+    //     <img src="${picture}" alt="">
+    //     <p class="name">${name}</p>
+    //     <p class="price">${price}</p>
+    //     </div>
+    //   `
+    // })
+
+    const str = goodsList.reduce((str, { name, price, picture }) => str + `
+
+						 <div class="item">         
+
+						 <img src="${picture}" alt="">         
+
+						 <p class="name">${name}</p>         
+
+						 <p class="price">${price}</p>         
+
+						 </div>       
+
+						 `
+
+      , '')
+
     document.querySelector('.list').innerHTML = str
 
 

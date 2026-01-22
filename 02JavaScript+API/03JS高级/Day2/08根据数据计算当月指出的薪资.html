@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const arr = [{
+      name: '张三',
+      salary: 1000
+
+    }, {
+      name: '李四',
+      salary: 900
+
+    }, {
+      name: '王五',
+      salary: 20000
+
+    }]
+
+    const total1 = arr.reduce((pre, cur) => {
+      return pre + cur.salary
+    }, 0)
+
+    const total2 = arr.reduce((pre, cur) => {
+      return pre + cur.salary * (1.3)
+    }, 0)
+
+    console.log('原本', total1);
+    console.log('涨薪水30%', total2);
+  </script>
+</body>
+
+</html>

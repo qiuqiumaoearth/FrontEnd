@@ -98,6 +98,7 @@
 - console.log('对不对')
   - 控制台输出语法，程序员调试使用
   - 控制台指的是f12里的console面板
+- console.table(arr); //打印数组表格的样式
 
 ## 输入语句
 
@@ -1931,13 +1932,13 @@ console.log(obj);
  <script>
     //实例成员
     function Pig(name) {
-      this.name = name
+      this.name = name //实例对象
     }
 
     const Peiqi = new Pig('佩奇')
-
-    Peiqi.age = '19' //实例属相
-    Peiqi.sayHi = () => {
+    Peiqi.name = '小猪佩奇' //name属于实例属性，实例对象的属性
+    Peiqi.age = '19'
+    Peiqi.sayHi = () => {  //加在实例对象身上的，叫做实例方法
       console.log('hi~');
     } //实例对象
 
@@ -1946,3 +1947,206 @@ console.log(obj);
 ```
 
 ### 静态成员
+
+- 构造函数的属性和方法称为静态成员(静态属性和静态方法)
+
+1. 静态成员只能构造函数来访问
+2. 静态方法中的this指向构造函数
+
+- 比如:`Date.now()`,`Math.PI`,`Math.random`
+
+```html
+  <script>
+    function Pig(name) {
+      this.name = name
+    }
+
+    Pig.eye = 2 //静态属性
+    Pig.sayHi = function () {
+      console.log(this);  //指向pig
+    }
+
+    Pig.sayHi() //静态方法
+
+  </script>
+```
+
+# 内置构造函数
+
+- js中最主要的数据类型有六种
+  - 基本数据类型:字符串,数值,布尔,undefined,null
+  - 引用数据类型:对象
+- 其实字符串,数值,布尔等基本数据类型也都有专门的构造函数,包装函数
+- js中几乎所有的数据都可以基于构成函数创建
+
+- 引用类型:Object,Array,RegExp(正则表达式),Date(日期函数)
+- 包装类型:Stirng,Number,Boolean
+
+## Object
+
+### 三个常用的静态方法
+
+- 静态方法就是只有构造函数Object可以调用
+
+### Object.keys 键
+
+- `Object.keys`静态方法获取对象中的所有属性(键)
+- 返回的是一个数组
+
+```html
+  <script>
+    const o = { uname: 'pink', age: 18 }
+    //1. 获取所有的属性名
+    console.log(Object.keys(o)); //返回数组 ['uname', 'age']
+
+    //2.获取所有的属性值
+    console.log(Object.values(o)); // 返回数组 ['pink', 18]
+  </script>
+```
+
+### Object.values 键值
+
+### Object.assign 拷贝
+
+- 经常使用的场景给对象添加属性
+
+```js
+  //3.对象的拷贝
+  const a = {}
+  Object.assign(a, o)
+  console.log(a); //返回对象 { uname: 'pink', age: 18 }
+
+  //给对象添加属性
+  Object.assign(o, { gender: '女' }) //返回对象:{uname: 'pink', age: 18, gender: '女'}
+  console.log(o);
+```
+
+## Array
+
+- [菜鸟教程手册array](https://www.runoob.com/jsref/jsref-obj-array.html)
+
+### 表格
+
+|方法|作用|说明|
+|:---:|:---:|:---:|
+|forEach|遍历数组|不返回数组,经常用于查找遍历数组元素|
+|filter|过滤数组|==返回新数组==,返回的是筛选满足条件的数组元素|
+|map|迭代函数|==返回新数组==,返回的是处理之后的数组元素,想要使用返回的新数组|
+|reduce|累计器|返回累计处理的结果,经常用于求和等|
+
+|类型|特点|常见方法|
+|:---:|:---:|:---:|
+|改变原数组|直接修改原数组内容|push(尾加)、pop(尾删)、shift(头删)、unshift(头加)、splice(索引,删数,加1,加2)、sort、reverse|
+|不改变原数组|返回新值 / 新数组，原数组不变|map(返回新数组)、filter(返回新数组)、reduce(返回数组)、forEach(遍历,无返回值)、find(查找第一个数)、findIndex(查找第一个索引)、slice(截取,起始,结束索引)、数组1.concat(合并数组2,元素1)、数组.join('')、every()|
+
+```html
+  <script>
+    const arr = [1, 2, 3, 4]
+    console.log(arr.join('/'));
+
+    console.log(arr.find((item, index) => item >= 2));  //2
+
+    console.log(arr.findIndex((item, index) => item >= 2)); //1
+
+    //全部
+    console.log(arr.every((item) => item < 5)); //true
+
+    //是否有
+    console.log(arr.some(item => item === 5)); //false
+
+    const arr2 = [4, 5, 6, 7]
+
+    const arr3 = arr.concat(arr2, 5)
+    console.log(arr3); //合并数组
+
+    const arr4 = [4, 3, 6, 1, 9]
+    arr4.sort()
+    console.log(arr4);
+    arr4.reverse()
+    console.log(arr4);
+
+    const str1 = '123456'
+
+    //字符串反转
+    const str2 = [...str1].reduceRight((a, b) => a + b, '')
+
+    console.log(str2);
+
+    const str3 = [...str1].reverse().join('')
+    console.log(str3);
+
+    //字符删除
+    console.log(arr.splice(2, 2));
+
+  </script>
+```
+
+### reduce方法
+
+- reduce 返回累计处理的结果,经常用于累加计算,或者字符出现次数
+- reduce 执行过程 从左到右
+- reduceRight 执行过程 从右到左
+- 语法:`arr.reduce(function(上一次值,当前值,index){},初始值)`
+
+1. 如果没有起始值,则把上一次值以数组的第一个数组元素的值
+2. 每一次循环,把返回值给作为下一次循环的上一次值
+3. 如果有起始值,则起始值作为上一次的值
+
+```html
+  <script>
+    //数组reduce方法
+    // arr.reduce(function(上一次值,当前值,index){},初始值)
+    const a = [1, 2, 3, 4]
+
+    //没有初始值
+    const total1 = a.reduce(function (pre, current) {
+      return pre + current
+    })
+    console.log(total1); //10
+
+    //有初始值
+    const total2 = a.reduce(function (pre, current) {
+      return pre + current
+    }, 12)
+    console.log(total2);//22
+
+    //箭头函数
+    const total3 = a.reduce((pre, current) => pre + current, 13)
+    console.log(total3); //23
+
+  </script>
+```
+
+```js
+    //输入字符串中每个字符出现的次数,并返回对象
+    const countChars = str => [...str].reduce((a, b) => (a[b]++ || (a[b] = 1), a), {})
+    console.log(countChars('nzjkshsjkwvxskx'))
+```
+
+### Array.from 方法(伪变真)
+
+- 语法 `Array.from(arr)`
+
+```html
+<body>
+  <ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+  </ul>
+
+  <script>
+    const lis = document.querySelectorAll('li')
+    //此时lis是一个伪数组,无法怎删改查
+    const liss = Array.from(lis)
+    console.log(liss); //[li, li, li]
+    liss.pop()
+    console.log(liss); //[li, li, li]
+  </script>
+
+</body>
+```
+
+## String
+
+## Number

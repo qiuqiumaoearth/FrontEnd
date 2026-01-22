@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const arr = [1, 2, 3, 4]
+    console.log(arr.join('/'));
+
+    console.log(arr.find((item, index) => item >= 2));  //2
+
+    console.log(arr.findIndex((item, index) => item >= 2)); //1
+
+    //全部
+    console.log(arr.every((item) => item < 5)); //true
+
+    //是否有
+    console.log(arr.some(item => item === 5)); //false
+
+    const arr2 = [4, 5, 6, 7]
+
+    const arr3 = arr.concat(arr2, 5)
+    console.log(arr3); //合并数组
+
+    const arr4 = [4, 3, 6, 1, 9]
+    arr4.sort()
+    console.log(arr4);
+    arr4.reverse()
+    console.log(arr4);
+
+    const str1 = '123456'
+
+    //字符串反转
+    const str2 = [...str1].reduceRight((a, b) => a + b, '')
+
+    console.log(str2);
+
+    const str3 = [...str1].reverse().join('')
+    console.log(str3);
+
+    //字符删除
+    console.log(arr.splice(2, 2));
+
+  </script>
+</body>
+
+</html>
