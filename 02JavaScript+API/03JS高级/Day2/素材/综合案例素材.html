@@ -109,7 +109,7 @@
     </div> -->
   </div>
   <div class="total">
-    <div>合计：<span class="amount">1000.00</span></div>
+    <div>合计：<span class="amount"></span></div>
   </div>
   <script>
     const goodsList = [
@@ -119,7 +119,7 @@
         price: 289.9,
         picture: 'https://yanxuan-item.nosdn.127.net/84a59ff9c58a77032564e61f716846d6.jpg',
         count: 2,
-        spec: { color: '白色' }
+        spec: { color: '白色', size: '10寸' }
       },
       {
         id: '4001009',
@@ -147,6 +147,26 @@
         gift: '50g茶叶,清洗球'
       }
     ]
+
+    let sum = 0
+
+    const goodHtml = goodsList.reduce((a, { id, name, price, picture, count, spec, gift }) => {
+
+      const str = gift ? gift.split(',').map(item => `<span class="tag">【赠品】${item}</span>`).join('') : ''
+      sum += price * count
+      return a + `<div class="item">
+      <img src="${picture}" alt="">
+      <p class="name">${name} ${str} </p>
+      <p class="spec">${Object.values(spec).join('/')}</p>
+      <p class="price">${price.toFixed(2)}</p>
+      <p class="count">x${count}</p>
+      <p class="sub-total">${(price * count).toFixed(2)}</p>
+    </div>`
+    }, '')
+
+    document.querySelector('.list').innerHTML = goodHtml
+    document.querySelector('.amount').innerHTML = sum.toFixed(2)
+
 
 
   </script>

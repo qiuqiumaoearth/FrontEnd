@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .tag {
+      width: 200px;
+      height: 20px;
+      background-color: pink;
+      border: 1px solid black;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <p class="name">
+    <!-- <span class="tag"></span>
+    <span class="tag"></span> -->
+  </p>
+  <script>
+    const gift = '50g茶叶,清洗球'
+    const data = gift.split(',').reduce((a, b) => a + `<span class="tag">[赠品]${b}</span>`, '')
+    document.querySelector('.name').innerHTML = data
+
+  </script>
+</body>
+
+</html>

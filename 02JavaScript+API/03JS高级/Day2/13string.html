@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    //split字符串转数组 和 join 数组转成字符串
+    //split('分隔符号',分割个数)
+    const str1 = 'pink,red'
+    const arr1 = str1.split(',')
+    console.log(arr1); //['pink', 'red']
+
+    const str2 = '2004-9-10'
+    console.log(str2.split('-')); //['2004', '9', '10']
+
+    //substring(开始索引,结束的索引) 截取字符串
+    // 如果省略结束的索引,默认取到最后
+    //[5,7),结束数字比你要截取位置加1
+    const str3 = '今天又要做核酸了'
+    console.log(str3.substring(5, 7)); //djfc
+
+    //startsWith 判断是不是以某个字符开头
+    const str4 = 'pink老师上课中'
+    console.log(str4.startsWith('pink')); //true
+    console.log(str4.startsWith('老师')); //false
+
+    //includes 判断某个字符串是不是包含在一个字符串里面
+    const str5 = '我是pink老师'
+    console.log(str5.includes('pink')); //true
+
+  </script>
+</body>
+
+</html>

@@ -1901,7 +1901,7 @@ console.log(obj);
   console.log(Pappa);
 ```
 
-## 构造函数
+## 构造函数(简单了解)
 
 - 构造函数:用来初始化对象,快速创建多个类似的对象
 - 它们的命名以大写字母开头
@@ -1949,6 +1949,7 @@ console.log(obj);
 ### 静态成员
 
 - 构造函数的属性和方法称为静态成员(静态属性和静态方法)
+- this.name 才是静态属性
 
 1. 静态成员只能构造函数来访问
 2. 静态方法中的this指向构造函数
@@ -2149,4 +2150,207 @@ console.log(obj);
 
 ## String
 
+- [菜鸟教程手册String](https://www.runoob.com/jsref/jsref-obj-string.html)
+
+```html
+  <script>
+    //split字符串转数组 和 join 数组转成字符串
+    //split('分隔符号',分割个数)
+    const str1 = 'pink,red'
+    const arr1 = str1.split(',')
+    console.log(arr1); //['pink', 'red']
+
+    const str2 = '2004-9-10'
+    console.log(str2.split('-')); //['2004', '9', '10']
+
+    //substring(开始索引,结束的索引) 截取字符串
+    // 如果省略结束的索引,默认取到最后
+    //[5,7),结束数字比你要截取位置加1
+    const str3 = '今天又要做核酸了'
+    console.log(str3.substring(5, 7)); //djfc
+
+    //startsWith 判断是不是以某个字符开头
+    const str4 = 'pink老师上课中'
+    console.log(str4.startsWith('pink')); //true
+    console.log(str4.startsWith('老师')); //false
+
+    //includes 判断某个字符串是不是包含在一个字符串里面
+    const str5 = '我是pink老师'
+    console.log(str5.includes('pink')); //true
+
+  </script>
+```
+
 ## Number
+
+- toFixed() 设置保留小数位的长度
+  - toFixed不完全四舍五入，这个要注意
+  - 四舍六入五成双
+
+```html
+  <script>
+    //数据类型
+    const num1 = 10.9855
+    const num2 = 1.005
+    console.log(num1.toFixed(2)); //10.99
+    console.log(num2.toFixed(2)); //1.00
+  </script>
+```
+
+- 钱的运算用分做单位
+- 小数计算精度问题
+
+```txt
+0.1+0.2?
+
+(0.1*100+0.2*100)/100 === 0.3
+```
+
+# 深入面向对象
+
+## 编程思想
+
+![编程思想](img/编程思想.png)
+
+### 面向过程编程
+
+- 面向过程:分析出解决问题所需要的步骤,用函数把这些步骤一步一步实现,使用的时候再一个一个的依次调用
+- 就是按照分析好的步骤,按照步骤解决问题
+- 优点:性能好
+- 缺点:不灵活,复用性差
+
+### 面向对象编程(oop)
+
+- 面向对象:把事务分解称为一个一个对象,由对象之间分工与合作
+- 是以对象功能来划分不同问题,而不是步骤
+- 在面向对象程序开发思想中,每一个对象都是功能中心,具有明确分工
+- 面向对象编程具有灵活,代码可复用,容易维护和开发的优点,更适合多人合作的大型软件项目
+- 面向对象的特征:封装性,继承性,多态性
+![面向对象的特征](img/面向对象的特征.jpg)
+
+## 构造函数(深入了解)--封装
+
+- 封装是面向对象思想中比较重要的一部分
+- js面向对象可以通过构造函数实现的封装
+- 同样的将变量和函数组合到一起并通过this实现数据共享,所不同的是借助构造函数创建出来的实例对象之间彼此不影响
+
+```html
+  <script>
+    //构造函数
+   
+    function Star(uname, age) {
+      this.uname = uname
+      this.age = age
+      this.sing = function () {
+        console.log('在唱歌');
+      }
+    }
+
+    const zs = new Star('张三', '19')
+    const ls = new Star('李四', '19')
+    console.log (zs.sing === ls.sing) //false
+
+    //这种构造函数存在浪费内存的问题 -- 用原型对象prototype属性解决
+    //每一个新的实例对象都开辟了一个新的内存
+
+  </script>
+```
+
+## 原型 -- 继承
+
+![原型](img/原型.jpg)
+
+### 原型对象(用prototype属性)
+
+- 构造函数通过原型分配的属性是所有对象所==共享==的
+- JS规定,每一个构造函数都有一个==prototype属性==,指向另一个对象(原型对象)
+- 这个==原型对象可以挂载函数==,对象实例化不会多次创建原型上的函数,节约内存
+- 把不变的方法,直接自定义在prototype对象上,这样所有对象的实例就可以共享这些方法
+- ==构造函数和原型对象中的this都指向实例化对象==
+- 原型prototype => 共享属性和方法
+
+```html
+  <script>
+    function Star(uname, age) {
+      this.uname = uname
+      this.age = age
+    }
+
+    //公共的方法写到原型对象身上
+    Star.prototype.sing = function () {
+      console.log('唱歌');
+    }
+
+    const zs = new Star('张三', '19')
+    const ls = new Star('李四', '19')
+    console.log(zs.sing === ls.sing) //true
+  </script>
+```
+
+```html
+  <script>
+    Array.prototype.max = function () {
+      return Math.max(...this)
+      //原型对象里面的this指向实例对象arr
+    }
+
+    const arr = [1, 2, 3]
+    console.log(arr.max());
+  </script>
+```
+
+### constructor属性
+
+- 每个原型对象里面都有个constructor属性(constructor 构造函数)
+- 作用:该属性指向原型对象的构造函数 :就是指向我的爸爸
+![constructor属性](img/constructor属性.jpg)
+
+```html
+  <script>
+    function Star() {
+
+    }
+
+    const zs = new Star()
+    console.log(Star.prototype); //constructor: ƒ Star()
+    console.log(Star.prototype.constructor === Star); //true
+
+    Star.prototype = {
+
+      // 重新指回创造这个原型对象的 构造函数,否则就只是个对象
+      constructor:Star,
+      sing: function () {
+        console.log('唱歌');
+      },
+      dance: function () {
+        console.log('跳舞');
+      }
+    }
+  </script>
+```
+
+### 对象原型(`__proto__`)
+
+- 对象都会有一个属性`__proto__`指向构造对象的prototype原型对象
+- 所以对象可以使用构造函数prototype原型对象的属性和方法
+- `__proto__`是JS非标准属性
+- `[[prototype]]` 和 `__proto__` 意义相同
+- 用来表明当前实例对象指向那个原型对象prototype
+- `__proto__`对象原型里面也有一个constructor属性,==指向创建该实例对象的钩爪函数==
+- `__proto__`属性只读
+
+![对象原型](img/对象原型.jpg)
+
+```html
+  <script>
+    function Star() { }
+    const zs = new Star()
+
+    //对象原型的__proto__ 指向 该构造函数的原型对象
+    console.log(zs.__proto__ === Star.prototype); //true
+  </script>
+```
+
+### 原型继承
+
+### 原型链
