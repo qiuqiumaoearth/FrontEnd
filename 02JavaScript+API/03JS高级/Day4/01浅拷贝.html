@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const obj = {
+      uname: '小明',
+      age: 19
+    }
+
+    //浅拷贝
+    const o = { ...obj }
+    o.age = 33
+    console.log(o); //age:33
+    console.log(obj);  //age:19
+
+    //3.assign对象的拷贝
+    const a = {}
+    Object.assign(a, obj)
+
+    //给对象添加属性
+    Object.assign(a, { gender: '女' }) //返回对象:{uname: 'pink', age: 18, gender: '女'}
+    console.log(a);
+  </script>
+</body>
+
+</html>

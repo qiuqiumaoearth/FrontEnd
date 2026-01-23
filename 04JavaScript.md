@@ -2435,10 +2435,254 @@ console.log(obj);
 
 ## 浅拷贝
 
+- 拷贝的是地址,简单数据类型可以浅拷贝,复杂数据类型比如function函数会出错
+- 拷贝对象:Object.assgin() / 展开运算符 {...obj}
+- 拷贝数组:Array.prototype.concat() 或者 [...arr]
+
+### 直接赋值和浅拷贝的区别
+
+- 直接赋值的方法,只要是对象,都会相互影响,因为是直接拷贝对象栈里面的地址
+- 浅拷贝如果是一层对象,不相互影响,如果出现多层对象拷贝,还是会相互影响
+
+### 浅拷贝理解
+
+- 拷贝对象之后,里面的属性值是简单数据类型直接拷贝数值
+- 如果属性值是引用数据类型则拷贝的是地址
+
+```html
+  <script>
+    const obj = {
+      uname: '小明',
+      age: 19
+    }
+
+    //浅拷贝
+    const o = { ...obj }
+    o.age = 33
+    console.log(o); //age:33
+    console.log(obj);  //age:19
+
+    //3.assign对象的拷贝
+    const a = {}
+    Object.assign(a, obj)
+
+    //给对象添加属性
+    Object.assign(a, { gender: '女' }) //返回对象:{uname: 'pink', age: 18, gender: '女'}
+    console.log(a);
+  </script>
+```
+
 ## 深拷贝
+
+- 通常递归实现深拷贝
+
+### 递归函数
+
+- 如果一个函数在内部可以调用其本身,那么这个函数就是递归函数
+- 递归容易发生"栈溢出"错误(stack loverflow),所以必须加退出条件return
+
+```html
+  <script>
+    let i = 1
+    function fn() {
+      console.log(`这是第${i}次`);
+      if (i >= 6) {
+        return
+      }
+      i++
+      fn()
+    }
+    fn()
+  </script>
+```
+
+### 递归实现深拷贝
+
+```html
+<body>
+  <script>
+    const obj = {
+      uname: "pink",
+      age: 10,
+      color: ['pink', 'yellow'],
+      family: {
+        baby: '小北鼻',
+        age: 12
+      }
+    }
+
+    const o = {}
+
+    function deepCopy(newObj, oldObj) {
+      for (const k in oldObj) {
+        // 先数组 再对象,因为array 属于 对象
+        if (oldObj[k] instanceof Array) {
+          newObj[k] = []
+          deepCopy(newObj[k], oldObj[k])
+        } else if (oldObj[k] instanceof Object) {
+          newObj[k] = {}
+          deepCopy(newObj[k], oldObj[k])
+        } else {
+          newObj[k] = oldObj[k]
+        }
+
+      }
+    }
+
+    deepCopy(o, obj)
+    console.log(o);
+  </script>
+</body>
+```
+
+### js库lodash里面cloneDeep
+
+```html
+  <script src="./lodash.min.js"></script>
+  <script>
+    const obj = {
+      uname: "pink",
+      age: 10,
+      color: ['pink', 'yellow'],
+      family: {
+        baby: '小北鼻',
+        age: 12
+      }
+    }
+
+    const o = _.cloneDeep(obj)
+    console.log(o);
+  </script>
+```
+
+### 转换成JSON字符串
+
+- 如果对象里面==有方法==就不行了
+
+```html
+  <script>
+    const obj = {
+      uname: "pink",
+      age: 10,
+      color: ['pink', 'yellow'],
+      family: {
+        baby: '小北鼻',
+        age: 12
+      }
+    }
+
+    //把对象转换成JSON字符串
+    const o = JSON.parse(JSON.stringify(obj))
+    console.log(o);
+  </script>
+```
 
 # 异常处理
 
+- 指预估代码执行过程中可能发生的错误,最大程度避免错误的发生,导致整个程序无法继续执行
+
+## throw抛异常
+
+1. throw 抛出异常信息,程序也会终止执行,后面跟的是错误
+2. Error对象配合throw使用,能够设置更详细的错误信息
+
+```html
+  <script>
+    function fn(x, y) {
+      if (!x || !y) {
+        throw new Error('没有参数传进来')
+      }
+      return x + y
+    }
+    console.log(fn());
+    // Uncaught Error: 没有参数传进来
+    // at fn (07throw抛异常.html:14:15)
+    // at 07throw抛异常.html:18:17
+  </script>
+```
+
+## try/catch捕获异常
+
+- 通过`try...catch` 捕获错误信息(浏览器提供的错误信息),try试试,catch拦住,finally最后
+- catch(error){console.log(error.message)}
+
+1. `try...catch` 用于捕获错误信息
+2. 将预估可能发生错误的代码写在try代码中
+3. 如果try代码段中出现错误后,会执行catch代码段,并截获错误信息
+4. finally不管是否有错,都会执行
+
+```html
+<body>
+  <p>123</p>
+  <script>
+    function fn() {
+      try {
+        const p = document.querySelector('.p')
+        p.style.color = 'red' //错误
+      } catch (error) {
+        //拦截错误,提示浏览器提供的错误信息,但是不中断程序执行
+        // 要加上return
+        console.log(error.message); //Cannot read properties of null (reading 'style')
+        throw new Error('你看看,选择器错了没有')
+        // return
+      }
+      finally {
+        // 不管你程序对不对,一定会执行的代码
+        //但是后面的代码就不执行了,clg(111)
+        alert('弹窗')
+
+      }
+      console.log(11);
+    }
+    fn()
+  </script>
+</body>
+```
+
+## debugger
+
+- 类似于打断点
+
+```html
+  <script>
+    let i = 1
+    function fn() {
+      console.log(`这是第${i}次`);
+      debugger
+      if (i >= 6) {
+        return
+      }
+      i++
+      fn()
+    }
+    fn()
+  </script>
+```
+
 # 处理this
+
+## 普通函数this指向
+
+- 谁调用this的值就指向谁
+- 严格模式下指向undefined
+
+## 箭头函数this指向
+
+- 箭头函数中并不存在this
+
+1. 箭头函数会默认帮我们绑定外层this值,所以在箭头函数中this的值和外层的this是一样的
+2. 箭头函数中的this引用的就是最近作用域中的this
+3. 向外层作用域中,一层一层查找this,直到有this的定义
+
+- 不适用:构造函数,原型函数,dom事件函数
+- 适用:需要使用上层this的地方
+
+## 改变this (动态指定普通函数this指向)
+
+### call()
+
+### apply()
+
+### bind()
 
 # 性能优化

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <p>123</p>
+  <script>
+    function fn() {
+      try {
+        const p = document.querySelector('.p')
+        p.style.color = 'red' //错误
+      } catch (error) {
+        //拦截错误,提示浏览器提供的错误信息,但是不中断程序执行
+        // 要加上return
+        console.log(error.message); //Cannot read properties of null (reading 'style')
+        throw new Error('你看看,选择器错了没有')
+        // return
+      }
+      finally {
+        // 不管你程序对不对,一定会执行的代码
+        alert('弹窗')
+
+      }
+      console.log(11);
+    }
+    fn()
+  </script>
+</body>
+
+</html>

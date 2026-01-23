@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function fn(x, y) {
+      if (!x || !y) {
+        throw new Error('没有参数传进来')
+      }
+      return x + y
+    }
+    console.log(fn());
+    // Uncaught Error: 没有参数传进来
+    // at fn (07throw抛异常.html:14:15)
+    // at 07throw抛异常.html:18:17
+  </script>
+</body>
+
+</html>
