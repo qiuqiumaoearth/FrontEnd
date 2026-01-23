@@ -526,6 +526,11 @@ document.getElementsByClassName('w')
 
 - keyup:键盘抬起触发
 
+## 视频/音频事件
+
+- ontimeupdate 事件在视频/音频(audio/video)当前的播放位置发送改变时触发 (触发频次太高了)
+- onloadeddata 事件在当前帧的数据加载完成且还没有足够的数据播放视频/音频(audio/video)的下一帧时触发
+
   ---
 
 # 获取事件对象e

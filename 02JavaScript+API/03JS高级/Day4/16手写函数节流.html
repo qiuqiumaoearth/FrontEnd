@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .box {
+    width: 200px;
+    height: 200px;
+    background-color: pink;
+    font-size: 20px;
+    text-align: center;
+  }
+</style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <script src="./lodash.min.js"></script>
+  <script>
+    const box = document.querySelector('.box')
+    let i = 1
+    function mouseMove() {
+      box.innerHTML = i++
+    }
+
+    //利用setTimeout定时器实现节流
+    //1.声明定时器变量
+    //2.当鼠标每次滑动都先判断是否有定时器了,如果有定时器则不开启新定时器
+    //3.如果没有定时器,则开启定时器,存入到定时器变量里面
+    //- 定时器里面调用执行函数
+    //- 定时器里面要把定时器清空
+
+    function throttle(fn, t) {
+      let timer = null
+
+      return function () {
+        if (!timer) {
+          timer = setTimeout(function () {
+            fn() //加小括号调用fn函数
+            // clearTimeout(timer) 不能用,因为清除定时器有一个坑
+            //在 setTimeout 中是无法删除定时器的因为定时器还在运作
+            //所以使用timer = null ,而不是clearTimeout(timer) 
+            timer = null
+          }, t)
+        }
+      }
+
+    }
+    box.addEventListener('mousemove', throttle(mouseMove, 500))
+  </script>
+
+</body>
+
+</html>

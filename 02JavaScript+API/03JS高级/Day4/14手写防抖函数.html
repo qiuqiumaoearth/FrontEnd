@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .box {
+    width: 200px;
+    height: 200px;
+    background-color: pink;
+    font-size: 20px;
+    text-align: center;
+  }
+</style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <script src="./lodash.min.js"></script>
+  <script>
+    const box = document.querySelector('.box')
+    let i = 1
+    function mouseMove() {
+      box.innerHTML = i++
+    }
+
+    //利用setTimeout定时器实现防抖
+    //1.声明定时器变量
+    //2.每次鼠标移动(事件触发)的时候都要先判断是否有定时器,如果有就先清除以前的定时器
+    //3.如果没有定时器,则开启定时器,存入到定时器变量里面
+    //4. 定时器里面写函数调用
+
+    function debounce(fn, t) {
+      let timer
+
+      return function () {
+        if (timer) clearTimeout(timer)
+
+        timer = setTimeout(function () {
+          fn() //加小括号调用fn函数
+        }, t)
+
+      }
+
+    }
+    box.addEventListener('mousemove', debounce(mouseMove, 500))
+  </script>
+
+</body>
+
+</html>

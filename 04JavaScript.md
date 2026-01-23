@@ -2681,8 +2681,231 @@ console.log(obj);
 
 ### call()
 
+`call(this指向对象,参数1,参数2)`
+
+```html
+  <script>
+    const obj = {
+      uname: 'pink'
+    }
+    function fn(...arr) {
+      console.log(this);
+      console.log(arr);
+    }
+
+    // 调用函数
+    // 改变this指向
+    fn.call(obj, 1, 2, 3)
+    // {uname: 'pink'} 
+    //[1,2,3]
+  </script>
+```
+
 ### apply()
 
-### bind()
+`fun.apply(thisArg,[arrgsArray])`
+
+- 传递的值,必须包含在数组里面
+
+```html
+  <script>
+    const obj = {
+      uname: 'pink'
+    }
+    function fn(x, y) {
+      console.log(this);
+      console.log(x, y);
+    }
+
+    // 调用函数
+    // 改变this指向
+    fn.apply(obj, [1, 2, 3])
+    //obj
+    //1,2
+  </script>
+```
+
+```html
+  <script>
+    //求最大值
+    const arr = [1, 9, 22, 1, 3, 6]
+    console.log(Math.max.apply(null, arr)); //22
+    console.log(Math.max(...arr)); //22
+  </script>
+
+```
+
+### bind() - 重点:不调用fun
+
+- bind()方法==不会调用函数==,但是改变函数内部this指向
+- 返回指定的this值和初始化参数改造的原函数拷贝(新函数)
+- 只想改变this指向,不想调用函数的时候,可以使用bind
+- 比如改变定时器内部的this指向
+
+`fun.bind(thisArg,参数1,参数2...)`
+
+```html
+  <script>
+    const obj = {
+      uname: 'pink'
+    }
+    function fn() {
+      console.log(this);
+    }
+
+    //1.bind 不会调用函数
+    //2.能改变this的指向
+    //3.返回值是个函数,但是这个函数里面的this是更改过obj的
+    const fun = fn.bind(obj)
+    fun()
+    //obj uname:'pink'
+  </script>
+```
 
 # 性能优化
+
+## 防抖(debounce) - 最后一次
+
+- 单位时间内,频繁触发事件,只执行最后一次
+- 比如:王者荣耀回城,只要被打断就需要重头再来
+- 使用场景
+  - 搜索框搜索输入,只需用户最后一次输入完,再发送请求
+  - 手机号,邮箱验证输入检测
+- 鼠标停了500毫秒之后,i++
+
+### lodash 提供防抖函数来处理
+
+- 语法:`_.debounce(func, [wait=0], [options=])`
+
+```html
+<body>
+  <div class="box"></div>
+  <script src="./lodash.min.js"></script>
+  <script>
+    const box = document.querySelector('.box')
+    let i = 1
+    function mouseMove() {
+      box.innerHTML = i++
+    }
+
+    //鼠标停了500毫秒之后,i++
+    // 语法:_.debounce(fun, 时间,对象)
+    box.addEventListener('mousemove', _.debounce(mouseMove, 500))
+  </script>
+
+</body>
+```
+
+### 手写一个防抖函数来处理
+
+- 防抖的核心就是利用定时器(setTimeout)来实现
+
+```html
+<body>
+  <div class="box"></div>
+  <script src="./lodash.min.js"></script>
+  <script>
+    const box = document.querySelector('.box')
+    let i = 1
+    function mouseMove() {
+      box.innerHTML = i++
+    }
+
+    //利用setTimeout定时器实现防抖
+    //1.声明定时器变量
+    //2.每次鼠标移动(事件触发)的时候都要先判断是否有定时器,如果有就先清除以前的定时器
+    //3.如果没有定时器,则开启定时器,存入到定时器变量里面
+    //4. 定时器里面写函数调用
+
+    function debounce(fn, t) {
+      let timer
+
+      return function () {
+        if (timer) clearTimeout(timer)
+
+        timer = setTimeout(function () {
+          fn() //加小括号调用fn函数
+        }, t)
+
+      }
+
+    }
+    box.addEventListener('mousemove', debounce(mouseMove, 500))
+  </script>
+
+</body>
+```
+
+## 节流(throttle) - 只一次
+
+- 单位时间内,频繁触发事件,只执行一次
+- 比如:王者荣耀技能冷却,期间无法继续释放技能
+- 使用场景
+  - 高频事件:鼠标移动:mousemove
+  - 页面尺寸缩放 resize
+  - 滚动条滚动scroll
+
+- 鼠标移动,不管移动多少次,每隔500ms才+1
+
+### lodash 提供节流函数来处理
+
+- 语法:`_.throttle(func, [wait=0], [options=])`
+
+```html
+  <body>
+    <div class="box"></div>
+    <script src="./lodash.min.js"></script>
+    <script>
+      const box = document.querySelector('.box')
+      let i = 1
+      function mouseMove() {
+        box.innerHTML = i++
+      }
+
+      box.addEventListener('mousemove', _.throttle(mouseMove, 500))
+    </script>
+
+  </body>
+```
+
+### 手写一个节流函数来处理
+
+```html
+<body>
+  <div class="box"></div>
+  <script src="./lodash.min.js"></script>
+  <script>
+    const box = document.querySelector('.box')
+    let i = 1
+    function mouseMove() {
+      box.innerHTML = i++
+    }
+
+    //利用setTimeout定时器实现节流
+    //1.声明定时器变量
+    //2.当鼠标每次滑动都先判断是否有定时器了,如果有定时器则不开启新定时器
+    //3.如果没有定时器,则开启定时器,存入到定时器变量里面
+    //- 定时器里面调用执行函数
+    //- 定时器里面要把定时器清空
+
+    function throttle(fn, t) {
+      let timer = null
+
+      return function () {
+        if (!timer) {
+          timer = setTimeout(function () {
+            fn() //加小括号调用fn函数
+            // clearTimeout(timer) 不能用,因为清除定时器有一个坑
+            //在 setTimeout 中是无法删除定时器的因为定时器还在运作
+            //所以使用timer = null ,而不是clearTimeout(timer) 
+            timer = null
+          }, t)
+        }
+      }
+
+    }
+    box.addEventListener('mousemove', throttle(mouseMove, 500))
+  </script>
+
+</body>
+```

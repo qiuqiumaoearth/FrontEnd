@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const obj = {
+      uname: 'pink'
+    }
+    function fn(...arr) {
+      console.log(this);
+      console.log(arr);
+    }
+
+    // 调用函数
+    // 改变this指向
+    fn.call(obj, 1, 2, 3)
+  </script>
+</body>
+
+</html>

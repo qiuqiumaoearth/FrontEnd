@@ -70,6 +70,18 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
   <script>
+    const video = document.querySelector('video')
+    video.ontimeupdate = _.throttle(() => {
+      // console.log(11);
+      // console.log(video.currentTime);
+      localStorage.setItem('currentTime', video.currentTime)
+    }, 1000)
+
+    //打开页面触发事件,就从本地存储里面取出记录的时间,赋值给video.currentTime
+    video.onloadeddata = () => {
+      // console.log(11);
+      video.currentTime = localStorage.getItem('currentTime') || 0
+    }
 
   </script>
 </body>

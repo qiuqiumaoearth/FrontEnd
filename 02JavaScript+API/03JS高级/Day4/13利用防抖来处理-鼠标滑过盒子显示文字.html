@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: pink;
+      font-size: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <script src="./lodash.min.js"></script>
+  <script>
+    const box = document.querySelector('.box')
+    let i = 1
+    function mouseMove() {
+      box.innerHTML = i++
+    }
+
+    //鼠标停了500毫秒之后,i++
+    // 语法:_.debounce(fun, 时间)
+    box.addEventListener('mousemove', _.debounce(mouseMove, 500))
+  </script>
+
+</body>
+
+</html>
