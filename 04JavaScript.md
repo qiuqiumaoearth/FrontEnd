@@ -2353,4 +2353,92 @@ console.log(obj);
 
 ### 原型继承
 
+- 父构造函数(父类) Person
+- 子构造函数(子类) Woman,Man
+- 子类的原型 = new 父类() //使用父类里面呢的属性和方法
+- 同时子类要去指向自身,用`Woman.prototype.constructor = Woman`
+
+```html
+  <script>
+    // 继续抽取 公共的部分放到原型上
+    // 函数创建出来的实例对象之间彼此不影响
+    function Person() {
+      this.eyes = 2
+      this.head = 1
+    }
+
+    //女人 构造函数
+    function Woman() {
+
+    }
+    //woman 通过原型继承 Person
+    Woman.prototype = new Person()
+    // 同时要告诉woman构造函数所new的实例对象,谁是父亲,用constructor
+    Woman.prototype.constructor = Woman
+    //给woman单独添加一个方法
+    Woman.prototype.boby = function () {
+      console.log('宝贝');
+    }
+
+    const red = new Woman()
+    console.log(red); //里面有原型对象,共享的属性和方法,eyes:2
+
+    // 男人 构造函数
+    function Man() {
+
+    }
+    Man.prototype = new Person()
+    Man.prototype.constructor = Man
+
+    const black = new Man()
+    console.log(black);
+  </script>
+```
+
 ### 原型链
+
+- 基于原型对象的继承是的不同构造函数的原型对象关联在一起,并且这种关联的关系是一种链状关系
+- 将原型对象的链状结构关系称为原型链(`__proto__`)
+
+![原型链2](img/原型链2.jpg)
+
+#### 查找规则instanceof
+
+1. 当访问一个对象的属性(包括方法)时,首先查找这个==对象自身==有没有该属性
+2. 如果没有就找它的原型(也就是`__proto__`,指向的`prototype`原型对象)
+3. 如果还没有就查找原型对象的原型(Object的原型对象)
+4. 依次类推一直找到Object为止(null)
+5. `__proto__`对象原型的意义就在于为对象成员查找机制提供一个方向,或者一条路径
+6. 可以使用`instanceof`运算符用于检测构造函数的prototype属性是否出现在某个实例对象的原型链上
+
+```html
+  <script>
+    function Person() {
+      this.eyes = 2
+      this.head = 1
+    }
+
+    // 男人 构造函数
+    function Man() {
+
+    }
+    Man.prototype = new Person()
+    Man.prototype.constructor = Man
+
+    console.log(Man instanceof Object);
+  </script>
+```
+
+# 深浅拷贝
+
+- 深浅拷贝只针对引用类型
+
+## 浅拷贝
+
+## 深拷贝
+
+# 异常处理
+
+# 处理this
+
+# 性能优化

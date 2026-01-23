@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* 模态框基础样式 */
+    .modal {
+      position: fixed;
+      /* 固定定位，居中显示 */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      background: #fff;
+      z-index: 1000;
+      /* 确保在最上层 */
+    }
+
+    /* 模态框头部 */
+    .modal .header {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eee;
+      font-size: 16px;
+      font-weight: bold;
+      position: relative;
+      /* 为关闭按钮定位 */
+    }
+
+    /* 关闭按钮样式 */
+    .modal .header i {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      /* 鼠标悬浮变手型 */
+    }
+
+    /* 关闭按钮伪元素（模拟×图标） */
+    .modal .header i::before,
+    .modal .header i::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 2px;
+      background: #999;
+    }
+
+    .modal .header i::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .modal .header i::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    /* 模态框内容区 */
+    .modal .body {
+      padding: 16px;
+      font-size: 14px;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="delete">删除</button>
+  <button id="login">登录</button>
+  <button id="add">新增</button>
+  <!-- <div class="modal">
+    <div class="header">温馨提示<i></i></div>
+    <div class="body">您没有删除权限操作</div>
+  </div> -->
+  <script>
+    function Modal(title = '', message = '') {
+      //创建模态框盒子
+      this.modalBox = document.createElement('div') // 创建一个div标签
+      this.modalBox.className = 'modal'
+      this.modalBox.innerHTML = `
+      <div class="header">${title}<i></i></div>
+      <div class="body">${message}</div>
+      `
+      console.log(this.modalBox);
+    }
+
+    Modal.prototype.open = function () {
+      //先来判断页面中有没有modalbox这个盒子
+      // document.querySelector('.modal') ? this.remove : document.body.append(this.modalBox)
+
+      const box = document.querySelector('.modal')
+      box && box.remove()
+
+      document.body.append(this.modalBox)
+
+      this.modalBox.querySelector('.modal .header i').addEventListener('click', () => {
+        this.close()
+      })
+    }
+
+    Modal.prototype.close = function () {
+      this.modalBox.remove()
+    }
+
+    document.querySelector('#delete').addEventListener('click', () => {
+      //先调用
+      const del = new Modal('温馨提示', '您没有删除权限操作')
+      del.open()
+    })
+
+    document.querySelector('#login').addEventListener('click', () => {
+      //先调用
+      const log = new Modal('友情提示', '您还没登录呢')
+      log.open()
+    })
+
+    document.querySelector('#add').addEventListener('click', () => {
+      //先调用
+      const add = new Modal('新增功能', '还未开放')
+      add.open()
+    })
+  </script>
+</body>
+
+</html>
