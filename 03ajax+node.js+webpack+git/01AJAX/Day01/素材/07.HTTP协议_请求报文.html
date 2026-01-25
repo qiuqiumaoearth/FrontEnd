@@ -21,25 +21,25 @@
 
       目标：运行后，查看请求报文
     */
-   document.querySelector('.btn').addEventListener('click', () => {
-    axios({
-      url: 'http://hmajax.itheima.net/api/register',
-      method: 'post',
-      data: {
-        username: 'itheima007',
-        password: '7654321'
-      }
-    }).then(result => {
-      // 成功
-      console.log(result)
-    }).catch(error => {
-      // 失败
-      // 处理错误信息
-      console.log(error)
-      console.log(error.response.data.message)
-      alert(error.response.data.message)
+    document.querySelector('.btn').addEventListener('click', () => {
+      axios({
+        url: 'http://hmajax.itheima.net/api/register',
+        method: 'post',
+        data: {
+          username: 'itheima007',
+          password: '7654321'
+        }
+      }).then(result => {
+        // 成功
+        console.log(result)
+      }).catch(error => {
+        // 失败
+        // 处理错误信息
+        console.log(error)
+        console.log(error.response.data.message)
+        alert(error.response.data.message)
+      })
     })
-   })
   </script>
 </body>
 

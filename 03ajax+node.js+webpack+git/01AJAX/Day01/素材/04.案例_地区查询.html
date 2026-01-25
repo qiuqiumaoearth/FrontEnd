@@ -37,7 +37,7 @@
     <p>地区列表: </p>
     <ul class="list-group">
       <!-- 示例地区 -->
-      <li class="list-group-item">东城区</li>
+      <!-- <li class="list-group-item">东城区</li> -->
     </ul>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -48,6 +48,27 @@
         pname: 省份或直辖市名字
         cname: 城市名字
     */
+    document.querySelector('.sel-btn').addEventListener('click', () => {
+      //获取省份和城市名字
+      let pName = document.querySelector('.province').value
+      let cName = document.querySelector('.city').value
+
+      //基于axios请求地区列表数据
+      axios({
+        url: 'http://hmajax.itheima.net/api/area',
+        params: {
+          pname: pName,
+          cname: cName
+
+        }
+      }).then(resule => {
+        // console.log(resule);
+        let list = resule.data.list
+        let theLi = list.map(ateaName => `<li class="list-group-item">${ateaName}</li>`).join('')
+        console.log(theLi);
+        document.querySelector('.list-group').innerHTML = theLi
+      })
+    })
 
   </script>
 </body>

@@ -22,25 +22,25 @@
       目标: 点击按钮, 通过axios提交用户和密码, 完成注册
       需求: 使用axios错误处理语法, 拿到报错信息, 弹框反馈给用户
     */
-   document.querySelector('.btn').addEventListener('click', () => {
-    axios({
-      url: 'http://hmajax.itheima.net/api/register',
-      method: 'post',
-      data: {
-        username: 'itheima007',
-        password: '7654321'
-      }
-    }).then(result => {
-      // 成功
-      console.log(result)
-    }).catch(error => {
-      // 失败
-      // 处理错误信息
-      // console.log(error)
-      console.log(error.response.data.message)
-      // alert(error.response.data.message)
+    document.querySelector('.btn').addEventListener('click', () => {
+      axios({
+        url: 'http://hmajax.itheima.net/api/registeer', //响应标头:HTTP/1.1 404 Not Found
+        method: 'post',
+        data: {
+          username: 'itheima007',
+          password: '7654321'
+        }
+      }).then(result => {
+        // 成功
+        console.log(result)
+      }).catch(error => {
+        // 失败
+        // 处理错误信息
+        // console.log(error)
+        console.log(error.response.data.message)
+        // alert(error.response.data.message)
+      })
     })
-   })
   </script>
 </body>
 
