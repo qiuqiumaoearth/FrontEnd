@@ -740,3 +740,172 @@
   ```html
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   ```
+
+## Bootstrap弹框
+
+- 功能:不离开当前页面,显示单独内容,供用户操作
+- [Modal弹框/模态](https://v5.bootcss.com/docs/5.3/components/modal/#how-it-works)
+
+1. 引入css `<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">`
+2. 引入js `<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>`
+
+### 通过属性控制
+
+- 自定义属性,控制弹框的显示和隐藏
+
+```html
+  <button data-bs-toggle="modal" data-bs-target="css选择器">
+    显示弹框
+  </button>
+
+    <button data-bs-dismiss="modal" >
+    关闭弹框
+  </button>
+```
+
+- 应用
+
+```html
+  <!-- 引入bootstrap.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- 
+    目标：使用Bootstrap弹框
+    1. 引入bootstrap.css 和 bootstrap.js
+    2. 准备弹框标签，确认结构
+    3. 通过自定义属性，控制弹框的显示和隐藏
+   -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".my-box">
+    显示弹框
+  </button>
+  <!-- 
+    弹框标签
+    bootstrap的modal弹框，添加modal类名（默认隐藏）
+   -->
+  <div class="modal my-box" tabindex="-1">
+    <div class="modal-dialog">
+      <!-- 弹框-内容 -->
+      <div class="modal-content">
+        <!-- 弹框-头部 -->
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- 弹框-身体 -->
+        <div class="modal-body">
+          <p>Modal body text goes here.</p>
+        </div>
+        <!-- 弹框-底部 -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入bootstrap.js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+</body>
+
+```
+
+### 通过JS控制
+
+- 语法
+
+```js
+    //创建弹框对象
+    const modalDom = document.querySelector('css选择器')
+
+    // backdrop: 'static' → 点击外部遮罩不关闭弹框
+    // keyboard: false → 可选，禁用ESC键关闭弹框（如需保留ESC关闭可删除此配置）
+    const modal = new bootstrap.Modal(modalDom, {
+      backdrop: 'static',
+      keyboard: false
+    })
+
+    //显示弹框
+    modal.show()
+
+    //隐藏弹框
+    modal.hide()
+```
+
+- 应用
+
+```html
+<!-- 引入bootstrap.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <!-- 
+    目标：使用JS控制弹框，显示和隐藏
+    1. 创建弹框对象
+    2. 调用弹框对象内置方法
+      .show() 显示
+      .hide() 隐藏
+   -->
+  <button type="button" class="btn btn-primary edit-btn">
+    编辑姓名
+  </button>
+
+  <div class="modal name-box" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">请输入姓名</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="">
+            <span>姓名：</span>
+            <input type="text" class="username">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary save-btn">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 引入bootstrap.js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+
+
+  <script>
+    //创建弹框对象
+    const modalDom = document.querySelector('.name-box')
+
+    // backdrop: 'static' → 点击外部遮罩不关闭弹框
+    // keyboard: false → 可选，禁用ESC键关闭弹框（如需保留ESC关闭可删除此配置）
+    const modal = new bootstrap.Modal(modalDom, {
+      backdrop: 'static',
+      keyboard: false
+    })
+
+    //编辑姓名 -> 点击 -> 赋予默认姓名 -> 弹框显示
+    document.querySelector('.edit-btn').addEventListener('click', () => {
+      document.querySelector('.username').value = '默认姓名'
+
+      //显示弹框
+      modal.show()
+    })
+
+    // 保存 -> 点击 -> 获取姓名打印 -> 弹框隐藏
+    document.querySelector('.save-btn').addEventListener('click', () => {
+
+      console.log(document.querySelector('.username').value);
+
+      //弹框隐藏
+      modal.hide()
+    })
+
+  </script>
+</body>
+```
