@@ -88,3 +88,54 @@ document.querySelector('.list').addEventListener('click', e => {
   }
 })
 
+// 编辑弹框 -> 显示和隐藏
+const editDom = document.querySelector('.edit-modal')
+const editModal = new bootstrap.Modal(editDom)
+
+//点击显示弹框
+document.querySelector('.list').addEventListener('click', e => {
+  if (e.target.classList.contains('edit')) {
+    // console.log('编辑');
+    const theId = e.target.parentNode.dataset.id
+    // console.log(theId);
+    axios({
+      url: `http://hmajax.itheima.net/api/books/${theId}`,
+      // method: 'PATCH',
+
+    }).then(result => {
+      const bookObj = result.data.data
+      //{id: 793274, bookname: '《红楼梦》', author: '曹雪芹', publisher: '人民文学出版社'}
+
+      //数据反写
+      console.log(bookObj);
+      const keys = Object.keys(bookObj)
+      console.log(keys); //['id','bookname']
+      keys.forEach(key => {
+        document.querySelector(`.edit-form .${key}`).value = bookObj[key]
+      });
+    })
+    editModal.show()
+  }
+})
+
+//修改按钮,隐藏弹框
+document.querySelector('.edit-btn').addEventListener('click', () => {
+  const editForm = document.querySelector('.edit-form')
+  const { id, bookname, author, publisher } = serialize(editForm, { hash: true, emty: true })
+  // console.log(bookObj);
+  axios({
+    url: `http://hmajax.itheima.net/api/books/${id}`,
+    method: 'PUT',
+    data: {
+      bookname,
+      author,
+      publisher,
+      creator
+    }
+  }).then(() => {
+    getBooksList()
+    editModal.hide()
+  })
+
+
+})

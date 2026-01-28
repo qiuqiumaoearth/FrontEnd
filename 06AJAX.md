@@ -10,7 +10,7 @@
 
 ![接口文档](img/接口文档.jpg)
 
-## form-serialize插件
+## form-serialize插件-表单
 
 - 作用:快速收集表单元素的值
 
@@ -52,6 +52,69 @@
     })
   </script>
 </body>
+```
+
+## FormData()-图片
+
+```js
+const fd = new FormData()
+fd.append(参数名,值)
+```
+
+```html
+<body>
+  <!-- 文件选择元素 -->
+  <input type="file" class="upload">
+  <img src="" alt="" class="my-img">
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    document.querySelector('.upload').addEventListener('change', e => {
+
+      //获取图片文件
+      console.log(e.target.files[0]);
+
+      //使用FormData携带图片文件
+      const fd = new FormData()
+      fd.append('img', e.target.files[0])
+
+      //提交到服务器,获取图片的url网址使用
+      axios({
+        url: 'http://hmajax.itheima.net/api/uploadimg',
+        method: 'POST',
+        data: fd
+
+      }).then(result => {
+        console.log(result);
+        //取出图片url网址,用img标签显示
+        const imgUrl = result.data.data.url
+        console.log(imgUrl);
+        document.querySelector('.my-img').src = imgUrl
+      })
+    })
+
+  </script>
+</body>
+```
+
+```js
+document.querySelector('.bg-ipt').addEventListener('change', e => {
+  //获取文件
+  console.log(e.target.files[0]);
+  const fd = new FormData()
+  fd.append('img', e.target.files[0])
+
+  axios({
+    url: 'http://hmajax.itheima.net/api/uploadimg',
+    method: 'POST',
+    data: fd
+  }).then(result => {
+    // console.log(result.data.message);
+    const imgUrl = result.data.data.url
+    document.body.style.backgroundImage = `url(${imgUrl})`
+
+  })
+})
 ```
 
 # axios库
@@ -257,5 +320,3 @@ axios({
 |PUT|修改数据(全部)|
 |DELETE|删除数据|
 |PATCH|修改数据(部分)|
-
-今天没学习
