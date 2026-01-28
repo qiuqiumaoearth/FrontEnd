@@ -117,6 +117,124 @@ document.querySelector('.bg-ipt').addEventListener('change', e => {
 })
 ```
 
+## 提示框
+
+```html
+  <div class="toast" data-bs-delay="1500">
+
+  </div>
+```
+
+```js
+  // 创建toast对象
+  const toastDom = document.querySelector('css选择器')
+  const toast = new bootstrap.Toast(toastDom)
+
+  //显示提示框
+  toast.show()
+```
+
+## AJAX原理 - XMLHttpRequest
+
+- XHR对象用于与服务器交互
+- axios内部采用XHR与服务器进行交互,axios是XHR的封装
+
+### 使用XHR
+
+```html
+<script>
+    /**
+     * 目标：使用XMLHttpRequest对象与服务器通信
+     *  1. 创建 XMLHttpRequest 对象
+     *  2. 配置请求方法和请求 url 地址
+     *  3. 监听 loadend 事件，接收响应结果
+     *  4. 发起请求
+    */
+    //1. 创建 XMLHttpRequest 对象
+    const xhr = new XMLHttpRequest()
+
+    //2. 配置请求方法和请求 url 地址
+    xhr.open('GET', 'http://hmajax.itheima.net/api/province')
+
+    //3. 监听 loadend 事件，接收响应结果
+    xhr.addEventListener('loadend', () => {
+      console.log(xhr.response);
+      data = JSON.parse(xhr.response)
+      console.log(data.list.join('<br>'));
+      document.querySelector('.my-p').innerHTML = data.list.join('<br>')
+
+    })
+
+    //4. 发起请求
+    xhr.send()
+
+  </script>
+```
+
+### XHR - 查询参数
+
+- 请求地址:`http://hmajax.itheima.net/api/city?参数名1=值1&参数名2=值2`
+
+```html
+  <script>
+
+    /**
+     * 目标：使用XHR携带查询参数，展示某个省下属的城市列表
+    */
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', 'http://hmajax.itheima.net/api/city?pname=山东省')
+    xhr.addEventListener('loadend', () => {
+      console.log(xhr.response);
+      const data = JSON.parse(xhr.response)
+      console.log(data);
+      document.querySelector('p').innerHTML = data.list.join('<br>')
+    })
+
+    xhr.send()
+  </script>
+```
+
+### 创建查询参数URLSP
+
+```js
+  //创建URLSearchParams对象
+  const paramsObj = new URLSearchParams({
+    参数1:值1,
+    参数2:值2
+  })
+
+  //生成指定格式查询参数,字符串
+  const queryString = paramsObj.toString()
+  //结果:参数1=值1&参数2=值2
+  // 使用xhr对象,查询地区列表
+  const xhr = new XMLHttpRequest()
+  xhr.open('GET', `http://hmajax.itheima.net/api/area?${queryString}`)
+
+```
+
+### XHR - 数据提交
+
+```js
+  const xhr = new XMLHttpRequest()
+
+  // xhr.open('请求方法','请求url网址')
+  xhr.open('post', 'http://hmajax.itheima.net/api/register')
+  xhr.addEventListener('loadend', () => {
+    console.log(xhr.response);
+  })
+
+  //设置请求头-告诉服务器内容类型(JOSN字符串)
+  xhr.setRequestHeader('Content-Type', 'application/json')
+
+  //准备要提交的数据,转换成JOSN字符串
+  const userObj = {
+    username: 'itheima066',
+    password: '1234567'
+  }
+  const userStr = JSON.stringify(userObj)
+  xhr.send(userStr)
+```
+
 # axios库
 
 ## axios使用
@@ -199,7 +317,7 @@ axios({
 
 ```
 
-## axios请求配置method
+## axios- 提交数据
 
 - url:请求的URL网址
 - method:请求的方法,GET可以省略(不区分大小写)
@@ -320,3 +438,101 @@ axios({
 |PUT|修改数据(全部)|
 |DELETE|删除数据|
 |PATCH|修改数据(部分)|
+
+# promise
+
+## 定义
+
+- promise对象用于表示(管理)一个异步操作的最终完成(或失败)及其结果值
+- 好处:逻辑更清晰,了解axios函数内部运作机制,能解决回调函数地狱问题
+
+![promise](img/promise.jpg)
+
+## 使用
+
+- 语法
+
+```html
+    <script>
+    /**
+     * 目标：使用Promise管理异步任务
+    */
+    //1.创建promise对象
+    const p = new Promise((resolve, reject) => {
+      //2.执行异步任务-并传递结果
+      //成功调用:resolve(值)触发then()执行
+      //失败调用:reject(值)触发catch()执行
+    })
+    //3.接收结果
+    p.then(result => {
+      //成功
+    }).catch(error=>{
+      //失败
+    })
+
+  </script>
+```
+
+- 应用
+
+```html
+  <script>
+    /**
+     * 目标：使用Promise管理异步任务
+    */
+    //1.创建promise对象
+    const p = new Promise((resolve, reject) => {
+      //Promise对象创建时,这里的代码都会执行了
+      //2.执行异步代码
+      setTimeout(() => {
+        //resolv()=> 'fulfilled状态-已兑现' => then()
+        //resolve('模拟AjAX请求-成功结果')
+
+        //reject()=> 'rejected状态-已拒绝' => catch()
+        reject('模拟AjAX请求-失败结果')
+
+      }, 2000)
+
+    })
+    //3.接收结果
+    p.then(result => {
+      //成功
+      console.log(result);
+    }).catch(error => {
+      //错误对象用console.dir详细打印
+      console.dir(error);
+    })
+
+  </script>
+```
+
+## 三种状态
+
+- 概念:一个promise对象,必然处于以下几种状态之一
+- 待定(pending):初始状态,既没有被兑现,也没有被拒绝
+- 已兑现(fulfilled):意味着,操作成功完成
+- 已拒绝(rejected):意味着,操作失败
+- 注意:Promise对象一旦被==兑现/拒绝==就是已敲定了,==状态无法再被改变==
+- promise状态改变后,调用关联的处理函数
+
+![promise三种状态](img/promise三种状态.jpg)
+
+## 基于Promise + XHR封装myAxios函数
+
+```js
+function myAxios(config){
+  return new Promise((resolve,reject)=>{
+    //XHR请求
+    //调用成功/失败的处理程序
+  })
+}
+
+myAxios({
+  url:'目标资源地址'
+}).then(result=>{
+
+}).catch(error=>{
+  
+})
+
+```

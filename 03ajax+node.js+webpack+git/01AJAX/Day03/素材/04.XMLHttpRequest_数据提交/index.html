@@ -15,7 +15,22 @@
      * 目标：使用xhr进行数据提交-完成注册功能
     */
     document.querySelector('.reg-btn').addEventListener('click', () => {
-      
+      const xhr = new XMLHttpRequest()
+      xhr.open('post', 'http://hmajax.itheima.net/api/register')
+      xhr.addEventListener('loadend', () => {
+        console.log(xhr.response);
+      })
+
+      //设置请求头-告诉服务器内容类型(JOSN字符串)
+      xhr.setRequestHeader('Content-Type', 'application/json')
+
+      //准备要提交的数据
+      const userObj = {
+        username: 'itheima066',
+        password: '1234567'
+      }
+      const userStr = JSON.stringify(userObj)
+      xhr.send(userStr)
     })
   </script>
 </body>

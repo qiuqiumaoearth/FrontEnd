@@ -45,6 +45,40 @@
     /**
      * 目标: 根据省份和城市名字, 查询对应的地区列表
     */
+    document.querySelector('.sel-btn').addEventListener('click', () => {
+      const pname = document.querySelector('.province').value
+      const cname = document.querySelector('.city').value
+
+      //组织查询参数字符串
+      const qObj = {
+        pname,
+        cname
+      }
+
+      //查询参数对象 -> 查询字符串
+      const paramsObj = new URLSearchParams(qObj)
+      const queryString = paramsObj.toString()
+      console.log(queryString);
+
+      // 使用xhr对象,查询地区列表
+      const xhr = new XMLHttpRequest()
+      xhr.open('GET', `http://hmajax.itheima.net/api/area?${queryString}`)
+      xhr.addEventListener('loadend', () => {
+
+        console.log(xhr.response);
+        const data = JSON.parse(xhr.response)
+        console.log(data);
+        const htmlStr = data.list.map(areaName => {
+          return `<li class="list-group-item">${areaName}</li>`
+        }).join('')
+        document.querySelector('.list-group').innerHTML = htmlStr
+      })
+      xhr.send()
+
+    })
+
+
+
   </script>
 </body>
 

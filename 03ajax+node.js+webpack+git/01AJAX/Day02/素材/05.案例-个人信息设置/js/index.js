@@ -72,6 +72,12 @@ document.querySelector('.submit').addEventListener('click', e => {
     data: userObj
   }).then(result => {
     console.log(result.data.message);
+    // 创建toast对象
+    const toastDom = document.querySelector('.my-toast')
+    const toast = new bootstrap.Toast(toastDom)
+
+    //显示提示框
+    toast.show()
   })
 
 })
