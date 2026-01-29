@@ -1051,6 +1051,18 @@ const sum = (a, b) => {
 })
 ```
 
+```js
+//foreach遍历二维数组
+function render(obj, doc) {
+  Object.entries(obj).forEach(([key, value]) => {
+    const targetElement = doc.querySelector(`.${key}`)
+    if (targetElement) {
+      targetElement.textContent = value || ''
+    }
+  })
+}
+```
+
 #### 筛选数组filter方法 >=<
 
 - filter()方法创建一个新数组,新数组中的元素是通过检查指定数组中符合条件的所有元素

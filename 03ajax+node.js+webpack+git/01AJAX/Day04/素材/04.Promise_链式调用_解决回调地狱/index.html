@@ -29,7 +29,30 @@
      * 目标：把回调函数嵌套代码，改成Promise链式调用结构
      * 需求：获取默认第一个省，第一个市，第一个地区并展示在下拉菜单中
     */
-    
+    let pname = ''
+    //获取省名字
+    axios({ url: 'http://hmajax.itheima.net/api/province' }).then((result) => {
+      pname = result.data.list[0]
+      document.querySelector('.province').innerHTML = pname
+
+      //获取市名字
+      return axios({ url: 'http://hmajax.itheima.net/api/city', params: { pname } })
+    }).then((result) => {
+      const cname = result.data.list[0]
+      document.querySelector('.city').innerHTML = cname
+      console.log(pname);
+
+      //获得地区名字
+      return axios({ url: 'http://hmajax.itheima.net/api/area', params: { pname, cname } })
+    }).then((result) => {
+      console.log(result);
+      const aname = result.data.list[0]
+      console.log(aname);
+      document.querySelector('.area').innerHTML = aname
+
+    })
+
+
   </script>
 </body>
 

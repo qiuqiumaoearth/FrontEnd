@@ -14,6 +14,29 @@
      * 目标：掌握Promise的链式调用
      * 需求：把省市的嵌套结构，改成链式调用的线性结构
     */
+    //创建promise对象
+    const p = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('山东省')
+      }, 2000);
+    });
+
+    //获取省份名字
+    const p2 = p.then(result => {
+      console.log(result);
+
+      //创建promise 对象 - 请求省份里面的城市
+      //return Promise对象最终状态和结果,影响到新的Promise对象
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(result + '---济南市')
+        }, 2000);
+      });
+    })
+
+    p2.then(result => {
+      console.log(result);
+    })
   </script>
 </body>
 

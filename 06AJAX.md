@@ -536,3 +536,258 @@ myAxios({
 })
 
 ```
+
+```js
+function myAxios(config) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    if (config.params) {
+      const paramsObj = new URLSearchParams(config.params)
+      const queryString = paramsObj.toString()
+      config.url += `?${queryString}`
+    }
+    xhr.open(config.method || 'GET', config.url)
+    xhr.addEventListener('loadend', () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(JSON.parse(xhr.response))
+      } else {
+        reject(new Error(xhr.response))
+      }
+    })
+    if (config.data) {
+      const jsonStr = JSON.stringify(config.data)
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.send(jsonStr)
+    } else {
+      xhr.send()
+    }
+  })
+}
+```
+
+## Promise.all静态方法
+
+- 概念：合并多个 Promise 对象，等待所有同时成功完成（或某一个失败），做后续逻辑
+
+![promiseAll静态方法.png](img/promiseAll静态方法.png)
+
+- 语法：
+
+   ```js
+   const p = Promise.all([Promise对象, Promise对象, ...])
+   p.then(result => {
+     // result 结果: [Promise对象成功结果, Promise对象成功结果, ...]
+   }).catch(error => {
+     // 第一个失败的 Promise 对象，抛出的异常对象
+   })
+   ```
+
+# 同步代码和异步代码
+
+## 同步代码
+
+- 实际上浏览器是按照我们书写代码的顺序一行一行执行程序的,浏览器会等待代码的解析和工作,在上一行完成后才会执行下一行,是一个同步程序
+- 同步代码:逐行执行,需原地等待结束后,才继续向下执行
+
+## 异步代码
+
+- 异步编程技术使程序可以在执行一个可能长期运行的任务的同时继续对其他事情做出反应而不必等待任务完成.同时,任务完成后显示结果
+- 异步代码:调用后耗时，不阻塞代码继续执行（不必原地等待），在将来完成后触发回调函数传递结果
+- setTimeout/setinterval/事件/AJAX
+
+## 回调函数地狱
+
+```js
+  /**
+   * 目标：演示回调函数地狱
+   * 需求：获取默认第一个省，第一个市，第一个地区并展示在下拉菜单中
+   * 概念：在回调函数中嵌套回调函数，一直嵌套下去就形成了回调函数地狱
+   * 缺点：可读性差，异常无法获取，耦合性严重，牵一发动全身
+  */
+  axios({ url: 'http://hmajax.itheima.net/api/province' }).then(result => {
+    const pname = result.data.list[0]
+    document.querySelector('.province').innerHTML = pname
+    // 获取第一个省份默认下属的第一个城市名字
+    axios({ url: 'http://hmajax.itheima.net/api/city', params: { pname } }).then(result => {
+      const cname = result.data.list[0]
+      document.querySelector('.city').innerHTML = cname
+      // 获取第一个城市默认下属第一个地区名字
+      axios({ url: 'http://hmajax.itheima.net/api/area', params: { pname, cname } }).then(result => {
+        document.querySelector('.area').innerHTML = result.data.list[0]
+      })
+    })
+  })
+
+```
+
+## Promise-链式调用
+
+1. 概念：依靠 then() 方法会返回一个新生成的 Promise 对象特性，继续串联下一环任务，直到结束
+2. 细节：then() 回调函数中的返回值，会影响新生成的 Promise 对象最终状态和结果
+3. 好处：通过链式调用，解决回调函数嵌套问题,回调函数地狱问题
+
+![promise链](img/promise链.png)
+
+```js
+  /**
+   * 目标：掌握Promise的链式调用
+   * 需求：把省市的嵌套结构，改成链式调用的线性结构
+  */
+  //创建promise对象
+  const p = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('山东省')
+    }, 2000);
+  });
+
+  //获取省份名字
+  const p2 = p.then(result => {
+    console.log(result);
+
+    //创建promise 对象 - 请求省份里面的城市
+    //return Promise对象最终状态和结果,影响到新的Promise对象
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(result + '---济南市')
+      }, 2000);
+    });
+  })
+
+  p2.then(result => {
+    console.log(result);
+  })
+
+```
+
+![promise链的使用.png](img/promise链的使用.png)
+
+```js
+/**
+   * 目标：把回调函数嵌套代码，改成Promise链式调用结构
+   * 需求：获取默认第一个省，第一个市，第一个地区并展示在下拉菜单中
+  */
+  let pname = ''
+  //获取省名字
+  axios({ url: 'http://hmajax.itheima.net/api/province' }).then((result) => {
+    pname = result.data.list[0]
+    document.querySelector('.province').innerHTML = pname
+
+    //获取市名字
+    return axios({ url: 'http://hmajax.itheima.net/api/city', params: { pname } })
+  }).then((result) => {
+    const cname = result.data.list[0]
+    document.querySelector('.city').innerHTML = cname
+    console.log(pname);
+
+    //获得地区名字
+    return axios({ url: 'http://hmajax.itheima.net/api/area', params: { pname, cname } })
+  }).then((result) => {
+    console.log(result);
+    const aname = result.data.list[0]
+    console.log(aname);
+    document.querySelector('.area').innerHTML = aname
+
+  })
+```
+
+## async函数和await
+
+```html
+  <script>
+    /**
+     * 目标：掌握async和await语法，解决回调函数地狱
+     * 概念：在async函数内，使用await关键字，获取Promise对象"成功状态"结果值
+     * 注意：await必须用在async修饰的函数内（await会阻止"异步函数内"代码继续执行，原地等待结果）
+    */
+    async function getData() {
+      const pObj = await axios({ url: 'http://hmajax.itheima.net/api/province' })
+      const pname = pObj.data.list[0]
+
+      const cObj = await axios({ url: 'http://hmajax.itheima.net/api/city', params: { pname } })
+      const cname = cObj.data.list[0]
+
+      const aObj = await axios({ url: 'http://hmajax.itheima.net/api/area', params: { pname, cname } })
+      const aname = aObj.data.list[0]
+
+      document.querySelector('.province').innerHTML = pname
+      document.querySelector('.city').innerHTML = cname
+      document.querySelector('.area').innerHTML = aname
+
+    }
+    getData()
+  </script>
+
+```
+
+### 捕获错误
+
+- try 和 catch 的作用：语句标记要尝试的语句块，并指定一个出现异常时抛出的响应
+
+```js
+  try {
+    // 要执行的代码
+  } catch (error) {
+    // error 接收的是，错误消息
+    // try 里代码，如果有错误，直接进入这里执行
+  }
+```
+
+> try 里有报错的代码，会立刻跳转到 catch 中
+
+```js
+    async function getData() {
+      try {
+        const pObj = await axios({ url: 'http://hmajax.itheima.net/api/province' })
+        const pname = pObj.data.list[0]
+        const cObj = await axios({ url: 'http://hmajax.itheima.net/api/city', params: { pname } })
+        const cname = cObj.data.list[0]
+        const aObj = await axios({ url: 'http://hmajax.itheima.net/api/area', params: { pname, cname } })
+        const areaName = aObj.data.list[0]
+
+        document.querySelector('.province').innerHTML = pname
+        document.querySelector('.city').innerHTML = cname
+        document.querySelector('.area').innerHTML = areaName
+      } catch (error) {
+        //如果try里某行代码报错后,try中剩余代码就不会执行了
+        console.dir(error)
+      }
+    }
+    getData()
+```
+
+# 事件循环(EventLoop)
+
+1. 先执行执行栈中的同步任务
+2. 异步任务放入任务队列中
+3. 一旦执行栈中的所有同步任务执行完毕,系统就会按次序读取任务队列中的异步任务,于是被读取的异步任务结束等待状态,进入执行栈,开始执行
+![事件循环](img/事件循环.jpg)
+
+- 由于主线程不断的重复获得任务,执行任务,再获取任务,再执行,所以这种机制被称为事件循环(event loop)
+- 作用：事件循环负责执行代码，收集和处理事件以及执行队列中的子任务
+- 原因：JavaScript 单线程（某一刻只能执行一行代码），为了让耗时代码不阻塞其他代码运行，设计了事件循环模型
+- 概念：执行代码和收集异步任务的模型，在调用栈空闲，反复调用任务队列里回调函数的执行机制，就叫事件循环
+
+![事件循环](img/事件循环.png)
+
+## JavaScript 内代码如何执行(简单)
+
+- 执行同步代码，遇到异步代码交给宿主浏览器环境执行
+- 异步有了结果后，把回调函数放入任务队列排队
+- 当调用栈空闲后，反复调用任务队列里的回调函数
+
+## 宏任务与微任务
+
+1. ES6 之后引入了 Promise 对象， 让 JS 引擎也可以发起异步任务
+2. 异步任务划分为了
+   - 宏任务：由浏览器环境执行的异步代码
+   - 微任务：由 JS 引擎环境执行的异步代码
+3. 宏任务和微任务具体划分：
+
+![宏任务和微任务.png](img/宏任务和微任务.png)
+![宏任务和微任务执行顺序.png](img/宏任务和微任务执行顺序.png)
+
+### JavaScript 内代码如何执行
+
+- 执行第一个 script 脚本事件宏任务，里面同步代码
+- 遇到 宏任务/微任务 交给宿主环境，有结果回调函数进入对应队列
+- 当执行栈空闲时，清空微任务队列，再执行下一个宏任务，从1再来
