@@ -34,6 +34,7 @@
               <p>巧克力</p>
             </a>
           </li>
+
         </ul>
       </div>
     </div>
@@ -47,6 +48,77 @@
      *  3. 合并所有二级分类Promise对象
      *  4. 等待同时成功后，渲染页面
     */
+    function renderli(obj, doc) {
+      Object.entries(obj).forEach(([key, value]) => {
+        if (key === 'name') {
+          doc.querySelector('p').textContent = value || ''
+        } else if (key === 'picture') {
+          doc.querySelector('img').src = value || ''
+        } else if (key === 'id') {
+          doc.dataset.id = value || ''
+        }
+      });
+    }
+
+    //获得所有一级分类商品
+    axios({
+      url: 'http://hmajax.itheima.net/api/category/top'
+    }).then((result) => {
+      console.log('一级分类', result);
+
+      //遍历id获得所有二级分类商品
+      const secPromiseList = result.data.data.map((item) => {
+        return axios({
+          url: 'http://hmajax.itheima.net/api/category/sub',
+          params: {
+            id: item.id //一级分类id
+          }
+        })
+      })
+
+
+      console.log(secPromiseList); //[promise二级分类,...] [Promise, Promise, Promise, Promise, Promise, Promise, Promise, Promise, Promise]
+
+      //合并所有二级分类promise对象
+      const p = Promise.all(secPromiseList)
+      p.then((result) => {
+        console.log('二级分类对象', result);
+
+        const htmlStr = result.map(item => {
+          const dataObj = item.data.data
+          console.log(dataObj);
+          const childObj = dataObj.children
+          return `<div class="item">
+        <h3>${dataObj.name}</h3>
+        <ul>
+          ${childObj.map(item => {
+            return `<li data-id = ${item.id}>
+            <a href="javascript:;">
+              <img src="${item.picture}">
+              <p>${item.name}</p>
+            </a>
+          </li>`
+          }).join('')}
+          
+         
+        </ul>
+      </div>`
+        }).join('')
+        document.querySelector('.sub-list').innerHTML = htmlStr
+
+
+
+
+
+      }).catch((err) => {
+
+      });
+
+
+    }).catch((err) => {
+
+    });
+
   </script>
 </body>
 

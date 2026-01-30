@@ -22,6 +22,30 @@
      * 广州-440100
      * 深圳-440300
     */
+    const bjPromise = axios({ url: 'http://hmajax.itheima.net/api/weather', params: { city: '110100' } })
+    // console.log(bjPromise);
+    const shPromise = axios({ url: 'http://hmajax.itheima.net/api/weather', params: { city: '310100' } })
+
+    const gzPromise = axios({ url: 'http://hmajax.itheima.net/api/weather000', params: { city: '440100' } })
+
+    const szPromise = axios({ url: 'http://hmajax.itheima.net/api/weather', params: { city: '440300' } })
+
+    //使用promise.all，合并多个promise对象
+    const p = Promise.all([bjPromise, shPromise, gzPromise, szPromise])
+    p.then((result) => {
+      console.log(result);
+      const rList = result
+      const htmlStr = rList.map(element => {
+        const data = element.data.data
+        console.log(data.area, data.dateShort, data.weather);
+        return `<li>${data.area}---${data.dateShort}---${data.weather}</li>`
+
+      }).join('');
+      document.querySelector('.my-ul').innerHTML = htmlStr
+    }).catch((err) => {
+      console.dir(err);
+    });
+
   </script>
 </body>
 

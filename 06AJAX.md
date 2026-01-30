@@ -365,6 +365,15 @@ axios({
 
 ```
 
+## axios公共配置
+
+```js
+// axios 公共配置
+// 基地址
+
+axios.defaults.baseURL = 'http://geek.itheima.net'
+```
+
 ---
 
 # 认识url
@@ -568,6 +577,8 @@ function myAxios(config) {
 ## Promise.all静态方法
 
 - 概念：合并多个 Promise 对象，等待所有同时成功完成（或某一个失败），做后续逻辑
+- 让合并后的所有promise对象同时打印出来
+- 缺点: 无法找到all里面某个对象的错误,只要有一个错误就会全部返回,无法打印
 
 ![promiseAll静态方法.png](img/promiseAll静态方法.png)
 
@@ -581,6 +592,51 @@ function myAxios(config) {
      // 第一个失败的 Promise 对象，抛出的异常对象
    })
    ```
+
+- 应用
+
+```html
+<body>
+  <ul class="my-ul"></ul>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    /**
+     * 目标：掌握Promise的all方法作用，和使用场景
+     * 业务：当我需要同一时间显示多个请求的结果时，就要把多请求合并
+     * 例如：默认显示"北京", "上海", "广州", "深圳"的天气在首页查看
+     * code：
+     * 北京-110100
+     * 上海-310100
+     * 广州-440100
+     * 深圳-440300
+    */
+    const bjPromise = axios({ url: 'http://hmajax.itheima.net/api/weather', params: { city: '110100' } })
+    // console.log(bjPromise);
+    const shPromise = axios({ url: 'http://hmajax.itheima.net/api/weather', params: { city: '310100' } })
+
+    const gzPromise = axios({ url: 'http://hmajax.itheima.net/api/weather', params: { city: '440100' } })
+
+    const szPromise = axios({ url: 'http://hmajax.itheima.net/api/weather', params: { city: '440300' } })
+
+    //使用promise.all，合并多个promise对象
+    const p = Promise.all([bjPromise, shPromise, gzPromise, szPromise])
+    p.then((result) => {
+      console.log(result);
+      const rList = result
+      const htmlStr = rList.map(element => {
+        const data = element.data.data
+        console.log(data.area, data.dateShort, data.weather);
+        return `<li>${data.area}---${data.dateShort}---${data.weather}</li>`
+
+      }).join('');
+      document.querySelector('.my-ul').innerHTML = htmlStr
+    }).catch((err) => {
+      console.dir(err);
+    });
+
+  </script>
+</body>
+```
 
 # 同步代码和异步代码
 
@@ -692,6 +748,8 @@ function myAxios(config) {
 
 ## async函数和await
 
+- async 类似于.then 一样获取结果,但async就是原地获得结果,.then还要调用result
+
 ```html
   <script>
     /**
@@ -791,3 +849,67 @@ function myAxios(config) {
 - 执行第一个 script 脚本事件宏任务，里面同步代码
 - 遇到 宏任务/微任务 交给宿主环境，有结果回调函数进入对应队列
 - 当执行栈空闲时，清空微任务队列，再执行下一个宏任务，从1再来
+
+# 黑马头条-数据管理平台
+
+## 项目介绍
+
+- 黑马头条-数据管理平台：对IT资讯移动网站的数据，进行数据管理
+- 数据管理平台-演示：配套代码在本地运行
+- 移动网站-演示： [http://](http://geek.itheima.net/)[geek.itheima.net](http://geek.itheima.net/)[/](http://geek.itheima.net/)
+
+### 功能
+
+1.登录和权限判断
+2.查看文章内容列表（筛选，分页）
+3.编辑文章（数据回显）
+4.删除文章
+5.发布文章（图片上传，富文本编辑器）
+
+## 项目准备
+
+### 技术
+
+- 基于 Bootstrap 搭建网站标签和样式
+- 集成 wangEditor 插件实现富文本编辑器
+- 使用原生 JS 完成增删改查等业务
+- 基于 axios 与黑马头条线上接口交互
+- 使用 axios 拦截器进行权限判断
+
+### 准备
+
+- 准备配套的素材代码
+- 包含：html，css，js，静态图片，第三方插件等等
+- 目录管理：建议这样管理，方便查找
+- assets：资源文件夹（图片，字体等）
+- lib：资料文件夹（第三方插件，例如：form-serialize）
+- page：页面文件夹
+- utils：实用程序文件夹（工具插件）
+
+![项目准备目录管理.png](img/项目准备目录管理.png)
+
+## 验证码登录
+
+![验证码登录.png](img/验证码登录.png)
+
+## token的使用
+
+- 概念：访问权限的令牌，本质上是一串字符串
+- 创建：正确登录后，由后端签发并返回
+- 作用：判断是否有登录状态等，控制访问权限
+- 注意：前端只能判断 token 有无，而后端才能判断 token 的有效性
+
+![token](img/token.png)
+
+- 步骤：
+
+1.在 utils/auth.js 中判断无 token 令牌字符串，则强制跳转到登录页（手动修改地址栏测试）
+2.在登录成功后，保存 token 令牌字符串到本地，再跳转到首页（手动修改地址栏测试）
+
+```js
+const token = localStorage.getItem('token')
+// 没有 token 令牌字符串，则强制跳转登录页
+if (!token) {
+  location.href = '../login/index.html'
+}
+```
