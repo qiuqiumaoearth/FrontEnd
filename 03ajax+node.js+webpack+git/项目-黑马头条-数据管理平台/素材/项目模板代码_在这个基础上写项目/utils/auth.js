@@ -17,7 +17,19 @@
  *  3.2 清空本地缓存，跳转到登录页面
  */
 
+// 目标1：访问权限控制
 const token = localStorage.getItem('token')
 if (!token) {
   location.href = '../login/index/html'
 }
+
+//目标2：设置个人信息
+axios({
+  url: '/v1_0/user/profile',
+}).then(result => {
+  console.log(result);
+  const username = result.data.name
+  document.querySelector('.nick-name').innerHTML = username
+})
+
+

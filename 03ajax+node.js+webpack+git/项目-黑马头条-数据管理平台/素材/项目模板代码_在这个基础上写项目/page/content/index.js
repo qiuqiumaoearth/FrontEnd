@@ -5,6 +5,29 @@
  *  1.3 展示到指定的标签结构中
  */
 
+//1.1 准备查询参数对象
+const queryObj = {
+  status: '', //文章状态(1-等待审核,2-审核通过) 空字符串-全部
+  channel_id: '',//文章频道id,空字符串-全部
+  page: 1, //当前页码
+  per_page: 5//当前页面条目
+}
+
+//1.2 获取文章列表数据
+async function setArtileList() {
+  //获取问斩那个列表数据
+  const res = await axios({
+    url: '/v1_0/mp/articles',
+    params: queryObj
+  })
+  console.log(res);
+  //1.3 展示到指定的标签结构中
+
+
+}
+
+setArtileList()
+
 /**
  * 目标2：筛选文章列表
  *  2.1 设置频道列表数据

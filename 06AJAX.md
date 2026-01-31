@@ -913,3 +913,109 @@ if (!token) {
   location.href = '../login/index.html'
 }
 ```
+
+---
+
+## 个人信息设置和 axios 请求拦截器
+
+语法：axios 可以在 headers 选项传递请求头参数
+
+问题：很多接口，都需要携带 token 令牌字符串
+
+解决：在[请求拦截器](https://www.axios-http.cn/docs/interceptors)统一设置公共 headers 选项
+
+![请求拦截器1.png](img/请求拦截器1.png)
+![请求拦截器2.png](img/请求拦截器2.png)
+
+对应代码：
+
+```js
+axios({
+  url: '目标资源地址',
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  }
+})
+```
+
+```js
+axios.interceptors.request.use(function (config) {
+  // 在发送请求之前做些什么
+  return config
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error)
+})
+```
+
+```js
+axios({
+  // 个人信息
+  url: '/v1_0/user/profile'
+}).then(result => {
+  // result：服务器响应数据对象
+}).catch(error => {
+  
+})
+```
+
+```js
+axios.interceptors.request.use(function (config) {
+  const token = location.getItem('token')  
+  token && config.headers.Authorization = `Bearer ${token}`
+  // 在发送请求之前做些什么
+  return config
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error)
+})
+```
+
+1. 什么是 axios 请求拦截器？ => 发起请求之前，调用的一个函数，对请求参数进行设置
+2. axios 请求拦截器，什么时候使用？ => 有公共配置和设置时，统一设置在请求拦截器中
+
+---
+
+## axios 响应拦截器和身份验证失败
+
+axios 响应拦截器：响应回到 then/catch 之前，触发的拦截函数，对响应结果统一处理
+例如：身份验证失败，统一判断并做处理
+
+![axios 响应拦截器.png](img/axios响应拦截器.png)
+
+```js
+axios.interceptors.response.use(function (response) {
+  // 2xx 范围内的状态码都会触发该函数。
+
+  //思路：其实就是在响应拦截器里，response.data 把后台返回的数据直接取出来统一返回给所有使用这个 axios 函数的逻辑页面位置的 then 的形参上
+  //好处：可以让逻辑页面少点一层 data 就能拿到后端返回的真正数据对象
+  return response.data;
+}, function (error) {
+  // 超出 2xx 范围的状态码都会触发该函数。
+  // 对响应错误做点什么，例如：判断响应状态为 401 代表身份验证失败
+  if (error?.response?.status === 401) {
+    alert('登录状态过期，请重新登录')
+    window.location.href = '../login/index.html'
+  }
+  return Promise.reject(error);
+});
+```
+
+1. 什么是 axios 响应拦截器？ => 响应回到 then/catch 之前，触发的拦截函数，对响应结果统一处理
+2. axios 响应拦截器，什么时候触发成功/失败的回调函数？ => 状态为 2xx 触发成功回调，其他则触发失败的回调函数
+
+## 富文本编辑器
+
+- 富文本：带样式，多格式的文本，在前端一般使用标签配合内联样式实现
+- 富文本编辑器：用于编写富文本内容的容器
+
+![富文本编辑器.png](img/富文本编辑器.png)
+
+使用：wangEditor 插件
+
+[步骤](https://www.wangeditor.com/v5/getting-started.html)：参考文档
+
+1.引入 CSS 定义样式
+2.定义 HTML 结构
+3.引入 JS 创建编辑器
+4.监听内容改变，保存在隐藏文本域（便于后期收集）

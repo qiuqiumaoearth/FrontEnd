@@ -19,11 +19,10 @@ document.querySelector('.btn').addEventListener('click', () => {
     myAlert(true, '登录成功')
     console.log(result);
     //登录成功后,在本地保存对应的token值
-    localStorage.setItem('token', result.data.data.token)
+    localStorage.setItem('token', result.data.token)
     setTimeout(() => {
       location.href = '../content/index.html'
     }, 1500);
-r'trt
 
   }).catch((err) => {
     myAlert(false, err.response.data.message)
