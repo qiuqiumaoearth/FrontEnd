@@ -13,6 +13,9 @@ const queryObj = {
   per_page: 5//当前页面条目
 }
 
+let totalCount = 0 //总条目数
+
+
 //1.2 获取文章列表数据
 async function setArtileList() {
   //获取问斩那个列表数据
@@ -20,8 +23,57 @@ async function setArtileList() {
     url: '/v1_0/mp/articles',
     params: queryObj
   })
-  console.log(res);
+  console.log('文章数据', res);
   //1.3 展示到指定的标签结构中
+
+  try {
+    const htmlStr = res.data.results.map(item => {
+      let htmlScr = 'https://img2.baidu.com/it/u=2640406343,1419332367&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=708&amp;h=500'
+      if (item.cover.type === 1) {
+        htmlScr = item.cover.images[0]
+      } else if (item.cover.type === 2) {
+        htmlScr = item.cover.images[0] + ',' + item.cover.images[1]
+      }
+
+      return `<tr>
+                <td>
+                  <img src=${htmlScr} }" alt="">
+                </td >
+                <td>${item.title}</td>
+                <td>
+                  ${item.status === 1 ? `<span class="badge text-bg-primary">待审核</span>` : `<span class="badge text-bg-success">审核通过</span>`}
+                  
+                  
+                </td>
+                <td>
+                  <span>${item.pubdate}</span>
+                </td>
+                <td>
+                  <span>${item.read_count}</span>
+                </td>
+                <td>
+                  <span>${item.comment_count}</span>
+                </td>
+                <td>
+                  <span>${item.like_count}</span>
+                </td>
+                <td data-id = ${item.id}>
+                  <i class="bi bi-pencil-square edit "></i>
+                  <i class="bi bi-trash3 del"></i>
+                </td>
+              </tr > `
+    }).join('')
+    document.querySelector('.art-list').innerHTML = htmlStr
+
+
+    //保存并设置文章总条数
+    totalCount = res.data.total_count
+
+    document.querySelector('.total-count').innerHTML = `<span class="total-count page-now">共${totalCount}条</span>`
+  } catch (error) {
+    console.log(error);
+  }
+
 
 
 }
@@ -36,12 +88,66 @@ setArtileList()
  *  2.4 获取匹配数据，覆盖到页面展示
  */
 
+//2.1 设置频道列表数据
+async function setChannnleList() {
+  const res = await axios({
+    url: '/v1_0/channels',
+  })
+  //console.log('频道信息', res);
+  const htmlStr = `<option value="" selected="">请选择文章频道</option>` + res.data.channels.map(item => `<option value="${item.id}">${item.name}</option>`).join('')
+  //console.log(htmlStr);
+  document.querySelector('.form-select').innerHTML = htmlStr
+
+}
+setChannnleList()
+
+//2.2 监听筛选条件改变，保存查询信息到查询参数对象
+document.querySelectorAll('.form-check-input').forEach(radio => {
+  radio.addEventListener('change', e => {
+    console.log(e.target.value);
+    queryObj.status = e.target.value
+  })
+})
+
+document.querySelector('.form-select').addEventListener('change', e => {
+  queryObj.channel_id = e.target.value
+})
+
+document.querySelector('.sel-btn').addEventListener('click', () => {
+  setArtileList()
+})
+
+
 /**
  * 目标3：分页功能
  *  3.1 保存并设置文章总条数
  *  3.2 点击下一页，做临界值判断，并切换页码参数并请求最新数据
  *  3.3 点击上一页，做临界值判断，并切换页码参数并请求最新数据
  */
+
+//3.2 点击下一页，做临界值判断，并切换页码参数并请求最新数据
+document.querySelector('.next').addEventListener('click', e => {
+
+  //当前页码小于最大页码
+  if (queryObj.page < Math.ceil(totalCount / queryObj.per_page)) {
+    queryObj.page++
+    document.querySelector('.page-now').innerHTML = `第${queryObj.page}页`
+    setArtileList()
+
+  }
+})
+
+document.querySelector('.last').addEventListener('click', e => {
+
+  //当前页码小于最大页码
+  if (queryObj.page > 1) {
+    queryObj.page--
+    document.querySelector('.page-now').innerHTML = `第${queryObj.page}页`
+    setArtileList()
+
+  }
+})
+
 
 /**
  * 目标4：删除功能
@@ -54,3 +160,25 @@ setArtileList()
 
 // 点击编辑时，获取文章 id，跳转到发布文章页面传递文章 id 过去
 
+//事件委托
+document.querySelector('.art-list').addEventListener('click', async e => {
+  console.log(e.target);
+  if (e.target.classList.contains('del')) {
+    const delId = e.target.parentNode.dataset.id
+    // console.log(delId); //获得删除的id
+    const res = await axios({
+      url: `/v1_0/mp/articles/${delId}`,
+      method: 'DELETE'
+    })
+    console.log(res);
+
+    //4.5 删除最后一页的最后一条，需要自动向前翻页
+    const children = document.querySelector('.art-list').children
+    if (children.length === 1 && queryObj.page !== 1) {
+      queryObj.page--
+      document.querySelector('.page-now').innerHTML = `第${queryObj.page}页`
+    }
+    setArtileList()
+
+  }
+})

@@ -32,15 +32,6 @@ document.querySelector('.img-file').addEventListener('change', async e => {
   const fd = new FormData()
   fd.append('image', file)
 
-  const reader = new FileReader()
-  reader.onload = e => {
-    //console.log('reader', e.target.result);
-    document.querySelector('.rounded').src = e.target.result
-    document.querySelector('.rounded').classList.add('show')
-    document.querySelector('.place').classList.add('hide')
-  }
-  reader.readAsDataURL(file)
-
   //单独上传图片并得到图片URL
   const res = await axios({
     url: '/v1_0/upload',
@@ -48,10 +39,15 @@ document.querySelector('.img-file').addEventListener('change', async e => {
     data: fd
   })
 
-  //console.log('图片返回', res); //{data: {url: 'http://geek.itheima.net/uploads/1769847531348.png'}, message: 'OK'}
+
+
+  console.log('图片返回', res); //{data: {url: 'http://geek.itheima.net/uploads/1769847531348.png'}, message: 'OK'}
 
   //回显并切换 img 标签展示（隐藏 + 号上传标签）
-  // const imgUrl = res.data.url
+  const imgUrl = res.data.url
+  document.querySelector('.rounded').src = imgUrl
+  document.querySelector('.rounded').classList.add('show')
+  document.querySelector('.place').classList.add('hide')
 
 })
 
