@@ -158,9 +158,9 @@ document.querySelector('.last').addEventListener('click', e => {
  *  4.5 删除最后一页的最后一条，需要自动向前翻页
  */
 
-// 点击编辑时，获取文章 id，跳转到发布文章页面传递文章 id 过去
 
-//事件委托
+
+//事件委托,删除按钮
 document.querySelector('.art-list').addEventListener('click', async e => {
   console.log(e.target);
   if (e.target.classList.contains('del')) {
@@ -181,4 +181,16 @@ document.querySelector('.art-list').addEventListener('click', async e => {
     setArtileList()
 
   }
+})
+
+// 点击编辑时，获取文章 id，跳转到发布文章页面传递文章 id 过去
+
+document.querySelector('.art-list').addEventListener('click', e => {
+  if (e.target.classList.contains('edit')) {
+    const artId = e.target.parentNode.dataset.id
+    console.log(artId); //获得编辑的id
+    location.href = `../publish/index.html?id=${artId}`
+
+  }
+
 })
