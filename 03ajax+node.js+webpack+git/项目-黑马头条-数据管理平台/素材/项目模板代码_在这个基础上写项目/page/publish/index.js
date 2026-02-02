@@ -67,6 +67,7 @@ document.querySelector('.rounded').addEventListener('click', () => {
  */
 
 document.querySelector('.send').addEventListener('click', async e => {
+  if (e.target.innerHTML != '发布') return
   const form = document.querySelector('.art-form')
   const data = serialize(form, { hash: true, empty: true })
 
@@ -131,9 +132,39 @@ document.querySelector('.send').addEventListener('click', async e => {
         document.querySelector('.title span').innerHTML = '修改文章'
         document.querySelector('.send').innerHTML = '修改'
 
+        //获取表单详情数据并回显表单
         const res = await axios({
           url: `/v1_0/mp/articles/${value}`
         })
+        console.log(res);
+        const dataObj = {
+          channel_id: res.data.channel_id,
+          title: res.data.title,
+          rounded: res.data.cover.images[0], //封面图片地址
+          content: res.data.content,
+          id: res.data.id
+        }
+
+        //遍历数组对象属性
+        Object.keys(dataObj).forEach(key => {
+          if (key === 'rounded') {
+            //封面设置
+            if (dataObj[key]) {
+              //有封面
+              document.querySelector('.rounded').src = dataObj[key]
+              document.querySelector('.rounded').classList.add('show')
+              document.querySelector('.place').classList.add('hide')
+            }
+          } else if (key === 'content') {
+            //富文本编辑
+            console.log(1);
+            editor.setHtml(dataObj[key])
+          } else {
+            //用数据对象属性名，作为标签，name
+            document.querySelector(`[name=${key}]`).value = dataObj[key]
+          }
+        })
+
       }
     })
 
@@ -147,4 +178,53 @@ document.querySelector('.send').addEventListener('click', async e => {
  *  5.2 调用编辑文章接口，保存信息到服务器
  *  5.3 基于 Alert 反馈结果消息给用户
  */
+
+document.querySelector('.send').addEventListener('click', async e => {
+  if (e.target.innerHTML != '修改') return
+  //修改文章逻辑
+  const form = document.querySelector('.art-form')
+  const data = serialize(form, { hash: true, empty: true })
+  console.log(data);
+  try {
+    const res = await axios({
+      url: `/v1_0/mp/articles/${data.id}`,
+      method: 'PUT',
+      data: {
+        ...data,
+        cover: {
+          type: document.querySelector('.rounded').src ? 1 : 0,
+          images: [document.querySelector('.rounded').src]
+        }
+      }
+
+    })
+    console.log(res);
+    myAlert(true, '修改文章成功')
+
+    //重置表单,并跳转页面
+    form.reset() //只清空标题
+
+    //封面手动重置
+    document.querySelector('.rounded').src = ''
+    document.querySelector('.rounded').classList.remove('show')
+    document.querySelector('.place').classList.remove('hide')
+
+
+    //富文本编辑器重置
+    editor.setHtml('')
+    setTimeout(() => {
+      location.href = '../content/index.html'
+    }, 2000);
+
+
+
+  } catch (error) {
+
+    myAlert(false, error.response.data.message)
+
+
+  }
+
+
+})
 

@@ -1,0 +1,5 @@
+console.log('hello.js');
+for (let i = 0; i < 10; i++) {
+  console.log(i);
+
+}
