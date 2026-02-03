@@ -884,6 +884,7 @@ node -v
 
       ```bash
       npm i less less-loader --save-dev
+      npm install less less-loader css-loader --save-dev
       ```
 
    4. 配置 webpack.config.js 让 Webpack 拥有功能
@@ -905,26 +906,14 @@ node -v
       }
       ```
 
-   5. 打包后运行  观察效果
+   5. ==修改原本的的dist/main.css文件的名字==,避免和less的重复被覆盖
 
-### 小结
+   6. 打包后运行  观察效果
 
-1. Webpack 支持 less 代码打包需要哪 2 个软件包?
-
-   <details>
-   <summary>答案</summary>
-   <ul>
-   <li>需要 less less-loader 这 2 个软件包</li>
-   </ul>
-   </details>
+* Webpack 支持 less 代码打包需要哪 2 个软件包?
+  * 需要 less less-loader 这 2 个软件包
 
 ## 09.Webpack-打包图片
-
-### 目标
-
- 让 Webpack 支持图片等资源打包
-
-### 讲解
 
 1. [资源模块](https://webpack.docschina.org/guides/asset-modules/)：Webpack 内置了资源模块的打包，无需下载额外 loader
 
@@ -942,7 +931,7 @@ node -v
 
       大于 8KB 文件：发送一个单独的文件并导出 URL 地址
 
-      小于 8KB 文件：导出一个 data URI（base64字符串）
+      ==小于 8KB 文件：导出一个 data URI（base64字符串）==
 
    3. 在 src/login/index.js 中给 img 标签添加 logo 图片
 
@@ -984,16 +973,8 @@ node -v
 
    5. 打包后运行观察效果
 
-### 小结
-
-1. 资源模块指的是什么?
-
-   <details>
-   <summary>答案</summary>
-   <ul>
-   <li>图片，字体文件等等</li>
-   </ul>
-   </details>
+* 资源模块指的是什么?
+  * 图片，字体文件等等
 
 ## 10.案例-用户登录-完成功能
 
