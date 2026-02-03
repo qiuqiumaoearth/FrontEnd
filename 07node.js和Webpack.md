@@ -718,12 +718,6 @@ node -v
 
 ## 05.Webpack-打包 css 代码
 
-### 目标
-
-让 Webpack 能够打包 css 代码
-
-### 讲解
-
 1. 注意：Webpack 默认只识别 JS 和 JSON 文件内容，所以想要让 Webpack 识别更多不同内容，需要使用加载器
 
 2. 介绍需要的 2 个加载器来辅助 Webpack 才能打包 css 代码
@@ -776,16 +770,8 @@ node -v
 
    4. 打包后运行 dist/login/index.html 观察效果，看看准备好的样式是否作用在网页上
 
-### 小结
-
-1. 加载器的作用是什么?
-
-   <details>
-   <summary>答案</summary>
-   <ul>
-   <li>让 Webpack 识别更多的代码内容类型</li>
-   </ul>
-   </details>
+* 加载器的作用是什么?
+  * 让 Webpack 识别更多的代码内容类型
 
 ## 06.优化-提取 css 代码
 
