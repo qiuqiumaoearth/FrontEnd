@@ -22,3 +22,9 @@ document.querySelector('.btn').addEventListener('click', () => {
 
 
 })
+
+//准备css代码,并引入到js中
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './index.css'
+
+

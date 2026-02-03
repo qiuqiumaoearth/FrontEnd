@@ -744,10 +744,12 @@ node -v
 
       > 注意：这里只是引入代码内容让 Webpack 处理，不需定义变量接收在 JS 代码中继续使用，所以没有定义变量接收
 
-   2. 下载 css-loader 和 style-loader 本地软件包
+   2. 下载 css-loader 和 style-loader 本地软件包,以及bootstrap
 
       ```bash
       npm i css-loader style-loader --save-dev
+      npm i bootstrap
+
       ```
 
    3. 配置 webpack.config.js 让 Webpack 拥有该加载器功能
@@ -775,63 +777,43 @@ node -v
 
 ## 06.优化-提取 css 代码
 
-### 目标
+1. 下载 mini-css-extract-plugin 插件软件包到本地项目中
 
-让 Webpack 能够提取 css 代码到独立的 css 文件中
+    ```bash
+    npm i --save-dev mini-css-extract-plugin
+    ```
 
-### 讲解
+2. 配置 webpack.config.js 让 Webpack 拥有该插件功能
 
-1. 需求：让 webpack 把 css 代码内容字符串单独提取到 dist 下的 css 文件中
-
-2. 需要：mini-css-extract-plugin 插件来实现
-
-3. 步骤：
-
-   1. 下载 mini-css-extract-plugin 插件软件包到本地项目中
-
-      ```bash
-      npm i --save-dev mini-css-extract-plugin
-      ```
-
-   2. 配置 webpack.config.js 让 Webpack 拥有该插件功能
-
-      ```js
+    ```js
+    // ...
+    const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+    
+    module.exports = {
       // ...
-      const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-      
-      module.exports = {
+      module: {
+        rules: [
+          {
+            test: /\.css$/i,
+            // use: ['style-loader', 'css-loader']
+            use: [MiniCssExtractPlugin.loader, "css-loader"],
+          },
+        ],
+      },
+      plugins: [
         // ...
-        module: {
-          rules: [
-            {
-              test: /\.css$/i,
-              // use: ['style-loader', 'css-loader']
-              use: [MiniCssExtractPlugin.loader, "css-loader"],
-            },
-          ],
-        },
-        plugins: [
-          // ...
-          new MiniCssExtractPlugin()
-        ]
-      };
-      ```
+        new MiniCssExtractPlugin()
+      ]
+    };
+    ```
 
-   3. 打包后观察效果
+3. 打包后观察效果
 
-   4. 注意：不能和 style-loader 一起使用
+4. 注意：不能和 style-loader 一起使用
 
-   5. 好处：css 文件可以被浏览器缓存，减少 JS 文件体积，让浏览器并行下载 css 和 js 文件
-
-### 小结
+5. 好处：css 文件可以被浏览器缓存，减少 JS 文件体积，让浏览器并行下载 css 和 js 文件
 
 ## 07.优化压缩过程
-
-### 目标
-
-把单独提取的 css 文件内代码压缩
-
-### 讲解
 
 1. 需求：把提出的 css 文件内样式代码压缩
 
@@ -868,15 +850,7 @@ node -v
 
    3. 打包后观察 css 文件内自己代码是否被压缩了
 
-### 小结
-
 ## 08.Webpack-打包 less 代码
-
-### 目标
-
-让 Webpack 拥有打包 less 代码功能
-
-### 讲解
 
 1. [加载器 less-loader](https://webpack.docschina.org/loaders/less-loader/)：把 less 代码编译为 css 代码，还需要依赖 less 软件包
 
