@@ -26,12 +26,14 @@
       transform: translate(-50%, -50%);
       box-shadow: 1px 1px 10px #fff;
       text-shadow: 0px 1px 30px white;
+
       display: flex;
       justify-content: space-around;
       align-items: center;
       font-size: 70px;
       user-select: none;
       padding: 0 20px;
+
       -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0%, transparent), to(rgba(250, 250, 250, .2)));
     }
   </style>
@@ -45,7 +47,26 @@
     <div>:</div>
     <div id="ss">00</div>
   </div>
-  <script>    window.addEventListener('load', function () { clock(); setInterval(clock, 1000); }); function clock() { let dt = new Date(); let HH = dt.getHours(); let mm = dt.getMinutes(); let ss = dt.getSeconds(); console.log(dt, HH, mm, ss); document.querySelector('#HH').innerHTML = padZero(HH); document.querySelector('#mm').innerHTML = padZero(mm); document.querySelector('#ss').innerHTML = padZero(ss); }; function padZero(n) { console.log(n); return n > 9 ? n : '0' + n; }  </script>
+  <script>
+    window.addEventListener('load', function () {
+      clock();
+      setInterval(clock, 1000);
+    });
+    function clock() {
+      let dt = new Date();
+      let HH = dt.getHours();
+      let mm = dt.getMinutes();
+      let ss = dt.getSeconds();
+      console.log(dt, HH, mm, ss);
+      document.querySelector('#HH').innerHTML = padZero(HH);
+      document.querySelector('#mm').innerHTML = padZero(mm);
+      document.querySelector('#ss').innerHTML = padZero(ss);
+    };
+    function padZero(n) {
+      console.log(n);
+      return n > 9 ? n : '0' + n;
+    }
+  </script>
 </body>
 
 </html>
