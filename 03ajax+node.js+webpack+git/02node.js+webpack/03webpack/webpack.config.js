@@ -6,18 +6,25 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const webpack = require('webpack');
 const { resolve } = require('dns');
+const { serialize } = require('v8');
 
 const config = {
   //打包的模式(development 开发模式-使用相关内置优化)
   mode: 'development',
 
   //入口
-  entry: path.resolve(__dirname, 'src/login/index.js'),
+  // entry: path.resolve(__dirname, 'src/login/index.js'),
+  entry: {
+    'login': path.resolve(__dirname, 'src/login/index.js'),
+    'content': path.resolve(__dirname, 'src/content/index.js'),
+    'publish': path.resolve(__dirname, 'src/publish/index.js'),
+
+  },
 
   //出口
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: './login/index.js',
+    filename: './[name]/index.js',
     clean: true //生成打包后内容之前,清空输出目录
   },
 
@@ -26,16 +33,34 @@ const config = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public/login.html'),//模板文件
       filename: path.resolve(__dirname, 'dist/login/index.html'), //输出文件
-      useCdn: process.env.NODE_ENV === 'production'
+      useCdn: process.env.NODE_ENV === 'production',//生产模式下使用cdn引入的地址
+      chunks: ['login']
 
     }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'public/content.html'),//模板文件
+      filename: path.resolve(__dirname, 'dist/content/index.html'), //输出文件
+      useCdn: process.env.NODE_ENV === 'production', //生产模式下使用cdn引入的地址
+      chunks: ['content']
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'public/publish.html'),//模板文件
+      filename: path.resolve(__dirname, 'dist/publish/index.html'), //输出文件
+      useCdn: process.env.NODE_ENV === 'production', //生产模式下使用cdn引入的地址
+      chunks: ['publish']
+    }),
+
+
+
     new MiniCssExtractPlugin({
-      filename: './login/index.css'
+      filename: './[name]/index.css'
     }),  //生成css文件
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     })
   ],
+
+
 
   //加载器
   module: {
@@ -92,7 +117,8 @@ if (process.env.NODE_ENV === 'production') {
     // key：import from 语句后面的字符串
     // value：留在原地的全局变量（最好和 cdn 在全局暴露的变量一致）
     'bootstrap/dist/css/bootstrap.min.css': 'bootstrap',
-    'axios': 'axios'
+    'axios': 'axios',
+    'form-serialize': 'serialize',
   }
 }
 

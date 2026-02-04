@@ -66,8 +66,12 @@ document.querySelector('.btn').addEventListener('click', () => {
       code: code,
 
     }
-  }).then(() => {
+  }).then((res) => {
     myAlert(true, '登录成功')
+    localStorage.setItem('token', res.data.token)
+
+    location.href = "../content/index.html"
+
   }).catch((err) => {
     myAlert(false, err.response.data.message)
   });
