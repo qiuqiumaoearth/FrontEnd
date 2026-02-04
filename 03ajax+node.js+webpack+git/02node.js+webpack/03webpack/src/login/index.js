@@ -1,4 +1,4 @@
-import { cheackPhone, cheackCode } from '../utils/check.js';
+import { cheackPhone, cheackCode } from '@/utils/check.js';
 
 console.log(cheackPhone('13863956723'));
 console.log(cheackCode('1234'));
@@ -80,4 +80,11 @@ document.querySelector('.btn').addEventListener('click', () => {
 //热更新
 console.log('打印,你好');
 
+if (process.env.NODE_ENV === 'production') {
+  console.log('此时是生产模式');
+  console.log = function () {
 
+  }
+}
+console.log('开发模式下好用,生产模式下失效');
+console.log('错误代码');

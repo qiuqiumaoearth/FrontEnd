@@ -1172,6 +1172,9 @@ node -v
    ```
 
    2.配置自定义命令，传入参数名和值（会绑定到 process.env 对象下）
+      * 理解
+      * build的 process.env.NODE_ENV === 'development'是内嵌形式,css代码都会进入js文件是一个整体
+      * build 的process.env.NODE_ENV === 'produciotn'是会有一个文件index.css
 
    ![image-20230518104016802](img/07nodejs/image-20230518104016802.png)
 
@@ -1202,11 +1205,7 @@ node -v
 
 ## 13.Webpack 前端注入环境变量
 
-### 目标
-
-前端项目中，开发模式下打印语句生效，生产模式下打印语句失效
-
-### 讲解
+* 判断环境变量,更换服务器接口,从而改变代码,开发者模式和生产者模式,不同,代码也不同
 
 1. 需求：前端项目中，开发模式下打印语句生效，生产模式下打印语句失效
 
@@ -1216,7 +1215,7 @@ node -v
 
 4. 作用：在编译时，将前端代码中匹配的变量名，替换为值或表达式
 
-5. 配置 webpack.config.js 中给前端注入环境变量
+5. 配置 webpack.config.js 中给前端注入环境变量,在`src/login/index.js`文件判断
 
    ```js
    // ...
@@ -1235,15 +1234,9 @@ node -v
    }
    ```
 
-### 小结
+   ![判断](img/07nodejs/判断webpack环境.jpg)
 
 ## 14.Webpack 开发环境调错 source map
-
-### 目标
-
-在开发环境如何精准定位到报错源码位置
-
-### 讲解
 
 1. [source map]([https://webpack.docschina.org/guides/development/#using-source-maps](https://webpack.docschina.org/guides/development/))：可以准确追踪 error 和 warning 在原始代码的位置
 
@@ -1262,26 +1255,18 @@ node -v
 
    > inline-source-map 选项：把源码的位置信息一起打包在 JS 文件内
 
+   ![开发环境下使用](img/07nodejs/Snipaste_2026-02-04_16-26-46.jpg)
+
+   ![调错](img/07nodejs/webpack调错.jpg)
+
 4. 注意：source map 适用于开发环境，不要在生产环境使用（防止被轻易查看源码位置）
 
-### 小结
+* 为何打包后，在控制台无法准确定位到源码的位置信息?
+  * 因为 Webpack 把代码压缩和混淆了
 
-1. 为何打包后，在控制台无法准确定位到源码的位置信息?
+---
 
-   <details>
-   <summary>答案</summary>
-   <ul>
-   <li>因为 Webpack 把代码压缩和混淆了</li>
-   </ul>
-   </details>
-
-## 15.Webpack 设置解析别名路径
-
-### 目标
-
-设置 Webpack 如何设置路径别名，方便我们引入目标模块
-
-### 讲解
+## 15.Webpack 设置解析别名路径alias
 
 1. [解析别名]([https://webpack.docschina.org/configuration/resolve#resolvealias](https://webpack.docschina.org/configuration/resolve))：配置模块如何解析，创建 import 或 require 的别名，来确保模块引入变得更简单
 
@@ -1302,7 +1287,7 @@ node -v
         // ...
         resolve: {
           alias: {
-            '@': path.resolve(__dirname, 'src')
+            '@': path.resolve(__dirname, 'src')  //目前@代表当前文档路径下的/src文件下
           }
         }
       }
@@ -1316,24 +1301,10 @@ node -v
 
 3. 修改代码的路径后，重新打包观察效果是否正常！
 
-### 小结
-
-1. 路径中的 '@' 符号代表什么意思？
-
-   <details>
-   <summary>答案</summary>
-   <ul>
-   <li>看在 webpack 配置中的别名路径是什么，就会在打包时替换成哪个路径使用</li>
-   </ul>
-   </details>
+* 路径中的 '@' 符号代表什么意思？
+  * 看在 webpack 配置中的别名路径是什么，就会在打包时替换成哪个路径使用
 
 ## 16.优化-CDN使用
-
-### 目标
-
-开发模式使用本地第三方库，生产模式下使用 CDN 加载引入
-
-### 讲解
 
 1. 需求：开发模式使用本地第三方库，生产模式下使用 CDN 加载引入
 
@@ -1343,11 +1314,11 @@ node -v
 
 4. 好处：减轻自己服务器请求压力，就近请求物理延迟低，配套缓存策略
 
-   ![image-20230518104603049](images/image-20230518104603049.png)
+   ![image-20230518104603049](img/07nodejs/image-20230518104603049.png)
 
 5. 实现需求的思路图：
 
-   ![image-20230518104625088](images/image-20230518104625088.png)
+   ![image-20230518104625088](img/07nodejs/image-20230518104625088.png)
 
 6. 步骤：
 
@@ -1389,8 +1360,6 @@ node -v
    ```
 
    3.两种模式下打包观察效果
-
-### 小结
 
 ## 17.Webpack 多页面打包
 
