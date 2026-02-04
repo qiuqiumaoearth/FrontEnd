@@ -978,15 +978,9 @@ node -v
 
 ## 10.案例-用户登录-完成功能
 
-### 目标
-
-在 Webpack 环境下，使用 npm 下包作用在前端项目
-
-### 讲解
-
 1. 需求：点击登录按钮，基于 npm 下载 axios 包，完成验证码登录功能
 
-   ![image-20230518103430262](images/image-20230518103430262.png)
+   ![image-20230518103430262](img/07nodejs/image-20230518103430262.png)
 
 2. 步骤：
 
@@ -1043,24 +1037,10 @@ node -v
 
    3. 打包后运行观察效果
 
-### 小结
-
-1. npm 下载的包如何作用在前端项目上?
-
-   <details>
-   <summary>答案</summary>
-   <ul>
-   <li>被 Webpack 打包处理后，再引入到 html 文件中运行</li>
-   </ul>
-   </details>
+* npm 下载的包如何作用在前端项目上?
+  * 被 Webpack 打包处理后，再引入到 html 文件中运行
 
 ## 10.Webpack 搭建开发环境
-
-### 目标
-
-体验 webpack-dev-server 开发服务器，快速开发应用程序
-
-### 讲解
 
 1. 每次改动代码，都要重新打包，很麻烦，所以这里给项目集成 webpack-dev-server 开发服务器
 
@@ -1095,25 +1075,41 @@ node -v
    3. 使用 npm run dev 来启动开发服务器，访问提示的域名+端口号，在浏览器访问打包后的项目网页，修改代码后试试热更新效果
 
       > 在 js / css 文件中修改代码保存后，会实时反馈到浏览器
+4. 注意
+  
+    * webpack-dev-server借助http模块创建8080默认web服务
+    * 默认以public文件夹作为服务器根目录
+    * webpack-dev-server 根据配置,打包相关代码在内存当中,以output.path的值作为服务器的根目录(所以可以自己拼接访问dist目录下内容)
 
-### 小结
+    ```html
+    <!-- public文件夹下面添加文件index.html -->
+    <!DOCTYPE html>
+    <html lang="en">
 
-1. webpack-dev-server 的作用?
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+    </head>
 
-   <details>
-   <summary>答案</summary>
-   <ul>
-   <li>启动 Webpack 开发服务器，会启动一个 Web 服务，实时检测代码变化重新打包，并快速反应最新效果到浏览器页面上</li>
-   </ul>
-   </details>
+    <body>
+      <script>
+        //自动跳转
+        location.href = '/login/index.html'
+      </script>
+
+    </body>
+
+    </html>
+
+    ```
+
+* webpack-dev-server 的作用?
+  * 启动 Webpack 开发服务器，会启动一个 Web 服务，实时检测代码变化重新打包，并快速反应最新效果到浏览器页面上
+
+---
 
 ## 11.Webpack 打包模式
-
-### 目标
-
-了解不同打包模式对代码和环境的影响
-
-### 讲解
 
 1. [打包模式](https://webpack.docschina.org/configuration/mode/)：告知 Webpack 使用相应模式的内置优化
 
@@ -1150,24 +1146,12 @@ node -v
 
 5. 体验：在 build 命令后 修改 mode 的值，打包输出观察打包后的 js 文件内容
 
-### 小结
+* 两种模式的区别?
+  * 开发模式注重代码热替换更快，让开发调试代码更便捷，生产模式注重项目体积更小，更轻量，适配不同的浏览器环境
 
-1. 两种模式的区别?
-
-   <details>
-   <summary>答案</summary>
-   <ul>
-   <li>开发模式注重代码热替换更快，让开发调试代码更便捷，生产模式注重项目体积更小，更轻量，适配不同的浏览器环境</li>
-   </ul>
-   </details>
+---
 
 ## 12.Webpack 打包模式的应用
-
-### 目标
-
-了解 Webpack 打包模式的应用
-
-### 讲解
 
 1. 需求：在开发模式下用 style-loader 内嵌更快，在生产模式下提取 css 代码
 
@@ -1189,7 +1173,7 @@ node -v
 
    2.配置自定义命令，传入参数名和值（会绑定到 process.env 对象下）
 
-   ![image-20230518104016802](images/image-20230518104016802.png)
+   ![image-20230518104016802](img/07nodejs/image-20230518104016802.png)
 
    3.在 webpack.config.js 区分不同环境使用不同配置
 
@@ -1215,8 +1199,6 @@ node -v
    ```
 
    4.重新打包观察两种配置区别
-
-### 小结
 
 ## 13.Webpack 前端注入环境变量
 
