@@ -22,3 +22,4 @@ Thumbs.db
 EOF
 # 验证规则是否写入
 cat .gitignore
+04node.js+up/资料/day8/素材/大事件项目
