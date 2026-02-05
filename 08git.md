@@ -42,6 +42,8 @@ git config --global user.email "<itheima@itcast.cn>"
 
 3.如何安装使用？ => 程序双击安装,在 VSCode 中使用 bash 终端以及 git 命令
 
+---
+
 ## 02.Git 仓库
 
 Git 仓库（repository）：记录文件状态内容的地方，存储着修改的历史记录
@@ -61,6 +63,8 @@ Git 仓库（repository）：记录文件状态内容的地方，存储着修改
 1.什么是 Git 仓库 ？ => 记录文件状态内容和历史记录的地方（.git 文件夹）
 
 2.如何创建 Git 仓库？ => 把本地文件夹转换成 Git 仓库：命令 git init ,从其他服务器上克隆 Git 仓库
+
+---
 
 ## 03.Git 的三个区域
 
@@ -85,6 +89,8 @@ Git 使用时：
 1.Git 使用时有哪些区域 ？ => 工作区，暂存区，版本库
 
 2.工作区的内容，最终要如何保存在版本库中？ => git add 添加到暂存区,等待时机后 git commit 提交保存到版本库，产生一次版本快照记录
+
+---
 
 ## 04.Git 文件状态
 
@@ -115,6 +121,8 @@ Git 使用时：
 
 2.如何查看暂存区和工作区文件状态？ => git status -s
 
+---
+
 ## 05.Git 暂存区作用
 
 暂存区：暂时存储，可以临时恢复代码内容，与版本库解耦
@@ -123,11 +131,13 @@ Git 使用时：
 
 从暂存区移除文件，命令：git rm --cached 目标文件
 
-![image-20230529123430435](images/image-20230529123430435.png)
+![image-20230529123430435](img/08git/image-20230529123430435.png)
 
 1.如何移除暂存区已暂存的文件？
 
-ü git rm --cached 目标文件
+- git rm --cached 目标文件
+
+---
 
 ## 06.练习-登录页面
 
@@ -141,15 +151,17 @@ Git 使用时：
 
 3.提交保存到版本库
 
-![image-20230529123902303](images/image-20230529123902303.png)
+![image-20230529123902303](img/08git/image-20230529123902303.png)
+
+---
 
 ## 07.Git-切换版本
 
 概念：把版本库某个版本对应的内容快照，恢复到工作区/暂存区
 
-查看提交历史：git log --oneline
+==查看提交历史：git log --oneline ,退出 :q==
 
-![image-20230529123927488](images/image-20230529123927488.png)
+![image-20230529123927488](img/08git/image-20230529123927488.png)
 
 回退命令：
 
@@ -163,21 +175,23 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 注意2：回退后，继续修改->暂存->提交操作即可（产生新的提交记录过程）
 
-![image-20230529123953391](images/image-20230529123953391.png)
+![image-20230529123953391](img/08git/image-20230529123953391.png)
 
 1.什么是 Git 回退版本？
 
-ü 把版本库某个版本对应的内容快照，恢复到工作区/暂存区
+- 把版本库某个版本对应的内容快照，恢复到工作区/暂存区
 
 2.强制覆盖暂存区和工作区的命令？
 
-ü git reset --hard 版本号
+- git reset --hard 版本号
 
 3.如何查看提交历史？
 
-ü git log --oneline
+- git log --oneline
 
-ü git reflog --oneline
+- git reflog --oneline
+
+---
 
 ## 08.删除文件
 
@@ -195,7 +209,9 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 工作区只要改变，都可以暂存提交产生新记录
 
-![image-20230529124024285](images/image-20230529124024285.png)
+![image-20230529124024285](img/08git/image-20230529124024285.png)
+
+---
 
 ## 09.忽略文件
 
@@ -215,13 +231,15 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 创建：
 
-1.项目根目录新建 .gitignore 文件
+1.项目根目录新建 ==.gitignore 文件==
 
 2.填入相应配置来忽略指定文件
 
 注意：如果文件已经被暂存区跟踪过，可以从暂存区移除即可
 
-![image-20230529124342264](images/image-20230529124342264.png)
+![image-20230529124342264](img/08git/image-20230529124342264.png)
+
+---
 
 ## 10.分支的概念
 
@@ -229,9 +247,9 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 注意：HEAD 指针影响工作区/暂存区的代码状态
 
-![image-20230529124358139](images/image-20230529124358139.png)
+![image-20230529124358139](img/08git/image-20230529124358139.png)
 
-![image-20230529124411556](images/image-20230529124411556.png)
+![image-20230529124411556](img/08git/image-20230529124411556.png)
 
 场景：开发新需求 / 修复 Bug，保证主线代码随时可用，多人协同开发提高效率
 
@@ -241,7 +259,7 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 突然需要紧急修复 Bug - 单独创建分支解决 Bug
 
-![image-20230529124440884](images/image-20230529124440884.png)
+![image-20230529124440884](img/08git/image-20230529124440884.png)
 
 需求：创建内容列表 content 分支，并产生 3 次提交记录
 
@@ -249,29 +267,31 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 1. 创建分支命令：git branch 分支名
 
-![image-20230529124522942](images/image-20230529124522942.png)
+    ![image-20230529124522942](img/08git/image-20230529124522942.png)
 
-1. 切换分支命令：git checkout 分支名
+2. 切换分支命令：git checkout 分支名
 
-![image-20230529124555625](images/image-20230529124555625.png)
+    ![image-20230529124555625](img/08git/image-20230529124555625.png)
 
-1. 工作区准备代码并暂存提交，重复 3 次
+3. 工作区准备代码并暂存提交，重复 3 次
 
-   ![image-20230529124624603](images/image-20230529124624603.png)
+   ![image-20230529124624603](img/08git/image-20230529124624603.png)
 
 1.什么是 Git 分支？
 
-ü 指针，指向提交记录
+- 指针，指向提交记录
 
 2.HEAD 指针的作用？
 
-ü 影响暂存区和工作区的代码
+- 影响暂存区和工作区的代码
 
 3.如何创建和切换指针？
 
-ü git branch 分支名
+- git branch 分支名
 
-ü git checkout 分支名
+- git checkout 分支名
+
+---
 
 ## 11.练习-登录 bug 修复
 
@@ -287,6 +307,8 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 4.修改代码，暂存，提交产生版本记录
 
+---
+
 ## 12.分支-合并与删除
 
 需求：把 login-bug 合并回到 master 分支并删除 login-bug 分支
@@ -299,7 +321,9 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 3.删除合并后的分支指针：git branch -d login-bug
 
-![image-20230529124941866](images/image-20230529124941866.png)
+![image-20230529124941866](img/08git/image-20230529124941866.png)
+
+---
 
 ## 13.分支-合并与提交
 
@@ -313,13 +337,15 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 3.删除合并后的分支：git branch -d content
 
-![image-20230529125317433](images/image-20230529125317433.png)
+![image-20230529125317433](img/08git/image-20230529125317433.png)
 
 最后合并回到主分支上时，提交记录流程图：
 
 注意：提交记录的顺序按照产生的先后顺序排列，而非合并的先后顺序
 
-![image-20230529125338535](images/image-20230529125338535.png)
+![image-20230529125338535](img/08git/image-20230529125338535.png)
+
+---
 
 ## 14.分支-合并冲突
 
@@ -345,7 +371,9 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 3.Node等软件版本统一，npm 包统一下载
 
-![image-20230529125409357](images/image-20230529125409357.png)
+![image-20230529125409357](img/08git/image-20230529125409357.png)
+
+---
 
 ## 15.Git 常用命令
 
@@ -364,17 +392,20 @@ git reset --mixed 版本号 （与 git reset 等价）
 | git log                  | 查看提交记录 - 详细信息 |                                        |
 | git log --oneline        | 查看提交记录 - 简略信息 | 版本号 分支指针 提交时说明注释         |
 
+<br>
+
 | **命令**               | **作用**                             | **注意**                                                     |
 | ---------------------- | ------------------------------------ | ------------------------------------------------------------ |
 | git reflog --oneline   | 查看完整历史 - 简略消息              | 包括提交，切换，回退等所有记录                               |
-| git reset 版本号       | 切换版本代码到暂存区和工作区         | --soft 模式保留暂存区和工作区原本内容  --hard 模式不保留暂存区和工作区原本内容  --mixed 模式不保留暂存区，工作区保留（默认）  先覆盖到暂存区，再用暂存区对比覆盖工作区 |
+| git reset 版本号       | 切换版本代码到暂存区和工作区         | --soft 模式保留暂存区和工作区原本内容  <br>--hard 模式不保留暂存区和工作区原本内容  <br>--mixed 模式不保留暂存区，工作区保留（默认） <br>先覆盖到暂存区，再用暂存区对比覆盖工作区 |
 | git branch 分支名      | 创建分支                             |                                                              |
 | git branch             | 查看本地分支                         |                                                              |
 | git branch -d 分支名   | 删除分支                             | 请确保记录已经合并到别的分支下，再删除分支                   |
 | git checkout 分支名    | 切换分支                             |                                                              |
 | git checkout -b 分支名 | 创建并立刻切换分支                   |                                                              |
 | git merge 分支名       | 把分支提交历史记录合并到当前所在分支 |                                                              |
-|                        |                                      |                                                              |
+
+---
 
 ## 16.Git 远程仓库
 
@@ -384,7 +415,7 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 创建：公司自己服务器 / 第三方托管平台（Gitee，GitLab，GitHub...）
 
-![image-20230529125501239](images/image-20230529125501239.png)
+![image-20230529125501239](img/08git/image-20230529125501239.png)
 
 需求：创建远程版本库，并把本地 Git 仓库推送上去保存
 
@@ -396,35 +427,37 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 3.本地 Git 仓库添加远程仓库原点地址
 
-命令：git remote add 远程仓库别名 远程仓库地址
+- 命令：git remote add 远程仓库别名 远程仓库地址
 
-例如：git remote add origin <https://gitee.com/lidongxu/work.git>
+- 例如：git remote add origin <https://gitee.com/lidongxu/work.git>
 
 4.本地 Git 仓库推送版本记录到远程仓库
 
-命令：git push -u 远程仓库别名 本地和远程分支名
+- 命令：git push -u 远程仓库别名 本地和远程分支名
 
-例如：git push -u origin master
+- 例如：git push -u origin master
 
-完整写法：git push --set-upstream origin master:master
+- 完整写法：git push --set-upstream origin master:master
 
-![image-20230529125724051](images/image-20230529125724051.png)
+  ![image-20230529125724051](img/08git/image-20230529125724051.png)
 
 1.远程版本库的作用？
 
-ü 保存提交历史记录，多人共享
+- 保存提交历史记录，多人共享
 
 2.远程版本库使用步骤？
 
-ü 创建远程版本库（自己服务器/第三方托管平台）
+- 创建远程版本库（自己服务器/第三方托管平台）
 
-ü 本地版本库设置远程地址
+- 本地版本库设置远程地址
 
-ü 推送本地版本库到远程
+- 推送本地版本库到远程
 
 3.推送的命令？
 
-ü git push -u origin master
+- git push -u origin master
+
+---
 
 ## 17.Git 远程仓库 - 克隆
 
@@ -438,7 +471,9 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 注意2：仓库公开随意克隆，推送需要身为仓库团队成员
 
-![image-20230529125801013](images/image-20230529125801013.png)
+![image-20230529125801013](img/08git/image-20230529125801013.png)
+
+---
 
 ## 18.多人协同开发
 
@@ -454,9 +489,11 @@ git reset --mixed 版本号 （与 git reset 等价）
 
 git fetch origin master:master（获取远程分支记录到本地，未合并）
 
-git merge origin/master (把远程分支记录合并到所在分支下）
+git merge origin/master (把远程分支记录合并到所在分支下)
 
-![image-20230529130044971](images/image-20230529130044971.png)
+![image-20230529130044971](img/08git/image-20230529130044971.png)
+
+---
 
 ## 19.VSCode 中使用 Git
 
@@ -464,7 +501,9 @@ git merge origin/master (把远程分支记录合并到所在分支下）
 
 注意：VSCode 打开的项目文件夹下需要有 .git 仓库
 
-![image-20230529130105619](images/image-20230529130105619.png)
+![image-20230529130105619](img/08git/image-20230529130105619.png)
+
+---
 
 ## 20.案例-发布黑马头条数据管理平台
 
@@ -483,6 +522,8 @@ git merge origin/master (把远程分支记录合并到所在分支下）
 5.本地推送到远程 Git 仓库
 
 6.开启 page 网页服务得到地址浏览
+
+---
 
 ## 21.Git 常用命令
 

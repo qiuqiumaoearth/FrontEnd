@@ -1,0 +1,24 @@
+# 1. 新建/覆盖.gitignore（根目录）
+touch .gitignore
+# 2. 写入前端通用忽略规则
+cat > .gitignore << EOF
+# 前端核心 - 永不提交
+node_modules/
+dist/
+build/
+# 大文件 - 解决100MB限制
+*.dmg
+*.msi
+*.iso
+*.zip
+*.rar
+# 系统/日志文件
+*.log
+.DS_Store
+Thumbs.db
+# 编辑器配置
+.idea/
+.vscode/
+EOF
+# 验证规则是否写入
+cat .gitignore
