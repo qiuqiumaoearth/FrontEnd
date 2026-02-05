@@ -374,20 +374,31 @@ vue 中的指令按照不同的用途可以分为如下 6 大类：
    注意：
 
    - 事件处理函数应该写到一个跟data同级的配置项（methods）中
-   - methods中的函数内部的this都指向Vue实例
+   - methods中的函数内部的==this都指向Vue实例==
 
-```js
-<div id="app">
-    <button>切换显示隐藏</button>
+```html
+  <div id="app">
+    <button @click="fn">切换显示隐藏</button>
     <h1 v-show="isShow">黑马程序员</h1>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
-        isShow: true
+        isShow:true
+      },
+      methods:{
+        fn(){
+          //让提供的所有methods中的函数,this都指向当前实例
+          //目前指向函数的this => app 
+          console.log('执行了fn',app.isShow);
+          //app.isShow =!app.isShow
+          this.isShow =!this.isShow
+          
+        }
       }
+      
     })
   </script>
 ```
@@ -398,8 +409,8 @@ vue 中的指令按照不同的用途可以分为如下 6 大类：
 
 - 如果传递了参数，则实参 `$event` 表示事件对象，固定用法。
 
-```js
- <style>
+```html
+   <style>
     .box {
       border: 3px solid #000000;
       border-radius: 10px;
@@ -407,40 +418,59 @@ vue 中的指令按照不同的用途可以分为如下 6 大类：
       margin: 20px;
       width: 200px;
     }
+
     h3 {
       margin: 10px 0 20px 0;
     }
+
     p {
       margin: 20px;
     }
   </style>
+</head>
 
- <div id="app">
+<body>
+
+  <div id="app">
     <div class="box">
       <h3>小黑自动售货机</h3>
-      <button>可乐5元</button>
-      <button>咖啡10元</button>
-      <button>牛奶8元</button>
+      <button @click="buy(5)" :disabled="money<5">可乐5元</button>
+      <button @click="buy(10)" :disabled="money<10">咖啡10元</button>
     </div>
-    <p>银行卡余额：{{ money }}元</p>
+    <p>银行卡余额:{{money}}元</p>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
         money: 100
+
+      },
+      methods: {
+        buy(x) {
+          if (this.money -= x > 5) {
+            this.money -= x
+          } else {
+            alert('钱不够了')
+
+          }
+
+        }
       }
     })
   </script>
+</body>
 ```
+
+---
 
 ## 十一、属性绑定指令
 
-1. **作用：**动态设置html的标签属性 比如：src、url、title
-2. **语法**：**v-bind:**属性名=“表达式”
-3. **v-bind:**可以简写成 =>   **:**
+1. **作用**：动态设置html的标签属性 比如：src、url、title
+2. **语法**：==v-bind:属性名=“表达式”==
+3. v-bind:可以简写成 冒号 **:**
 
 比如，有一个图片，它的 `src` 属性值，是一个图片地址。这个地址在数据 data 中存储。
 
@@ -466,6 +496,8 @@ vue 中的指令按照不同的用途可以分为如下 6 大类：
   </script>
 ```
 
+---
+
 ## 十二、小案例-波仔的学习之旅
 
 需求：默认展示数组中的第一张图片，点击上一页下一页来回切换数组中的图片
@@ -482,19 +514,21 @@ vue 中的指令按照不同的用途可以分为如下 6 大类：
 
 5.当展示第一张的时候，上一页按钮应该隐藏。展示最后一张的时候，下一页按钮应该隐藏
 
-```js
- <div id="app">
-    <button>上一页</button>
+```html
+<body>
+  <div id="app">
+    <button @click="index--" :disabled="index < 1">上一页</button>
     <div>
-      <img src alt="">
+      <img :src="list[index]" alt="">
     </div>
-    <button>下一页</button>
+    <button @click="index++" :disabled="index>4">下一页</button>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
+        index: 0,
         list: [
           './imgs/11-00.gif',
           './imgs/11-01.gif',
@@ -506,7 +540,10 @@ vue 中的指令按照不同的用途可以分为如下 6 大类：
       }
     })
   </script>
+</body>
 ```
+
+---
 
 ## 十三、列表渲染指令
 
@@ -532,6 +569,29 @@ index:遍历索引从0开始
 item从1 开始
 ```
 
+```html
+<body>
+  <div id="app">
+    <h3>小黑水果店</h3>
+    <ul>
+      <li v-for="(item,index) in list">水果{{index+1}} - {{item}}</li>
+    </ul>
+  </div>
+
+  <script src="./vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        list: ['西瓜', '苹果', '鸭梨']
+      }
+    })
+  </script>
+</body>
+```
+
+---
+
 ## 十四、小案例-小黑的书架
 
 需求：
@@ -540,22 +600,24 @@ item从1 开始
 
 2.点击删除按钮时，应该把当前行从列表中删除（获取当前行的id，利用filter进行过滤）
 
-![68189663267](assets/1681896632672.png)
+![68189663267](img/09vue/assets01/1681896632672.png)
 
 准备代码：
 
-```js
-<div id="app">
+```html
+<body>
+  <div id="app">
     <h3>小黑的书架</h3>
     <ul>
-      <li>
-        <span>《红楼梦》</span>
-        <span>曹雪芹</span>
-        <button>删除</button>
+      <!-- vue2里,这个key是必须的 -->
+      <li v-for="(item,index) in booksList" :key="item.id">
+        <span>{{item.name}}</span>
+        <span>{{item.author}}</span>
+        <button @click="del(item.id)">删除</button>
       </li>
     </ul>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
@@ -566,18 +628,30 @@ item从1 开始
           { id: 3, name: '《水浒传》', author: '施耐庵' },
           { id: 4, name: '《三国演义》', author: '罗贯中' }
         ]
+      },
+      methods: {
+        del(id) {
+          // this.booksList.splice(index, 1)
+          this.booksList = this.booksList.filter(item => item.id !== id)
+        }
       }
     })
   </script>
+</body>
 ```
+
+---
 
 ## 十五、v-for中的key
 
 **语法：** key="唯一值"
 
-**作用：**给列表项添加的**唯一标识**。便于Vue进行列表项的**正确排序复用**。
+**作用：** 给列表项添加的**唯一标识**。便于Vue进行列表项的**正确排序复用**。
 
-**为什么加key：**Vue 的默认行为会尝试原地修改元素（**就地复用**）
+**为什么加key:** Vue的默认行为会尝试原地修改元素（**就地复用**）
+
+如果不加key:vue会觉得第一项变了，第二项变了，第三项变了，最后一项删了
+可以尝试在标签上加背景色看
 
 实例代码：
 
@@ -597,7 +671,9 @@ item从1 开始
 2. key 的值必须具有唯一性
 3. 推荐使用  id 作为 key（唯一），不推荐使用 index 作为 key（会变化，不对应）
 
-## 十六、双向绑定指令
+---
+
+## 十六、双向绑定指令v-model
 
 所谓双向绑定就是：
 
@@ -606,44 +682,44 @@ item从1 开始
 
 **作用：** 给**表单元素**（input、radio、select）使用，双向绑定数据，可以快速 **获取** 或 **设置** 表单元素内容
 
-**语法：**v-model="变量"
+**语法：** v-model="变量"
 
-**需求：**使用双向绑定实现以下需求
+**需求：** 使用双向绑定实现以下需求
 
 1. 点击登录按钮获取表单中的内容
 2. 点击重置按钮清空表单中的内容
 
-![68191312573](assets/1681913125738.png)
+![68191312573](img/09vue/assets01/1681913125738.png)
 
 ```js
-<div id="app">
-    账户：<input type="text"> <br><br>
-    密码：<input type="password"> <br><br>
-    <button>登录</button>
-    <button>重置</button>
+<body>
+  <div id="app">
+    账户：<input v-model="username" type="text"> <br><br>
+    密码：<input v-model="passworld" type="password"> <br><br>
+    <button @click="login">登录</button>
+    <button @click="reset">重置</button>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
         username: '',
-        password: ''
+        passworld: ''
+
       },
+      methods: {
+        login() {
+          console.log(this.username, this.passworld);
+        },
+        reset() {
+          this.username = ''
+          this.passworld = ''
+        }
+      }
     })
   </script>
+</body>
 ```
 
-## 十七、综合案例-小黑记事本
-
-![68191456581](assets/1681914565816.png)
-
-**功能需求：**
-
-1. 列表渲染
-
-2. 删除功能
-
-3. 添加功能
-
-4. 底部统计 和 清空
+---

@@ -18,17 +18,21 @@
     const app = new Vue({
       el: '#app',
       data: {
-        isShow:true
-      
+        isShow: true
       },
-      methods:{
-        fn(){
-          console.log('执行了fn',app.isShow);
-          app.isShow =fal
+      methods: {
+        fn() {
+
+          //让提供的所有methods中的
+          console.log('执行了fn', app.isShow);
+          this.isShow = !this.isShow
         }
-      }
-      
+      },
+
+
     })
+
+    console.log('app', app.fn);
   </script>
 </body>
 

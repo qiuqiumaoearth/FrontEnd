@@ -1,27 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-<body>
 
+<body>
   <div id="app">
-    账户：<input type="text"> <br><br>
-    密码：<input type="password"> <br><br>
-    <button>登录</button>
-    <button>重置</button>
+    账户：<input v-model="username" type="text"> <br><br>
+    密码：<input v-model="passworld" type="password"> <br><br>
+    <button @click="login">登录</button>
+    <button @click="reset">重置</button>
   </div>
   <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
-        
+        username: '',
+        passworld: ''
+
+      },
+      methods: {
+        login() {
+          console.log(this.username, this.passworld);
+        },
+        reset() {
+          this.username = ''
+          this.passworld = ''
+        }
       }
     })
   </script>
 </body>
+
 </html>
