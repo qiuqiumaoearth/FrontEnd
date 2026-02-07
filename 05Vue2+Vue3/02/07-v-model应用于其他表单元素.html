@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,18 +15,19 @@
     }
   </style>
 </head>
+
 <body>
 
   <div id="app">
     <h3>小黑学习网</h3>
 
     姓名：
-      <input type="text"> 
-      <br><br>
+    <input type="text" v-model="userName">
+    <br><br>
 
     是否单身：
-      <input type="checkbox"> 
-      <br><br>
+    <input type="checkbox" v-model="isSingle">
+    <br><br>
 
     <!-- 
       前置理解：
@@ -33,10 +35,10 @@
         2. value: 给单选框加上 value 属性，用于提交给后台的数据
       结合 Vue 使用 → v-model
     -->
-    性别: 
-      <input type="radio">男
-      <input type="radio">女
-      <br><br>
+    性别:
+    <input v-model="gender" type="radio" name="gender" value="1">男
+    <input v-model="gender" type="radio" name="gender" value="2">女
+    <br><br>
 
     <!-- 
       前置理解：
@@ -45,27 +47,38 @@
       结合 Vue 使用 → v-model
     -->
     所在城市:
-      <select>
-        <option>北京</option>
-        <option>上海</option>
-        <option>成都</option>
-        <option>南京</option>
-      </select>
-      <br><br>
+    <select v-model="cityId">
+      <option value="101">北京</option>
+      <option value="102">上海</option>
+      <option value="103">成都</option>
+      <option value="104">南京</option>
+    </select>
+    <br><br>
 
     自我描述：
-      <textarea></textarea> 
+    <textarea v-model="desc"></textarea>
 
-    <button>立即注册</button>
+    <button @click="fn">立即注册</button>
   </div>
   <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
+        userName: '',
+        isSingle: false,
+        gender: '2',
+        cityId: '103',
+        desc: ''
+      },
 
+      methods: {
+        fn() {
+          console.log(app.userName, app.isSingle, app.gender, app.cityId, app.desc);
+        }
       }
     })
   </script>
 </body>
+
 </html>

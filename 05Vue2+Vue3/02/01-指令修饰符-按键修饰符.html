@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
   <div id="app">
-    <h3>@keyup.enter  →  监听键盘回车事件</h3>
-    <input v-model="username" type="text">
+    <h3>@keyup.enter → 监听键盘回车事件</h3>
+    <input @keyup="fn" v-model="username" type="text">
   </div>
   <script src="./vue.js"></script>
   <script>
@@ -19,9 +21,15 @@
         username: ''
       },
       methods: {
-        
+        fn(e) {
+          // console.log(e);
+          if (e.key == "Enter") {
+            console.log("键盘回车的时候触发", this.username);
+          }
+        }
       }
     })
   </script>
 </body>
+
 </html>

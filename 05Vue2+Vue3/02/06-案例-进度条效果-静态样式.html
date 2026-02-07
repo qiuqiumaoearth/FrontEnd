@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,6 +16,7 @@
       box-sizing: border-box;
       margin-bottom: 30px;
     }
+
     .inner {
       width: 50%;
       height: 20px;
@@ -26,6 +28,7 @@
       box-sizing: border-box;
       transition: all 1s;
     }
+
     .inner span {
       position: absolute;
       right: -20px;
@@ -33,26 +36,31 @@
     }
   </style>
 </head>
+
 <body>
   <div id="app">
+    <!-- 外层盒子--黑色 -->
     <div class="progress">
-      <div class="inner">
-        <span>50%</span>
+
+      <!-- 内层盒子--蓝色 -->
+      <div class="inner" :style="{width:percent+'%'}">
+        <span>{{percent}}%</span>
       </div>
     </div>
-    <button>设置25%</button>
-    <button>设置50%</button>
-    <button>设置75%</button>
-    <button>设置100%</button>
+    <button @click="percent=25">设置25%</button>
+    <button @click="percent=50">设置50%</button>
+    <button @click="percent=75">设置75%</button>
+    <button @click="percent=100">设置100%</button>
   </div>
   <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
-
+        percent: 20
       }
     })
   </script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +13,7 @@
       background-color: pink;
       margin-top: 20px;
     }
+
     .son {
       width: 100px;
       height: 100px;
@@ -19,20 +21,23 @@
     }
   </style>
 </head>
+
 <body>
   <div id="app">
     <h3>v-model修饰符 .trim .number</h3>
-    姓名：<input v-model="username" type="text"><br>
-    年纪：<input v-model="age" type="text"><br>
+    姓名：<input @keyup.enter="fn('user')" v-model.trim="username" type="text"><br>
+    年纪：<input @keyup.enter="fn('age')" v-model.number="age" type="text"><br>
+    性别：<input @keyup.enter="fn('gender')" v-model.lazy="gender" type="text"><br>
 
-    
-    <h3>@事件名.stop     →  阻止冒泡</h3>
+
+
+    <h3>@事件名.stop → 阻止冒泡</h3>
     <div @click="fatherFn" class="father">
-      <div @click="sonFn" class="son">儿子</div>
+      <div @click.stop="sonFn" class="son">儿子</div>
     </div>
 
-    <h3>@事件名.prevent  →  阻止默认行为</h3>
-    <a href="http://www.baidu.com">阻止默认行为</a>
+    <h3>@事件名.prevent → 阻止默认行为</h3>
+    <a @click.prevent href="http://www.baidu.com">阻止默认行为</a>
   </div>
   <script src="./vue.js"></script>
   <script>
@@ -41,16 +46,27 @@
       data: {
         username: '',
         age: '',
+        gender: ''
       },
       methods: {
-        fatherFn () {
+        fatherFn() {
           alert('老父亲被点击了')
         },
-        sonFn () {
+        sonFn() {
           alert('儿子被点击了')
+        },
+        fn(a) {
+          if (a === 'user') {
+            console.log(this.username);
+          } else if (a === 'age') {
+            console.log(this.age);
+          } else if (a === "gender") {
+            console.log(this.gender);
+          }
         }
       }
     })
   </script>
 </body>
+
 </html>
