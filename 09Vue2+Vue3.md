@@ -759,15 +759,17 @@ item从1 开始
 ### 2.按键修饰符@keyup.enter
 
 - @keyup.enter  —>当点击enter键的时候才触发
+- 类似于事件监听event,获得e
 
 代码演示：
 
 ```js
+<body>
   <div id="app">
-    <h3>@keyup.enter  →  监听键盘回车事件</h3>
-    <input v-model="username" type="text">
+    <h3>@keyup.enter → 监听键盘回车事件</h3>
+    <input @keyup="fn" v-model="username" type="text">
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
@@ -775,14 +777,21 @@ item从1 开始
         username: ''
       },
       methods: {
-        
+        fn(e) {
+          // console.log(e);
+          if (e.key == "Enter") {
+            console.log("键盘回车的时候触发", this.username);
+          }
+        }
       }
     })
   </script>
+</body>
 ```
 
 ### 3.v-model修饰符
 
+- v-model.lazy ->事件改变的时候触发
 - v-model.trim  —>去除首位空格
 - v-model.number —>转数字
 
@@ -792,56 +801,72 @@ item从1 开始
 - @事件名.prevent  —>阻止默认行为
 - @事件名.stop.prevent —>可以连用 即阻止事件冒泡也阻止默认行为
 
-```js
- <style>
+```html
+  <style>
     .father {
       width: 200px;
       height: 200px;
       background-color: pink;
       margin-top: 20px;
     }
+
     .son {
       width: 100px;
       height: 100px;
       background-color: skyblue;
     }
   </style>
+</head>
 
- <div id="app">
+<body>
+  <div id="app">
     <h3>v-model修饰符 .trim .number</h3>
-    姓名：<input v-model="username" type="text"><br>
-    年纪：<input v-model="age" type="text"><br>
+    姓名：<input @keyup.enter="fn('user')" v-model.trim="username" type="text"><br>
+    年纪：<input @keyup.enter="fn('age')" v-model.number="age" type="text"><br>
+    性别：<input @keyup.enter="fn('gender')" v-model.lazy="gender" type="text"><br>
 
-    
-    <h3>@事件名.stop     →  阻止冒泡</h3>
+
+
+    <h3>@事件名.stop → 阻止冒泡</h3>
     <div @click="fatherFn" class="father">
-      <div @click="sonFn" class="son">儿子</div>
+    <div @click.stop="sonFn" class="son">儿子</div>
     </div>
 
-    <h3>@事件名.prevent  →  阻止默认行为</h3>
-    <a @click href="http://www.baidu.com">阻止默认行为</a>
+    <h3>@事件名.prevent → 阻止默认行为</h3>
+    <a @click.prevent href="http://www.baidu.com">阻止默认行为</a>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
         username: '',
         age: '',
+        gender: ''
       },
       methods: {
-        fatherFn () {
+        fatherFn() {
           alert('老父亲被点击了')
         },
-        sonFn (e) {
-          // e.stopPropagation()
+        sonFn() {
           alert('儿子被点击了')
+        },
+        fn(a) {
+          if (a === 'user') {
+            console.log(this.username);
+          } else if (a === 'age') {
+            console.log(this.age);
+          } else if (a === "gender") {
+            console.log(this.gender);
+          }
         }
       }
     })
   </script>
+</body>
 ```
+
+---
 
 ## 三、v-bind对样式控制的增强-操作class
 
@@ -861,7 +886,7 @@ item从1 开始
 <div class="box" :class="{ 类名1: 布尔值, 类名2: 布尔值 }"></div>
 ```
 
-​    适用场景：一个类名，来回切换
+​适用场景：一个类名，来回切换
 
 ### 3.数组语法
 
@@ -876,7 +901,7 @@ item从1 开始
 ### 4.代码练习
 
 ```html
- <style>
+  <style>
     .box {
       width: 200px;
       height: 200px;
@@ -884,23 +909,25 @@ item从1 开始
       font-size: 30px;
       margin-top: 10px;
     }
+
     .pink {
       background-color: pink;
     }
+
     .big {
       width: 300px;
       height: 300px;
     }
   </style>
+</head>
 
+<body>
 
-<div id="app">
-    <!--绑定对象-->
-    <div class="box">黑马程序员</div>
-    <!--绑定数组-->
-    <div class="box">黑马程序员</div>
+  <div id="app">
+    <div :class="{'pink':true,'box':true,'big':true}">黑马程序员</div>
+    <div :class="["pink","big"]">黑马程序员</div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
@@ -909,7 +936,10 @@ item从1 开始
       }
     })
   </script>
+</body>
 ```
+
+---
 
 ## 四、京东秒杀-tab栏切换导航高亮
 
@@ -920,16 +950,18 @@ item从1 开始
 ### 2.准备代码
 
 ```html
- <style>
+  <style>
     * {
       margin: 0;
       padding: 0;
     }
+
     ul {
       display: flex;
       border-bottom: 2px solid #e01222;
       padding: 0 10px;
     }
+
     li {
       width: 100px;
       height: 50px;
@@ -937,39 +969,49 @@ item从1 开始
       list-style: none;
       text-align: center;
     }
+
     li a {
       display: block;
       text-decoration: none;
       font-weight: bold;
       color: #333333;
     }
+
     li a.active {
       background-color: #e01222;
       color: #fff;
     }
-
   </style>
+</head>
 
-<div id="app">
+<body>
+
+  <div id="app">
     <ul>
-      <li><a class="active" href="#">京东秒杀</a></li>
-      <li><a href="#">每日特价</a></li>
-      <li><a href="#">品类秒杀</a></li>
+      <li v-for="(item,index) in list" :key="item.id" @click="activeIndex=index">
+        <a :class="{active: index===activeIndex }" href="#">{{item.name}}</a>
+      </li>
+
     </ul>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
+
+        activeIndex: 0, //记录高亮
+
         list: [
           { id: 1, name: '京东秒杀' },
           { id: 2, name: '每日特价' },
           { id: 3, name: '品类秒杀' }
         ]
+
       }
     })
   </script>
+</body>
 ```
 
 ### 3.思路
@@ -979,6 +1021,8 @@ item从1 开始
 2.准备一个下标 记录高亮的是哪一个 tab
 
 3.基于下标动态切换class的类名
+
+---
 
 ## 五、v-bind对有样式控制的增强-操作style
 
@@ -991,17 +1035,20 @@ item从1 开始
 ### 2.代码练习
 
 ```html
-<style>
+  <style>
     .box {
       width: 200px;
       height: 200px;
       background-color: rgb(187, 150, 156);
     }
- </style>
- <div id="app">
-    <div class="box"></div>
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="box" :style="{width:'400px','background-color':'green'}"></div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
@@ -1010,12 +1057,13 @@ item从1 开始
       }
     })
   </script>
+</body>
 ```
 
 ### 3.进度条案例
 
 ```html
- <style>
+  <style>
     .progress {
       height: 25px;
       width: 400px;
@@ -1025,6 +1073,7 @@ item从1 开始
       box-sizing: border-box;
       margin-bottom: 30px;
     }
+
     .inner {
       width: 50%;
       height: 20px;
@@ -1036,35 +1085,43 @@ item从1 开始
       box-sizing: border-box;
       transition: all 1s;
     }
+
     .inner span {
       position: absolute;
       right: -20px;
       bottom: -25px;
     }
   </style>
+</head>
 
-<div id="app">
+<body>
+  <div id="app">
+    <!-- 外层盒子--黑色 -->
     <div class="progress">
-      <div class="inner">
-        <span>50%</span>
+
+      <!-- 内层盒子--蓝色 -->
+      <div class="inner" :style="{width:percent+'%'}">
+        <span>{{percent}}%</span>
       </div>
     </div>
-    <button>设置25%</button>
-    <button>设置50%</button>
-    <button>设置75%</button>
-    <button>设置100%</button>
+    <button @click="percent=25">设置25%</button>
+    <button @click="percent=50">设置50%</button>
+    <button @click="percent=75">设置75%</button>
+    <button @click="percent=100">设置100%</button>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
-
+        percent: 20
       }
     })
   </script>
+</body>
 ```
+
+---
 
 ## 六、v-model在其他表单元素的使用
 
@@ -1086,7 +1143,7 @@ item从1 开始
 ### 2.代码准备
 
 ```html
- <style>
+  <style>
     textarea {
       display: block;
       width: 240px;
@@ -1094,24 +1151,32 @@ item从1 开始
       margin: 10px 0;
     }
   </style>
- <div id="app">
+</head>
+
+<body>
+
+  <div id="app">
     <h3>小黑学习网</h3>
+
     姓名：
-      <input type="text"> 
-      <br><br>
+    <input type="text" v-model="userName">
+    <br><br>
+
     是否单身：
-      <input type="checkbox"> 
-      <br><br>
+    <input type="checkbox" v-model="isSingle">
+    <br><br>
+
     <!-- 
       前置理解：
         1. name:  给单选框加上 name 属性 可以分组 → 同一组互相会互斥
         2. value: 给单选框加上 value 属性，用于提交给后台的数据
       结合 Vue 使用 → v-model
     -->
-    性别: 
-      <input type="radio">男
-      <input type="radio">女
-      <br><br>
+    性别:
+    <input v-model="gender" type="radio" name="gender" value="1">男
+    <input v-model="gender" type="radio" name="gender" value="2">女
+    <br><br>
+
     <!-- 
       前置理解：
         1. option 需要设置 value 值，提交给后台
@@ -1119,27 +1184,42 @@ item从1 开始
       结合 Vue 使用 → v-model
     -->
     所在城市:
-      <select>
-        <option>北京</option>
-        <option>上海</option>
-        <option>成都</option>
-        <option>南京</option>
-      </select>
-      <br><br>
+    <select v-model="cityId">
+      <option value="101">北京</option>
+      <option value="102">上海</option>
+      <option value="103">成都</option>
+      <option value="104">南京</option>
+    </select>
+    <br><br>
+
     自我描述：
-      <textarea></textarea> 
-    <button>立即注册</button>
+    <textarea v-model="desc"></textarea>
+
+    <button @click="fn">立即注册</button>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
+        userName: '',
+        isSingle: false,
+        gender: '2',
+        cityId: '103',
+        desc: ''
+      },
 
+      methods: {
+        fn() {
+          console.log(app.userName, app.isSingle, app.gender, app.cityId, app.desc);
+        }
       }
     })
   </script>
+</body>
 ```
+
+---
 
 ## 七、computed计算属性
 
@@ -1164,26 +1244,30 @@ item从1 开始
 
 比如我们可以使用计算属性实现下面这个业务场景
 
-![68203932785](assets/1682039327858.png)
+![68203932785](img/09vue/assets02/1682039327858.png)
 
 ### 5.代码准备
 
 ```html
-<style>
+  <style>
     table {
       border: 1px solid #000;
       text-align: center;
       width: 240px;
     }
-    th,td {
+    th,
+    td {
       border: 1px solid #000;
     }
     h3 {
       position: relative;
     }
   </style>
+</head>
 
-<div id="app">
+<body>
+
+  <div id="app">
     <h3>小黑的礼物清单</h3>
     <table>
       <tr>
@@ -1197,22 +1281,33 @@ item从1 开始
     </table>
 
     <!-- 目标：统计求和，求得礼物总数 -->
-    <p>礼物总数：? 个</p>
+    <p>礼物总数：{{totalCount}} 个</p>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
         // 现有的数据
+        
         list: [
-          { id: 1, name: '篮球', num: 1 },
+          { id: 1, name: '篮球', num: 2 },
           { id: 2, name: '玩具', num: 2 },
           { id: 3, name: '铅笔', num: 5 },
         ]
+      },
+      computed: {
+        totalCount() {
+          //console.log(this.list);
+          return this.list.reduce((sum, item) => {
+            return sum + item.num
+          }, 0)
+          
+        }
       }
     })
   </script>
+</body>
 ```
 
 ## 八、computed计算属性 VS methods方法
@@ -1239,7 +1334,7 @@ item从1 开始
    - js中调用：this.方法名()
    - 模板中调用 {{方法名()}}  或者 @事件名=“方法名”
 
-### 3.计算属性的优势
+### 3.计算属性computed的优势
 
 1. 缓存特性（提升性能）
 
@@ -1249,72 +1344,6 @@ item从1 开始
 
 2. methods没有缓存特性
 
-3. 通过代码比较
-
-```html
-<style>
-    table {
-      border: 1px solid #000;
-      text-align: center;
-      width: 300px;
-    }
-    th,td {
-      border: 1px solid #000;
-    }
-    h3 {
-      position: relative;
-    }
-    span {
-      position: absolute;
-      left: 145px;
-      top: -4px;
-      width: 16px;
-      height: 16px;
-      color: white;
-      font-size: 12px;
-      text-align: center;
-      border-radius: 50%;
-      background-color: #e63f32;
-    }
-  </style>
-
-<div id="app">
-    <h3>小黑的礼物清单🛒<span>?</span></h3>
-    <table>
-      <tr>
-        <th>名字</th>
-        <th>数量</th>
-      </tr>
-      <tr v-for="(item, index) in list" :key="item.id">
-        <td>{{ item.name }}</td>
-        <td>{{ item.num }}个</td>
-      </tr>
-    </table>
-
-    <p>礼物总数：{{ totalCount }} 个</p>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-  <script>
-    const app = new Vue({
-      el: '#app',
-      data: {
-        // 现有的数据
-        list: [
-          { id: 1, name: '篮球', num: 3 },
-          { id: 2, name: '玩具', num: 2 },
-          { id: 3, name: '铅笔', num: 5 },
-        ]
-      },
-      computed: {
-        totalCount () {
-          let total = this.list.reduce((sum, item) => sum + item.num, 0)
-          return total
-        }
-      }
-    })
-  </script>
-```
-
 ### 4.总结
 
 1.computed**有缓存特性**，methods**没有缓存**
@@ -1323,6 +1352,8 @@ item从1 开始
 
 3.当处理业务逻辑时，推荐使用methods方法，比如事件的处理函数
 
+---
+
 ## 九、计算属性的完整写法
 
 **既然计算属性也是属性，能访问，应该也能修改了？**
@@ -1330,38 +1361,66 @@ item从1 开始
 1. 计算属性默认的简写，只能读取访问，不能 "修改"
 2. 如果要 "修改"  → 需要写计算属性的完整写法
 
-![68204182296](assets/1682041822963.png)
+![68204182296](img/09vue/assets02/1682041822963.png)
 
 完整写法代码演示
 
 ```html
- <div id="app">
+<body>
+   <div id="app">
     姓：<input type="text" v-model="firstName"> +
     名：<input type="text" v-model="lastName"> =
-    <span></span><br><br> 
-    <button>改名卡</button>
+    <span>{{fullName}}</span><br><br> 
+
+    <input type="text" placeholder="要改的名字"  v-model="changeName">
+    <button @click="chanName">改名卡</button>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
-    firstName: '刘',
-        lastName: '备'
+        firstName: '刘',
+        lastName: '备',
+        changeName:''
       },
       computed: {
 
-      },
-      methods: {
+        //简写 → 获取,没有配置设置的逻辑
+        // fullName(){
+        //     return this.firstName+this.lastName
+        // }
+        
+        //完整写法 → 获取 + 设置
+        fullName:{
 
+          //当fullName计算属性,被获取求值时,执行get(有缓存,先读缓存)
+          //会将返回值作为求值的结果
+          get(){
+            return this.firstName+this.lastName
+          },
+          set(value){
+            console.log(value);
+            this.firstName = value.slice(0,1)
+            this.lastName = value.slice(1)
+          }
+        }
+      },
+      methods:{
+        chanName(){
+          this.fullName=this.changeName
+        }
       }
     })
   </script>
+</body>
 ```
+
+---
 
 ## 十、综合案例-成绩案例
 
-![68204248931](assets/1682042489319.png)
+![68204248931](img/09vue/assets02/1682042489319.png)
 
 功能描述：
 
@@ -1381,7 +1440,9 @@ item从1 开始
 
 3.v-model的修饰符 .trim、 .number、  判断数据是否为空后 再添加、添加后清空文本框的数据
 
-4.使用计算属性computed 计算总分和平均分的值
+4.使用计算属性computed 计算总分和平均分的值,获取小数，用parseFloat().toFixed(2)
+
+---
 
 ## 十一、watch侦听器（监视器）
 
@@ -1416,118 +1477,25 @@ item从1 开始
    }
    ```
 
-### 3.侦听器代码准备
+   ```js
+    watch: {
+      // 监听words属性的变化
+      words(newvalue, oldvalue) {
+        console.log('变化了',newvalue,"=>",oldvalue);
+      },
+    },
 
-```html
- <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-size: 18px;
-      }
-      #app {
-        padding: 10px 20px;
-      }
-      .query {
-        margin: 10px 0;
-      }
-      .box {
-        display: flex;
-      }
-      textarea {
-        width: 300px;
-        height: 160px;
-        font-size: 18px;
-        border: 1px solid #dedede;
-        outline: none;
-        resize: none;
-        padding: 10px;
-      }
-      textarea:hover {
-        border: 1px solid #1589f5;
-      }
-      .transbox {
-        width: 300px;
-        height: 160px;
-        background-color: #f0f0f0;
-        padding: 10px;
-        border: none;
-      }
-      .tip-box {
-        width: 300px;
-        height: 25px;
-        line-height: 25px;
-        display: flex;
-      }
-      .tip-box span {
-        flex: 1;
-        text-align: center;
-      }
-      .query span {
-        font-size: 18px;
-      }
+    'obj.words'(newvalue, oldvalue) {
+      console.log('变化了',newvalue,"=>",oldvalue);
+    },
 
-      .input-wrap {
-        position: relative;
-      }
-      .input-wrap span {
-        position: absolute;
-        right: 15px;
-        bottom: 15px;
-        font-size: 12px;
-      }
-      .input-wrap i {
-        font-size: 20px;
-        font-style: normal;
-      }
-    </style>
+   ```
 
- <div id="app">
-      <!-- 条件选择框 -->
-      <div class="query">
-        <span>翻译成的语言：</span>
-        <select>
-          <option value="italy">意大利</option>
-          <option value="english">英语</option>
-          <option value="german">德语</option>
-        </select>
-      </div>
 
-      <!-- 翻译框 -->
-      <div class="box">
-        <div class="input-wrap">
-          <textarea v-model="words"></textarea>
-          <span><i>⌨️</i>文档翻译</span>
-        </div>
-        <div class="output-wrap">
-          <div class="transbox">mela</div>
-        </div>
-      </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-      // 接口地址：https://applet-base-api-t.itheima.net/api/translate
-      // 请求方式：get
-      // 请求参数：
-      // （1）words：需要被翻译的文本（必传）
-      // （2）lang： 需要被翻译成的语言（可选）默认值-意大利
-      // -----------------------------------------------
-      
-      const app = new Vue({
-        el: '#app',
-        data: {
-          words: ''
-        },
-        // 具体讲解：(1) watch语法 (2) 具体业务实现
-      })
-    </script>
-```
 
 ## 十二、翻译案例-代码实现
 
-```js
+```html
   <script>
       // 接口地址：https://applet-base-api-t.itheima.net/api/translate
       // 请求方式：get
@@ -1574,6 +1542,8 @@ item从1 开始
     </script>
 ```
 
+---
+
 ## 十三、watch侦听器
 
 ### 1.语法
@@ -1605,7 +1575,7 @@ watch: {// watch 完整写法
 
 ### 2.需求
 
-![68205051572](assets/1682050515722.png)
+![68205051572](img/09vue/assets02/1682050515722.png)
 
 - 当文本框输入的时候 右侧翻译内容要时时变化
 - 当下拉框中的语言发生变化的时候 右侧翻译的内容依然要时时变化
@@ -1613,34 +1583,44 @@ watch: {// watch 完整写法
 
 ### 3.代码实现
 
-```js
- <script> 
+```html
+    <script>
       const app = new Vue({
         el: '#app',
         data: {
-          obj: {
-            words: '小黑',
-            lang: 'italy'
+          obj:{
+            words: '苹果',
+            lang:'italy',
+            
           },
-          result: '', // 翻译结果
+          timer:null,//延时器的id,防抖定时器（移出obj，避免触发obj监听）
+          result:'', //翻译结果
+          
         },
+        // 具体讲解：(1) watch语法 (2) 具体业务实现
         watch: {
+          // 监听words属性的变化
           obj: {
-            deep: true, // 深度监视
-            immediate: true, // 立刻执行，一进入页面handler就立刻执行一次
-            handler (newValue) {
-              clearTimeout(this.timer)
-              this.timer = setTimeout(async () => {
+
+            deep:true, //深度监听,对对象里面的事件进行监听
+            immediate:true, //立即执行
+            handler(newvalue, oldvalue) {
+              console.log('对象被修改',newvalue);
+              this.timer && clearTimeout(this.timer)
+              this.timer = setTimeout(async() => {
                 const res = await axios({
-                  url: 'https://applet-base-api-t.itheima.net/api/translate',
-                  params: newValue
-                })
+                  url:'https://applet-base-api-t.itheima.net/api/translate',
+                  method:'get',
+                  params:{
+                    words:newvalue.words,
+                    lang:newvalue.lang
+                }})
+                console.log(res);
                 this.result = res.data.data
-                console.log(res.data.data)
-              }, 300)
+              }, 500);
             }
-          } 
-        }
+          }
+        },    
       })
     </script>
 ```
@@ -1662,7 +1642,7 @@ watch: {
 }
 ```
 
-2.完整写法
+2.完整写法(要注意那些不能放入监听中,比如定时器名,结果)
 
 ```js
 watch: {// watch 完整写法
@@ -1676,11 +1656,13 @@ watch: {// watch 完整写法
 }
 ```
 
+---
+
 ## 十四、综合案例
 
 购物车案例
 
-![68205100897](assets/1682051008978.png)
+![68205100897](img/09vue/assets02/1682051008978.png)
 
 需求说明：
 

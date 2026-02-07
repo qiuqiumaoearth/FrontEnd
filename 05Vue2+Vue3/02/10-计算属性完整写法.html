@@ -9,22 +9,38 @@
 <body>
 
   <div id="app">
-    姓：<input type="text"><br>
-    名：<input type="text"><br>
-    <p>姓名：</p>
-    <button>修改姓名</button>
+    姓：<input type="text" v-model="firstName"><br>
+    名：<input type="text" v-model="lastName"><br>
+    <p>姓名：{{fullName}}</p>
+    <button @click="changeName">修改姓名</button>
   </div>
   <script src="./vue.js"></script>
   <script>
     const app = new Vue({
       el: '#app',
       data: {
+        firstName:'',
+        lastName:''
 
       },
       computed: {
+        fullName:{
+          get(){
+          return this.firstName +this.lastName
+          },
+          set(value){
 
+            this.firstName=value.slice(0,1)
+            this.lastName=value.slice(1)
+        }
+
+        }
+        
       },
       methods: {
+        changeName(){
+          this.fullName='盾山'
+        }
 
       }
     })

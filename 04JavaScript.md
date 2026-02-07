@@ -404,6 +404,12 @@ const：声明的是 “常量”，必须在声明时赋值，且赋值后不�
 - parseint(数据) -- 只保留整数,只切整数,不四舍五入
 - parseFloat(数据) -- 可以保留小数
 
+```js
+averageCount(){
+  return parseFloat(this.totalCount/this.list.length).toFixed(2)
+}
+```
+
 ```html
   <body>
   <script>

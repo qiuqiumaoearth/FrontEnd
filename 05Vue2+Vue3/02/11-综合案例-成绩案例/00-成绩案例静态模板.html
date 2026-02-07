@@ -19,27 +19,16 @@
               <th>操作</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>语文</td>
-              <td class="red">46</td>
-              <td><a href="#">删除</a></td>
+          <tbody v-if="list.length>0">
+            <tr v-for="(item,index) in list" :key="item.id">
+              <td>{{index+1}}</td>
+              <td>{{item.subject}}</td>
+              <td :class="{red: item.score<60}">{{item.score}}</td>
+              <td><a href="#" @click.prevent="del(item.id)">删除</a></td>
             </tr>
-            <tr>
-              <td>2</td>
-              <td>英语</td>
-              <td>80</td>
-              <td><a href="#">删除</a></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>数学</td>
-              <td>100</td>
-              <td><a href="#">删除</a></td>
-            </tr>
+
           </tbody>
-          <tbody>
+          <tbody v-else>
             <tr>
               <td colspan="5">
                 <span class="none">暂无数据</span>
@@ -50,8 +39,8 @@
           <tfoot>
             <tr>
               <td colspan="5">
-                <span>总分：246</span>
-                <span style="margin-left: 50px">平均分：79</span>
+                <span>总分：{{list.length?totalCount:0}}</span>
+                <span style="margin-left: 50px">平均分：{{list.length?averageCount:0}}</span>
               </td>
             </tr>
           </tfoot>
@@ -59,18 +48,20 @@
       </div>
       <div class="form">
         <div class="form-item">
-          <div class="label">科目：</div>
+          <div class="label" >科目：</div>
           <div class="input">
-            <input
+            <input 
+              v-model.trim="subject"
               type="text"
               placeholder="请输入科目"
             />
           </div>
         </div>
         <div class="form-item">
-          <div class="label">分数：</div>
+          <div class="label" >分数：</div>
           <div class="input">
             <input
+              v-model.number="score"
               type="text"
               placeholder="请输入分数"
             />
@@ -79,7 +70,7 @@
         <div class="form-item">
           <div class="label"></div>
           <div class="input">
-            <button class="submit" >添加</button>
+            <button class="submit" @click="add">添加</button>
           </div>
         </div>
       </div>
@@ -97,8 +88,50 @@
           ],
           subject: '',
           score: ''
+        },
+        methods:{
+          del(id){
+            this.list = this.list.filter(item=>item.id !==id)
+          },
+
+          add(){
+            if (!this.subject) {
+              alert('请输入科目')
+              return 
+            }
+            if (!this.score) {
+              alert('请输入成绩')
+              return 
+            }
+            if (typeof(this.score)!=='number') {
+              alert('请输入数字')
+              this.score=''
+              return
+            }
+            this.list.unshift({id:Date.now(),subject:this.subject,score:this.score})
+            this.subject=''
+            this.score=''
+
+          }
+
+        },
+
+        computed:{
+          totalCount(){
+            return this.list.reduce((sum,item)=> sum+ item.score,0)
+          },
+        
+          averageCount(){
+            return parseFloat(this.totalCount/this.list.length).toFixed(2)
+          }
+          
+          
+          
+
+
         }
       })
+
     </script>
   </body>
 </html>
