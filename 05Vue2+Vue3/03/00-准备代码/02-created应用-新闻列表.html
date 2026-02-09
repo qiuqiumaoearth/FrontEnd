@@ -52,7 +52,7 @@
     <ul>
       <li class="news">
         <div class="left">
-          <div class="title">5G商用在即,三大运营商营收持续下降</div>
+          <div class="title">5G商用在即，三大运营商营收持续下降</div>
           <div class="info">
             <span>新京报经济新闻</span>
             <span>2222-10-28 11:50:28</span>
@@ -65,7 +65,7 @@
 
       <li class="news">
         <div class="left">
-          <div class="title">5G商用在即,三大运营商营收持续下降</div>
+          <div class="title">5G商用在即，三大运营商营收持续下降</div>
           <div class="info">
             <span>新京报经济新闻</span>
             <span>2222-10-28 11:50:28</span>
@@ -78,7 +78,7 @@
 
       <li class="news">
         <div class="left">
-          <div class="title">5G商用在即,三大运营商营收持续下降</div>
+          <div class="title">5G商用在即，三大运营商营收持续下降</div>
           <div class="info">
             <span>新京报经济新闻</span>
             <span>2222-10-28 11:50:28</span>
@@ -90,21 +90,16 @@
       </li>
     </ul>
   </div>
-  <script src="./vue.js"></script>
-  <script src="./axios.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
     // 接口地址：http://hmajax.itheima.net/api/news
     // 请求方式：get
     const app = new Vue({
       el: '#app',
       data: {
-
-      },
-      async created() {
-        const res = await axios.get('http://hmajax.itheima.net/api/news')
-        console.log(res.data.data);
-        }
-        
+        list: []
+      }
     })
   </script>
 </body>

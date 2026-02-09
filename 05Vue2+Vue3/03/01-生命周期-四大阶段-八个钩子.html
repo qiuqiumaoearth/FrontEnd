@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
   <div id="app">
     <h3>{{ title }}</h3>
     <div>
@@ -25,6 +24,50 @@
       data: {
         count: 100,
         title: '计数器'
+      },
+
+      //1.创建阶段
+      beforeCreate(){
+        console.log("beforeCreat 响应式数据未初始化,el和数据对象还未初始化",this.count); 
+        //undefined
+      },
+      created(){
+        console.log("created 响应式数据已初始化,el还未初始化",this.count);
+        //100
+        //this.数据名=请求回来的数据
+        //可以开始发送初始化的渲染请求
+      },
+
+      //2.挂载阶段(渲染模板)
+      beforeMount(){
+        console.log("beforeMount el还未初始化,模板还未编译",document.querySelector('h3').innerHTML);
+        //{{ title }}
+      },
+      mounted(){
+        console.log("mounted el已初始化,模板已编译",document.querySelector('h3').innerHTML);
+        //计数器
+        //可以操作dom了
+      },
+
+      //3.更新阶段(修改数据 → 更新视图)
+      beforeUpdate(){
+        console.log("beforeUpdate 数据更新前,模板还未更新",document.querySelector('span').innerHTML);
+        //100
+      },
+      updated(){
+        console.log("updated 数据更新后,模板已更新",document.querySelector('span').innerHTML);
+        //101
+      },
+
+      //app.$destroy()销毁实例,在页面尝试
+      //4.销毁阶段
+      beforeDestroy(){
+        console.log("beforeDestroy 实例销毁前,实例仍然完全可用",this.count);
+        //101
+      },
+      destroyed(){
+        console.log("destroyed 实例销毁后,所有的事件监听器会被移除,所有的子实例也会被销毁",this.count);
+        //101
       }
     })
   </script>
