@@ -1823,7 +1823,7 @@ Vue生命周期过程中，会**自动运行一些函数**，被称为【**生�
 ### 1.在created中发送数据
 
 ```html
- <style>
+  <style>
     * {
       margin: 0;
       padding: 0;
@@ -1863,123 +1863,52 @@ Vue生命周期过程中，会**自动运行一些函数**，被称为【**生�
       object-fit: cover;
     }
   </style>
+</head>
+<body>
 
- <div id="app">
+  <div id="app">
     <ul>
-      <li class="news">
+      <li class="news" v-for="(item,index) in list" :key="item.id" >
         <div class="left">
-          <div class="title">5G商用在即，三大运营商营收持续下降</div>
+          <div class="title">{{item.title}}</div>
           <div class="info">
-            <span>新京报经济新闻</span>
-            <span>2222-10-28 11:50:28</span>
+            <span>{{item.source}}</span>
+            <span>{{item.time}}</span>
           </div>
         </div>
         <div class="right">
-          <img src="http://ajax-api.itheima.net/public/images/0.webp" alt="">
+          <img :src=item.img alt="">
         </div>
       </li>
 
-      <li class="news">
-        <div class="left">
-          <div class="title">5G商用在即，三大运营商营收持续下降</div>
-          <div class="info">
-            <span>新京报经济新闻</span>
-            <span>2222-10-28 11:50:28</span>
-          </div>
-        </div>
-        <div class="right">
-          <img src="http://ajax-api.itheima.net/public/images/0.webp" alt="">
-        </div>
-      </li>
-
-      <li class="news">
-        <div class="left">
-          <div class="title">5G商用在即，三大运营商营收持续下降</div>
-          <div class="info">
-            <span>新京报经济新闻</span>
-            <span>2222-10-28 11:50:28</span>
-          </div>
-        </div>
-        <div class="right">
-          <img src="http://ajax-api.itheima.net/public/images/0.webp" alt="">
-        </div>
-      </li>
     </ul>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./vue.js"></script>
+  <script src="./axios.js"></script>
   <script>
     // 接口地址：http://hmajax.itheima.net/api/news
     // 请求方式：get
     const app = new Vue({
       el: '#app',
       data: {
-        list: []
-      }
+        list:[]
+
+      },
+      async created() {
+        const res = await axios.get('http://hmajax.itheima.net/api/news')
+        console.log(res.data.data);
+        this.list = res.data.data
+      },
+        
     })
   </script>
+</body>
 ```
 
 ### 2.在mounted中获取焦点
 
 ```html
- <style>
-    html,
-    body {
-      height: 100%;
-    }
-    .search-container {
-      position: absolute;
-      top: 30%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-    }
-    .search-container .search-box {
-      display: flex;
-    }
-    .search-container img {
-      margin-bottom: 30px;
-    }
-    .search-container .search-box input {
-      width: 512px;
-      height: 16px;
-      padding: 12px 16px;
-      font-size: 16px;
-      margin: 0;
-      vertical-align: top;
-      outline: 0;
-      box-shadow: none;
-      border-radius: 10px 0 0 10px;
-      border: 2px solid #c4c7ce;
-      background: #fff;
-      color: #222;
-      overflow: hidden;
-      box-sizing: content-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .search-container .search-box button {
-      cursor: pointer;
-      width: 112px;
-      height: 44px;
-      line-height: 41px;
-      line-height: 42px;
-      background-color: #ad2a27;
-      border-radius: 0 10px 10px 0;
-      font-size: 17px;
-      box-shadow: none;
-      font-weight: 400;
-      border: 0;
-      outline: 0;
-      letter-spacing: normal;
-      color: white;
-    }
-    body {
-      background: no-repeat center /cover;
-      background-color: #edf0f5;
-    }
-  </style>
-
+<body>
 <div class="container" id="app">
   <div class="search-container">
     <img src="https://www.itheima.com/images/logo.png" alt="">
@@ -1990,31 +1919,35 @@ Vue生命周期过程中，会**自动运行一些函数**，被称为【**生�
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="./vue.js"></script>
 <script>
   const app = new Vue({
     el: '#app',
     data: {
       words: ''
+    },
+
+    //一进页面就获取焦点,在mounted中
+    mounted(){
+      document.querySelector('#inp').focus()
     }
   })
+ 
 </script>
+</body>
 ```
 
 ## 五、案例-小黑记账清单
 
-### 1.需求图示:
+### 1.需求图示
 
 ![68207197208](img/09vue/assets03/1682071972085.png)
 
 ### 2.需求分析
 
 1.基本渲染
-
 2.添加功能
-
 3.删除功能
-
 4.饼图渲染
 
 ### 3.思路分析
@@ -2043,140 +1976,13 @@ Vue生命周期过程中，会**自动运行一些函数**，被称为【**生�
 
 - 初始化一个饼图 echarts.init(dom)    mounted钩子中渲染
 - 根据数据试试更新饼图 echarts.setOptions({...})
+- echarts <https://echarts.apache.org/zh/index.html>
 
-### 4.代码准备
+### 4.总结
 
-```html
- <!-- CSS only -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-    />
-    <style>
-      .red {
-        color: red!important;
-      }
-      .search {
-        width: 300px;
-        margin: 20px 0;
-      }
-      .my-form {
-        display: flex;
-        margin: 20px 0;
-      }
-      .my-form input {
-        flex: 1;
-        margin-right: 20px;
-      }
-      .table > :not(:first-child) {
-        border-top: none;
-      }
-      .contain {
-        display: flex;
-        padding: 10px;
-      }
-      .list-box {
-        flex: 1;
-        padding: 0 30px;
-      }
-      .list-box  a {
-        text-decoration: none;
-      }
-      .echarts-box {
-        width: 600px;
-        height: 400px;
-        padding: 30px;
-        margin: 0 auto;
-        border: 1px solid #ccc;
-      }
-      tfoot {
-        font-weight: bold;
-      }
-      @media screen and (max-width: 1000px) {
-        .contain {
-          flex-wrap: wrap;
-        }
-        .list-box {
-          width: 100%;
-        }
-        .echarts-box {
-          margin-top: 30px;
-        }
-      }
-    </style>
+![案例总结](img/09vue/assets03/Snipaste_2026-02-09_22-06-59.jpg)
 
-
-  <div id="app">
-      <div class="contain">
-        <!-- 左侧列表 -->
-        <div class="list-box">
-
-          <!-- 添加资产 -->
-          <form class="my-form">
-            <input type="text" class="form-control" placeholder="消费名称" />
-            <input type="text" class="form-control" placeholder="消费价格" />
-            <button type="button" class="btn btn-primary">添加账单</button>
-          </form>
-
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>编号</th>
-                <th>消费名称</th>
-                <th>消费价格</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>帽子</td>
-                <td>99.00</td>
-                <td><a href="javascript:;">删除</a></td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>大衣</td>
-                <td class="red">199.00</td>
-                <td><a href="javascript:;">删除</a></td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="4">消费总计： 298.00</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        
-        <!-- 右侧图表 -->
-        <div class="echarts-box" id="main"></div>
-      </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-      /**
-       * 接口文档地址：
-       * https://www.apifox.cn/apidoc/shared-24459455-ebb1-4fdc-8df8-0aff8dc317a8/api-53371058
-       * 
-       * 功能需求：
-       * 1. 基本渲染
-       * 2. 添加功能
-       * 3. 删除功能
-       * 4. 饼图渲染
-       */
-      const app = new Vue({
-        el: '#app',
-        data: {
-          
-        },
-      })
-    </script>
-```
-
-
+---
 
 ## 六、工程化开发和脚手架
 
@@ -2185,9 +1991,7 @@ Vue生命周期过程中，会**自动运行一些函数**，被称为【**生�
 - 核心包传统开发模式：基于html / css / js 文件，直接引入核心包，开发 Vue。
 - **工程化开发模式：基于构建工具（例如：webpack）的环境中开发Vue。**
 
-![68209003907](assets/1682090039070.png)
-
-
+![68209003907](img/09vue/assets03/1682090039070.png)
 
 工程化开发模式优点：
 
@@ -2201,28 +2005,28 @@ Vue生命周期过程中，会**自动运行一些函数**，被称为【**生�
 
 为了解决以上问题，所以我们需要一个工具，生成标准化的配置
 
-
-
 ### 2.脚手架Vue CLI
 
-####   基本介绍：
+![脚手架](img/09vue/assets03/Snipaste_2026-02-09_22-10-10.jpg)
+
+#### 基本介绍
 
    Vue CLI 是Vue官方提供的一个**全局命令工具**
 
    可以帮助我们**快速创建**一个开发Vue项目的**标准化基础架子**。【集成了webpack配置】
 
-####    好处：
+#### 好处
 
 1. 开箱即用，零配置
 2. 内置babel等工具
 3. 标准化的webpack配置
 
-####    使用步骤：
+#### 使用步骤
 
-1. 全局安装（只需安装一次即可） yarn global add @vue/cli 或者 npm i @vue/cli -g
-2. 查看vue/cli版本： vue --version
-3. 创建项目架子：**vue create project-name**(项目名不能使用中文)
-4. 启动项目：**yarn serve** 或者 **npm run serve**(命令不固定，找package.json)
+1. 全局安装（只需安装一次即可） `yarn global add @vue/cli 或者 npm i @vue/cli -g`
+2. 查看vue/cli版本： `vue --version`
+3. 创建项目架子：`vue create project-name`(项目名不能使用中文)
+4. 启动项目：`yarn serve` 或者 `npm run serve`(命令不固定，找package.json)
 
 
 

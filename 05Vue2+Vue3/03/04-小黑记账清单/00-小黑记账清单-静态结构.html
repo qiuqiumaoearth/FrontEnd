@@ -70,9 +70,9 @@
 
           <!-- 添加资产 -->
           <form class="my-form">
-            <input type="text" class="form-control" placeholder="消费名称" />
-            <input type="text" class="form-control" placeholder="消费价格" />
-            <button type="button" class="btn btn-primary">添加账单</button>
+            <input type="text" class="form-control" placeholder="消费名称" v-model.trim="name"/>
+            <input type="text" class="form-control" placeholder="消费价格" v-model.number="price"/>
+            <button type="button" class="btn btn-primary" @click="add">添加账单</button>
           </form>
 
           <table class="table table-hover">
@@ -85,22 +85,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>帽子</td>
-                <td>99.00</td>
-                <td><a href="javascript:;">删除</a></td>
+              <tr v-for="(item,index) in list" :key="item.id">
+                <td>{{index+1}}</td>
+                <td>{{item.name}}</td>
+                <td :class="{red:item.price>100}">{{item.price.toFixed(2)}}</td>
+                <td><a href="javascript:;" @click="del(item.id)">删除</a></td>
               </tr>
-              <tr>
-                <td>2</td>
-                <td>大衣</td>
-                <td class="red">199.00</td>
-                <td><a href="javascript:;">删除</a></td>
-              </tr>
+
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="4">消费总计： 298.00</td>
+                <td colspan="4">消费总计：{{totalPrice}}</td>
               </tr>
             </tfoot>
           </table>
@@ -124,11 +119,146 @@
        * 3. 删除功能
        * 4. 饼图渲染
        */
+      const defaultArr=[
+        {id: 38, name: '球鞋', price: 299, creator: '张三'},
+        {id: 39, name: '纯棉短袖', price: 89, creator: '张三'},
+        {id: 40, name: '无线耳机', price: 199, creator: '张三'},
+        {id: 41, name: '防滑地垫', price: 39, creator: '张三'},
+        {id: 42, name: '坚果礼盒', price: 129, creator: '张三'}
+
+      ]
+
       const app = new Vue({
         el: '#app',
         data: {
-          
+          list: JSON.parse(localStorage.getItem('list'))||defaultArr,
+          name:'',
+          price:'', 
+          creator:'张三' 
         },
+        // async created(){
+        //   try {
+        //     const res = await axios.get('https://applet-base-api-t.itheima.net/bill',{
+        //       params:{
+        //         creator:this.creator
+        //       }
+        //     })
+        //     console.log(res);
+        //     this.list=res.data.data.length?res.data.data:defaultArr
+        //   } catch (error) {
+        //     console.log(error.response);
+        //   }
+        // },
+
+        mounted(){
+          // 初始化饼图
+        this.initEcharts();
+        // 首次加载时更新饼图数据
+        this.updateEcharts();
+
+        },
+
+        computed:{
+          totalPrice(){
+            return this.list.reduce((sum,item)=>sum+item.price,0)||0
+          }
+        },
+        methods:{
+          initEcharts() {
+          this.myChart = echarts.init(document.querySelector('#main'));
+          // 基础配置（固定不变）
+          this.myChart.setOption({
+            title: {
+              text: '消费账单分布',
+              //subtext: '基于本地存储数据',
+              left: 'center'
+            },
+            tooltip: {
+              trigger: 'item',
+              formatter: '{b}: ¥{c} ({d}%)' // 提示格式：名称：金额（占比）
+            },
+            legend: {
+              orient: 'vertical',
+              left: 'left',
+              // 动态显示所有消费名称
+              data: this.list.map(item => item.name)
+            },
+            series: [
+              {
+                name: '消费金额',
+                type: 'pie',
+                radius: ['30%', '70%'], // 饼图内外半径，更美观
+                data: [],
+                emphasis: {
+                  itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  }
+                }
+              }
+            ]
+          });
+          // 适配窗口大小变化
+          //window.addEventListener('resize', () => this.myChart.resize());
+        },
+        
+        // 更新饼图数据（核心修复）
+        updateEcharts() {
+          if (!this.myChart) return;
+          // 转换列表数据为饼图格式：[{name: '球鞋', value: 299}, ...]
+          const pieData = this.list.map(item => ({
+            name: item.name,
+            value: item.price
+          }));
+          // 更新饼图数据和图例
+          this.myChart.setOption({
+            legend: { data: this.list.map(item => item.name) },
+            series: [{ data: pieData }]
+          });
+        },
+
+
+          del(id){
+            this.list=this.list.filter(item=>item.id!==id)
+            this.updateEcharts();
+          },
+          add(){
+            if (!this.name) {
+              return alert('请输入消费的名称')
+            }
+            if (typeof this.price !== 'number' || !this.price) {
+              return alert('请输入正确的消费价格')
+            }
+
+            this.list.unshift({id:Date.now(),name:this.name,price:this.price,creator:'张三'})
+            this.updateEcharts();
+
+            //更新图表
+            //this.myChart.setOption({series: [{data: this.list.map(item=>({value: this.price,name: this.name})),}]})
+           
+            console.log(this.list);
+            this.name=''
+            this.price=''
+          }
+
+        },
+        watch:{
+          list:{
+            deep:true,
+            handler(newValue){
+              console.log('新',newValue);
+
+              
+              
+              //需要将变化后的newValue存入本地(转JOSN)
+              
+              localStorage.setItem('list',JSON.stringify(newValue))
+            }
+
+          }
+
+        }
       })
     </script>
   </body>
