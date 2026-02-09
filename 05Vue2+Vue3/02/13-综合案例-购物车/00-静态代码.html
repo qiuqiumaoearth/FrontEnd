@@ -61,9 +61,9 @@
           </label>
           <div class="right-box">
             <!-- 所有商品总价 -->
-            <span class="price-box">总价&nbsp;&nbsp;:&nbsp;&nbsp;¥&nbsp;<span class="price">24</span></span>
+            <span class="price-box">总价&nbsp;&nbsp;:&nbsp;&nbsp;¥&nbsp;<span class="price">{{totalprice}}</span></span>
             <!-- 结算按钮 -->
-            <button class="pay">结算( 6 )</button>
+            <button class="pay">结算( {{totalCount}} )</button>
           </div>
         </div>
       </div>
@@ -72,11 +72,7 @@
     </div>
     <script src="../vue.js"></script>
     <script>
-      const app = new Vue({
-        el: '#app',
-        data: {
-          // 水果列表
-          fruitList: [
+      const defaultArr=[
             {
               id: 1,
               icon: 'img/火龙果.png',
@@ -112,7 +108,13 @@
               num: 20,
               price: 34,
             },
-          ],
+          ];
+
+      const app = new Vue({
+        el: '#app',
+        data: {
+          // 水果列表
+          fruitList:  JSON.parse(localStorage.getItem('list'))||defaultArr
         },
         computed:{
           isAll:{
@@ -121,12 +123,15 @@
             },
             set(value){
               this.fruitList.forEach(item => item.isChecked=value);
-
-
             }
-
+          },
+          totalCount(){
+            return this.fruitList.reduce((sum,item)=> item.isChecked?sum+item.num:sum,0)
+            },
+          totalprice(){
+            return this.fruitList.reduce((sum,item)=>item.isChecked?sum+(item.num*item.price):sum,0)
             
-          }
+            }
 
         },
         methods:{
@@ -144,6 +149,19 @@
             fruit.num--
           
           }
+        },
+        watch:{
+          fruitList:{
+            deep:true,
+            handler(newValue){
+              console.log(newValue);
+              
+              //需要将变化后的newValue存入本地(转JOSN)
+              localStorage.setItem('list',JSON.stringify(newValue))
+            }
+
+          }
+
         }
 
 
