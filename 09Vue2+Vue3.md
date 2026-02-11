@@ -2272,3 +2272,20 @@ export default {
 3. 拆分封装通用小组件  (局部或全局注册)
 
    将来 → 通过 js 动态渲染，实现功能
+   模块划分,一个一个小组件
+
+   ```html
+    <div class="bd">
+    <ul>
+      <BaseGoodsItem v-for="item in 4" :key="item"></BaseGoodsItem>
+      <!-- <BaseGoodsItem></BaseGoodsItem>
+      <BaseGoodsItem></BaseGoodsItem>
+      <BaseGoodsItem></BaseGoodsItem> -->
+    </ul>
+    </div>
+   ```
+
+### 快捷键
+
+- 所有都折叠 ctrl k + ctrl 0
+- 所有都展开 ctrl k + ctrl j
