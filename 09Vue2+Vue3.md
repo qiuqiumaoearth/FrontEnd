@@ -2028,43 +2028,37 @@ Vue生命周期过程中，会**自动运行一些函数**，被称为【**生�
 3. 创建项目架子：`vue create project-name`(项目名不能使用中文)
 4. 启动项目：`yarn serve` 或者 `npm run serve`(命令不固定，找package.json)
 
-
-
 ## 七、项目目录介绍和运行流程
 
 ### 1.项目目录介绍
 
-![68209214852](assets/1682092148521.png)
+![68209214852](img/09vue/assets03/1682092148521.png)
 
 虽然脚手架中的文件有很多，目前咱们只需人事三个文件即可
 
 1. main.js  入口文件
-2. App.vue  App根组件 
+2. App.vue  App根组件
 3. index.html 模板文件
 
 ### 2.运行流程
 
-![68209403287](assets/1682094032876.png)
+![68209403287](img/09vue/assets03/1682094032876.png)
+
+---
 
 ## 八、组件化开发
 
-​     组件化：一个页面可以拆分成一个个组件，每个组件有着自己独立的结构、样式、行为。
+组件化：一个页面可以拆分成一个个组件，每个组件有着自己独立的结构、样式、行为。
 
-​     好处：便于维护，利于复用 → 提升开发效率。
+好处：便于维护，利于复用 → 提升开发效率。
 
-​     组件分类：普通组件、根组件。
+组件分类：普通组件、根组件。
 
-​      比如：下面这个页面，可以把所有的代码都写在一个页面中，但是这样显得代码比较混乱，难易维护。咱们可以按模块进行组件划分
+比如：下面这个页面，可以把所有的代码都写在一个页面中，但是这样显得代码比较混乱，难易维护。咱们可以按模块进行组件划分
 
-![68216885237](assets/1682168852372.png)
+![68216885237](img/09vue/assets03/1682168852372.png)
 
-总结：
-
-组件化的好处是什么？
-
-组件的分类？
-
-
+---
 
 ## 九、根组件 App.vue
 
@@ -2072,63 +2066,98 @@ Vue生命周期过程中，会**自动运行一些函数**，被称为【**生�
 
 整个应用最上层的组件，包裹所有普通小组件
 
-![68216913168](assets/1682169131688.png)
-
-
+![68216913168](img/09vue/assets03/1682169131688.png)
 
 ### 2.组件是由三部分构成
 
 - 语法高亮插件
 
-![68216926426](assets/1682169264266.png)
+![68216926426](img/09vue/assets03/1682169264266.png)
 
 - 三部分构成
 
   - template：结构 （有且只能一个根元素）
-  - script:   js逻辑 
-  -  style： 样式 (可支持less，需要装包)
+  - script:   js逻辑
+  - style： 样式 (可支持less，需要装包)
 
 - 让组件支持less
 
-  （1） style标签，lang="less" 开启less功能 
+  （1） style标签，lang="less" 开启less功能
 
   （2） 装包: yarn add less less-loader -D 或者npm i less less-loader -D
+  （vue2要下载对应的版本）
 
-### 3.总结
+  ```bash
+  # Vue2 专用：安装兼容版本的 less-loader
+  npm install less@4.1.3 less-loader@7.3.0 --save-dev
+  ```
 
-App组件包含哪三部分？
+```html
+
+<template>
+  <div class="app">
+    <div class="box" @click="fn">我是盒子</div>
+  </div>
+</template>
 
 
+<script>
+//import HelloWorld from './components/HelloWorld.vue'
+
+//导出的是当前组件的配置项
+//里面可以提供 data(特殊),methods,computed,watch,生命周期八大钩子
+export default {
+  methods:{
+    fn(){
+      alert('你好')
+    }
+  }
+}
+</script>
+
+<style lang = 'less'>
+
+/* 让style支持less
+  1.给style加上lang="less"
+  2.安装依赖包 less less-loader
+    yarn add less less-loader -D (开发依赖)
+ */
+.app{
+  width: 400px;
+  height: 400px;
+  background-color: pink;
+  .box{
+  width: 200px;
+  height: 200px;
+  background-color: blue;
+  color: #fff;
+  text-align: center;
+}
+}
+</style>
+
+
+```
 
 ## 十、普通组件的注册使用-局部注册
 
-### 1.特点：
+1.特点 :只能在注册的组件内使用
 
-只能在注册的组件内使用
+2.步骤
+    - 创建.vue文件（三个组成部分）
+    - 在使用的组件内先导入再注册，最后使用
+3.使用方式:当成html标签使用即可  `<组件名></组件名>`
+4.组件名规范 —> 大驼峰命名法， 如 HmHeader
+5.语法
 
-### 2.步骤：
-
-1. 创建.vue文件（三个组成部分）
-2. 在使用的组件内先导入再注册，最后使用
-
-### 3.使用方式：
-
-当成html标签使用即可  <组件名></组件名>
-
-### 4.注意：
-
-组件名规范 —> 大驼峰命名法， 如 HmHeader
-
-### 5.语法：
-
-![68222796681](assets/1682227966812.png)
+![68222796681](img/09vue/assets03/1682227966812.png)
 
 ```js
 // 导入需要注册的组件
 import 组件对象 from '.vue文件路径'
 import HmHeader from './components/HmHeader'
 
-export default {  // 局部注册
+export default { // 局部注册
   components: {
    '组件名': 组件对象,
     HmHeader:HmHeaer,
@@ -2137,126 +2166,54 @@ export default {  // 局部注册
 }
 ```
 
-
-
-### 6.练习
-
+- 练习
 在App组件中，完成以下练习。在App.vue中使用组件的方式完成下面布局
+![68222790287](img/09vue/assets03/1682227902873.png)
 
-![68222790287](assets/1682227902873.png)
-
-
-
-```vue
+```html
 <template>
-  <div class="hm-header">
+  <div class="hm-header"> 
     我是hm-header
   </div>
 </template>
 
 <script>
-export default {
 
-}
 </script>
 
 <style>
-.hm-header {
+
+.hm-header{
+  width: 100%;
   height: 100px;
-  line-height: 100px;
   text-align: center;
+  line-height: 100px;
   font-size: 30px;
   background-color: #8064a2;
   color: white;
+  margin: 0 auto;
 }
+
 </style>
 ```
 
-```vue
-<template>
-  <div class="hm-main">
-    我是hm-main
-  </div>
-</template>
-
-<script>
-export default {
-
-}
-</script>
-
-<style>
-.hm-main {
-  height: 400px;
-  line-height: 400px;
-  text-align: center;
-  font-size: 30px;
-  background-color: #f79646;
-  color: white;
-  margin: 20px 0;
-}
-</style>
-```
-
-```vue
-<template>
-  <div class="hm-footer">
-    我是hm-footer
-  </div>
-</template>
-
-<script>
-export default {
-
-}
-</script>
-
-<style>
-.hm-footer {
-  height: 100px;
-  line-height: 100px;
-  text-align: center;
-  font-size: 30px;
-  background-color: #4f81bd;
-  color: white;
-}
-</style>
-```
-
-### 7.总结
-
-- A组件内部注册的局部组件能在B组件使用吗
-- 局部注册组件的步骤是什么
-- 使用组件时 应该按照什么命名法
-
-
+---
 
 ## 十一、普通组件的注册使用-全局注册
 
-### 1.特点：
-
-全局注册的组件，在项目的**任何组件**中都能使用
-
-### 2.步骤
-
-1. 创建.vue组件（三个组成部分）
-2. **main.js**中进行全局注册
-
-### 3.使用方式
-
-当成HTML标签直接使用
-
+1.特点 :全局注册的组件，在项目的**任何组件**中都能使用
+2.步骤
+    - 创建.vue组件（三个组成部分）
+    - **main.js**中进行全局注册
+3.使用方式:当成HTML标签直接使用
 > <组件名></组件名>
-
-### 4.注意
+4.注意
 
 组件名规范 —> 大驼峰命名法， 如 HmHeader
 
-### 5.语法
+5.语法: `Vue.component('组件名', 组件对象)`
 
-Vue.component('组件名', 组件对象)
-
-例：
+例：在main.js中导入
 
 ```js
 // 导入需要全局注册的组件
@@ -2264,13 +2221,13 @@ import HmButton from './components/HmButton'
 Vue.component('HmButton', HmButton)
 ```
 
-### 6.练习
+- 练习
 
 在以下3个局部组件中是展示一个通用按钮
 
-![68226318734](assets/1682263187344.png)
+![68226318734](img/09vue/assets03/1682263187344.png)
 
-```vue
+```html
 <template>
   <button class="hm-button">通用按钮</button>
 </template>
@@ -2296,13 +2253,7 @@ export default {
 </style>
 ```
 
-### 7.总结
-
-1.全局注册组件应该在哪个文件中注册以及语法是什么？
-
-2.全局组件在项目中的任何一个组件中可不可以使用？
-
-
+---
 
 ## 十二、综合案例
 
@@ -2310,9 +2261,7 @@ export default {
 
 ### 2.小兔仙组件拆分示意图
 
-![68226549162](assets/1682265491628.png)
-
-
+![68226549162](img/09vue/assets03/1682265491628.png)
 
 ### 3.开发思路
 
@@ -2323,5 +2272,3 @@ export default {
 3. 拆分封装通用小组件  (局部或全局注册)
 
    将来 → 通过 js 动态渲染，实现功能
-
-1111

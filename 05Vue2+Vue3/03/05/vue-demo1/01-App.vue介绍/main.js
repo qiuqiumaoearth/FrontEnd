@@ -1,18 +1,10 @@
 //此文件核心作用:导入APP。vue，基于App.vue创建结构渲染index
-//编写导入的代码,往代码的顶部编写(规范)
 
 //1.导入vue核心包
 import Vue from 'vue'
 
 //2.导入APP.vue根组件
 import App from './App.vue'
-
-import HmButton from './components/HmButton.vue'
-
-//进行全局注册
-//Vue.component(组件名,组件对象)
-Vue.component('HmButton',HmButton)
-
 
 //提示,当前处于什么环境(生产环境pro/开发环境dev)
 Vue.config.productionTip = true
