@@ -3184,11 +3184,14 @@ export default {
 
 ## 十六、v-model原理
 
-### 1.原理
+### 1.v-model原理
 
-v-model本质上是一个语法糖。例如应用在输入框上，就是value属性 和 input事件 的合写
+v-model本质上是一个语法糖。
+例如:
+应用在输入框上，就是value属性 和 input事件 的合写;
+在复选框,就是checked属性 和 change事件的合写
 
-```vue
+```html
 <template>
   <div id="app" >
     <input v-model="msg" type="text">
@@ -3199,39 +3202,45 @@ v-model本质上是一个语法糖。例如应用在输入框上，就是value�
 
 ```
 
-### 2.作用：
+### 2.v-model作用
 
 提供数据的双向绑定
 
 - 数据变，视图跟着变 :value
 - 视图变，数据跟着变 @input
 
-### 3.注意
+### 3.$event注意
 
 **$event** 用于在模板中，获取事件的形参
 
 ### 4.代码示例
 
-```vue
+```html
 <template>
-  <div class="app">
-    <input type="text"  />
-    <br /> 
-    <input type="text" />
+  <div>
+    <div id="app" >
+      <input v-model="msg1" type="text">
+      <br/>
+      <input :value="msg2" @input="msg = $event.target.value" type="text">
+    </div>
+    
   </div>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      msg1: '',
-      msg2: '',
+  export default {
+    data(){
+      return {
+        msg1:'123',
+        msg2:'456'
+      }
     }
-  },
-}
-</script> 
-<style>
+    
+  }
+</script>
+
+<style lang="scss" scoped>
+
 </style>
 ```
 
@@ -3241,9 +3250,9 @@ export default {
 
 底层处理的是 checked属性和change事件。
 
-**不过咱们只需要掌握应用在文本框上的原理即可**
+==只需要掌握应用在文本框上的原理即可==
 
-
+---
 
 ## 十七、表单类组件封装
 
@@ -3251,14 +3260,16 @@ export default {
 
 实现子组件和父组件数据的双向绑定 （实现App.vue中的selectId和子组件选中的数据进行双向绑定）
 
-### 2.代码演示
+### 2.表单双向绑定代码演示
 
 App.vue
 
-```vue
+```html
 <template>
   <div class="app">
-    <BaseSelect></BaseSelect>
+
+    <!-- 用$event 监听事件发生改变,获取最新的值 -->
+    <BaseSelect :cityId="selectId" @changeId="selectId = $event"></BaseSelect>
   </div>
 </template>
 
@@ -3282,10 +3293,21 @@ export default {
 
 BaseSelect.vue
 
-```vue
+```html
 <template>
   <div>
     <select>
+      <option value="101">北京</option>
+      <option value="102">上海</option>
+      <option value="103">武汉</option>
+      <option value="104">广州</option>
+      <option value="105">深圳</option>
+    </select>
+  </div>
+</template><template>
+  <div>
+    <select :value="cityId" @change="handleSelect">
+      <!-- 实现双向绑定,注意props数据,不能被子组件修改,所以不能使用v-model进行双向绑定,只能拆分成原本的value+change -->
       <option value="101">北京</option>
       <option value="102">上海</option>
       <option value="103">武汉</option>
@@ -3297,6 +3319,19 @@ BaseSelect.vue
 
 <script>
 export default {
+
+  //获取来自父组件的数据
+  props:{
+    cityId:String
+  },
+  methods:{
+    handleSelect(e){
+      console.log(e.target.value);
+
+      // 将修改后的数据传递给父组件
+      this.$emit('changeId',e.target.value)
+    }
+  }
 }
 </script>
 
@@ -3304,54 +3339,117 @@ export default {
 </style>
 ```
 
-
+---
 
 ## 十八、v-model简化代码
 
-### 1.目标：
+### 1.目标
 
 父组件通过v-model **简化代码**，实现子组件和父组件数据 **双向绑定**
 
-### 2.如何简化：
+### 2.如何简化
 
 v-model其实就是 :value和@input事件的简写
 
 - 子组件：props通过value接收数据，事件触发 input
-- 父组件：v-model直接绑定数据
+- 父组件：v-model直接绑定数据(:value + @input)
 
-### 3.代码示例
+### 3.简化代码示例
 
 子组件
 
-```vue
-<select :value="value" @change="handleChange">...</select>
-props: {
-  value: String
-},
-methods: {
-  handleChange (e) {
-    this.$emit('input', e.target.value)
-  }
+```html
+<template>
+  <div>
+    <!-- <select :value="cityId" @change="handleSelect"> -->
+      
+      <!-- 用v-model进行简化 -->
+      <select :value="value" @change="handleSelect">
+
+      
+      <!-- 实现双向绑定,注意props数据,不能被子组件修改,所以不能使用v-model进行双向绑定,只能拆分成原本的value+change -->
+      <option value="101">北京</option>
+      <option value="102">上海</option>
+      <option value="103">武汉</option>
+      <option value="104">广州</option>
+      <option value="105">深圳</option>
+    </select>
+  </div>
+</template>
+
+<script>
+export default {
+
+  //获取来自父组件的数据
+  props:{
+    // cityId:String
+
+    //用v-model进行简化
+    value:String
+  },
+  methods:{
+    handleSelect(e){
+      console.log(e.target.value);
+
+      // 将修改后的数据传递给父组件
+      // this.$emit('changeId',e.target.value)
+
+      //用v-model进行简化
+      this.$emit('input',e.target.value)
+
+    }
+  }
 }
+</script>
+
+<style>
+</style>
 ```
 
 父组件
 
-```vue
-<BaseSelect v-model="selectId"></BaseSelect>
+```html
+<template>
+  <div class="app">
+
+    <!-- 用$event 监听事件发生改变,获取最新的值 -->
+    <!-- <BaseSelect :cityId="selectId" @changeId="selectId = $event"></BaseSelect> -->
+     
+    <!-- 用v-model进行简化 v-model的本质就是 :value + @input -->
+    <BaseSelect v-model="selectId"></BaseSelect>
+
+  </div>
+</template>
+
+<script>
+import BaseSelect from './components/BaseSelect.vue'
+export default {
+  data() {
+    return {
+      selectId: '102',
+    }
+  },
+  components: {
+    BaseSelect,
+  },
+}
+</script>
+
+<style>
+</style>
 ```
 
-
+---
 
 ## 十九、.sync修饰符
 
-### 1.作用
+### 1.sync作用
 
 可以实现 **子组件** 与 **父组件数据** 的 **双向绑定**，简化代码
 
 简单理解：**子组件可以修改父组件传过来的props值**
 
-### 2.场景
+### 2.sync场景
 
 封装弹框类的基础组件， visible属性 true显示 false隐藏
 

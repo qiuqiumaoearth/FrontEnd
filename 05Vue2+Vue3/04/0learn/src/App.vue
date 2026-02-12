@@ -29,7 +29,16 @@
     <br/>
     <BaseA></BaseA>
     <BaseB></BaseB>
-    
+
+    <br/>
+    <VmodelYuan></VmodelYuan>
+
+    <br/>
+    <!-- <BaseSelect :cityId="selectId" @changeId="selectId = $event"></BaseSelect> -->
+
+    <!-- 用v-model进行简化 v-model的本质就是 :value + @input -->
+    <BaseSelect v-model="selectId"></BaseSelect>
+
 
 
   </div>
@@ -47,6 +56,11 @@ import BaseProgress from './components/BaseProgress.vue'
 import BaseA from './components/BaseA.vue';
 import BaseB from './components/BaseB.vue';
 
+import VmodelYuan from './components/VmodelYuan.vue';
+
+import BaseSelect from './components/BaseSelect.vue';
+
+
 
 
 
@@ -62,7 +76,10 @@ export default {
     UserInfo,
     BaseProgress,
     BaseA,
-    BaseB
+    BaseB,
+    VmodelYuan,
+    BaseSelect,
+    
   },
   data(){
     return {
@@ -75,7 +92,8 @@ export default {
       },
       hobby: ['篮球', '足球', '羽毛球'],
       width:87,
-      count:100
+      count:100,
+      selectId: '102',
     }
   },
   methods:{
