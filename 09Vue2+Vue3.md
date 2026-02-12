@@ -2688,7 +2688,7 @@ export default {
 
 ### 2.作用
 
-为组件的 prop 指定**验证要求**，不符合要求，控制台就会有**错误提示**  → 帮助开发者，快速发现错误
+为组件的 prop 指定**验证要求**，不符合要求，控制台就会有**错误提示**  => 帮助开发者，快速发现错误
 
 ### 3.语法
 
@@ -2703,7 +2703,7 @@ export default {
 
 App.vue
 
-```vue
+```html
 <template>
   <div class="app">
     <BaseProgress :w="width"></BaseProgress>
@@ -2730,7 +2730,7 @@ export default {
 
 BaseProgress.vue
 
-```vue
+```html
 <template>
   <div class="base-progress">
     <div class="inner" :style="{ width: w + '%' }">
@@ -2740,8 +2740,13 @@ BaseProgress.vue
 </template>
 
 <script>
+
 export default {
-  props: ['w'],
+  // props: ['w'],
+  props:{
+    // 传入的类型校验
+    w:Number //Number,String,Boolean,Array,Object,Function
+  }
 }
 </script>
 
@@ -2778,7 +2783,7 @@ export default {
 
 ### 1.props校验语法
 
-```vue
+```js
 props: {
   校验的属性名: {
     type: 类型,  // Number String Boolean ...
@@ -2794,7 +2799,7 @@ props: {
 
 ### 2.代码实例
 
-```vue
+```html
 <script>
 export default {
   // 完整写法（类型、默认值、非空、自定义校验）
@@ -2821,7 +2826,6 @@ export default {
 ### 3.props注意
 
 1.default和required一般不同时写（因为当时必填项时，肯定是有值的）
-
 2.default后面如果是简单类型的值，可以直接写默认。如果是复杂类型的值，则需要以函数的形式return一个默认值
 
 ---
@@ -2837,73 +2841,93 @@ export default {
 - data 的数据是**自己**的  →   随便改  
 - prop 的数据是**外部**的  →   不能直接改，要遵循 **单向数据流**
 
-### 3.单向数据流：
+### 3.单向数据流
 
 父级props 的数据更新，会向下流动，影响子组件。这个数据流动是单向的
 
 ### 4.单选数据流代码演示
 
+点击计数按钮,儿子的元素由父亲传过来,想要修改儿子的元素,就需要$emit传给父亲,由父亲修改
+
 App.vue
 
-```vue
+```html
 <template>
-  <div class="app">
-    <BaseCount></BaseCount>
+  <div id="app">
+    <BaseCount :count="count" @changeCount="handleCount"></BaseCount>
   </div>
 </template>
 
 <script>
-import BaseCount from './components/BaseCount.vue'
+import BaseCount from './components/BaseCount.vue';
 export default {
-  components:{
-    BaseCount
+  name: 'App',
+  components: {
+    BaseCount,
   },
   data(){
+    return {
+      count:100
+    }
   },
+  methods:{
+    //提供处理函数,提供逻辑
+    handleCount(newCount){
+      console.log(newCount);
+      this.count=newCount
+    }
+  }
 }
 </script>
 
 <style>
-
 </style>
+
 ```
 
 BaseCount.vue
 
-```vue
+```html
 <template>
-  <div class="base-count">
-    <button @click="count--">-</button>
-    <span>{{ count }}</span>
-    <button @click="count++">+</button>
+  <div>
+    <button @click="handleSub">-</button>
+    <span>{{ count}}</span>
+    <button @click="handleAdd">+</button>
   </div>
 </template>
 
 <script>
-export default {
-  // 1.自己的数据随便修改  （谁的数据 谁负责）
-   data () {
-     return {
-       count: 100,
-     }
-   },
-  // 2.外部传过来的数据 不能随便修改
-  //props: {
-  //  count: {
-  //    type: Number,
-  //  }, 
-  //}
-}
+  export default {
+    // data必须是一个函数 => 保证每个组件实例,维护独立的一个数据对象
+    // data(){
+    //   return {
+    //     count:999
+    //   }
+    // }
+    
+    //props传过来的数据(外部数据)
+    //不能直接修改
+    props:{
+      count:Number
+    },
+    methods:{
+      handleAdd(){
+        //子传父.$emit,让父亲进行修改,谁的数据谁负责
+        this.$emit('changeCount',this.count +1)
+      },
+      handleSub(){
+        this.$emit('changeCount',this.count -1)
+
+      }
+    }
+  }
 </script>
 
-<style>
-.base-count {
-  margin: 20px;
-}
+<style lang="scss" scoped>
 </style>
 ```
 
-![68232373422](assets/1682323734228.png)
+![68232373422](img/09vue/assets04/1682323734228.png)
 
 ### 5.口诀
 
@@ -2916,19 +2940,15 @@ export default {
 - 拆分基础组件
 - 渲染待办任务
 - 添加任务
--  删除任务
--  底部合计 和 清空功能
--  持久化存储
-
-
+- 删除任务
+- 底部合计 和 清空功能
+- 持久化存储
 
 ### 2.拆分基础组件
 
 咱们可以把小黑记事本原有的结构拆成三部分内容：头部（TodoHeader）、列表(TodoMain)、底部(TodoFooter)
 
-![68232559841](assets/1682325598418.png)
-
-
+![68232559841](img/09vue/assets04/1682325598418.png)
 
 ## 十、综合案例-列表渲染
 
@@ -2937,8 +2957,6 @@ export default {
 1. 提供数据：提供在公共的父组件 App.vue
 2. 通过父传子，将数据传递给TodoMain
 3. 利用v-for进行渲染
-
-
 
 ## 十一、综合案例-添加功能
 
@@ -2949,8 +2967,6 @@ export default {
 3. 子传父，将任务名称传递给父组件App.vue
 4. 父组件接受到数据后 进行添加 **unshift**(自己的数据自己负责)
 
-
-
 ## 十二、综合案例-删除功能
 
 思路分析：
@@ -2958,8 +2974,6 @@ export default {
 1. 监听时间（监听删除的点击）携带id
 2. 子传父，将删除的id传递给父组件App.vue
 3. 进行删除 **filter**  (自己的数据自己负责)
-
-
 
 ## 十三、综合案例-底部功能及持久化存储
 
@@ -2969,13 +2983,11 @@ export default {
 2. 清空功能：监听事件 —> **子组件**通知父组件 —>父组件清空
 3. 持久化存储：watch监听数据变化，持久化到本地
 
-
-
 ## 十四、非父子通信-event bus 事件总线
 
-### 1.作用
+### 1.event bus作用
 
-非父子组件之间，进行简易消息传递。(复杂场景→ Vuex)
+非父子组件之间，进行简易消息传递。(==复杂场景→ Vuex==)
 
 ### 2.步骤
 
@@ -2989,7 +3001,7 @@ export default {
 
 2. A组件（接受方），监听Bus的 $on事件
 
-   ```vue
+   ```js
    created () {
      Bus.$on('sendMsg', (msg) => {
        this.msg = msg
@@ -2999,15 +3011,15 @@ export default {
 
 3. B组件（发送方），触发Bus的$emit事件
 
-   ```vue
+   ```js
    Bus.$emit('sendMsg', '这是一个消息')
    ```
 
-   ![68232839240](assets/1682328392400.png)
+   ![68232839240](img/09vue/assets04/1682328392400.png)
 
 ### 3.代码示例
 
-EventBus.js
+EventBus.js(这是是事件总线,可一发,多收)
 
 ```js
 import Vue from 'vue'
@@ -3017,10 +3029,10 @@ export default Bus
 
 BaseA.vue(接受方)
 
-```vue
+```html
 <template>
   <div class="base-a">
-    我是A组件（接收方）
+    我是A组件(接收方)
     <p>{{msg}}</p>  
   </div>
 </template>
@@ -3028,6 +3040,14 @@ BaseA.vue(接受方)
 <script>
 import Bus from '../utils/EventBus'
 export default {
+  created(){
+    //在A组件(接收方)中进行监听Bus的事件(订阅消息)
+    Bus.$on('sendMsg',(msg)=>{
+      console.log(msg);
+      this.msg = msg
+    })
+
+  },
   data() {
     return {
       msg: '',
@@ -3044,22 +3064,32 @@ export default {
   border-radius: 3px;
   margin: 10px;
 }
+p{
+  color: #0ff;
+}
 </style>
 ```
 
 BaseB.vue(发送方)
 
-```vue
+```html
 <template>
   <div class="base-b">
-    <div>我是B组件（发布方）</div>
-    <button>发送消息</button>
+    <div>我是B组件(发布方)</div>
+    <button @click="clickSend">发送消息</button>
   </div>
 </template>
 
 <script>
 import Bus from '../utils/EventBus'
 export default {
+  methods:{
+    clickSend(){
+      //B组件(发送方),触发事件的方式传递参数(发布消息)
+      Bus.$emit('sendMsg','这是一个消息')
+    }
+
+  }
 }
 </script>
 
@@ -3076,7 +3106,7 @@ export default {
 
 App.vue
 
-```vue
+```html
 <template>
   <div class="app">
     <BaseA></BaseA>
@@ -3100,31 +3130,19 @@ export default {
 </style>
 ```
 
-### 4.总结
-
-1.非父子组件传值借助什么？
-
-2.什么是事件总线
-
-3.发送方应该调用事件总线的哪个方法
-
-4.接收方应该调用事件总线的哪个方法
-
-5.一个组件发送数据，可不可以被多个组件接收
-
-
+---
 
 ## 十五、非父子通信-provide&inject
 
-### 1.作用
+### 1.provide&inject作用
 
-跨层级共享数据
+跨层级共享数据,祖先给后代传递数据
 
 ### 2.场景
 
-![68232950551](assets/1682329516878.png)
+![68232950551](img/09vue/assets04/1682329516878.png)
 
-### 3.语法
+### 3.provide&inject语法
 
 1. 父组件 provide提供数据
 
@@ -3132,10 +3150,15 @@ export default {
 export default {
   provide () {
     return {
-       // 普通类型【非响应式】
+       // 普通类型【非响应式-数据变,页面不改变】
        color: this.color, 
-       // 复杂类型【响应式】
-       userInfo: this.userInfo, 
+
+       // 复杂类型【响应式-数据变,页面会改变】
+       //userInfo: this.userInfo, 
+       userInfo:{
+        name:'zs',
+        age:18
+       }
     }
   }
 }
@@ -3147,7 +3170,7 @@ export default {
 export default {
   inject: ['color','userInfo'],
   created () {
-    console.log(this.color, this.userInfo)
+    console.log(this.color, this.userInfo.name)
   }
 }
 ```
@@ -3157,11 +3180,11 @@ export default {
 - provide提供的简单类型的数据不是响应式的，复杂类型数据是响应式。（推荐提供复杂类型数据）
 - 子/孙组件通过inject获取的数据，不能在自身组件内修改
 
-
+---
 
 ## 十六、v-model原理
 
-### 1.原理：
+### 1.原理
 
 v-model本质上是一个语法糖。例如应用在输入框上，就是value属性 和 input事件 的合写
 

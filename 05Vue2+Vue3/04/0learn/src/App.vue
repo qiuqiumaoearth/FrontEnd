@@ -4,7 +4,7 @@
     <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <BaseOne></BaseOne>
     <BaseTwo></BaseTwo>
-    <BaseCount></BaseCount>
+    <BaseCount :count="count" @changeCount="handleCount"></BaseCount>
     <br/>
     <div class="dad">我是app组件
       <!-- 父组件,对消息进行监听 -->
@@ -22,6 +22,16 @@
       ></UserInfo>
     </div>
 
+    <div class="baseprogress">
+      <BaseProgress :w="width"></BaseProgress>
+    </div>
+
+    <br/>
+    <BaseA></BaseA>
+    <BaseB></BaseB>
+    
+
+
   </div>
 </template>
 
@@ -32,8 +42,16 @@ import BaseTwo from './components/BaseTwo.vue';
 import BaseCount from './components/BaseCount.vue';
 import BaseSon from './components/BaseSon.vue';
 import UserInfo from './components/UserInfo.vue'
+import BaseProgress from './components/BaseProgress.vue'
+
+import BaseA from './components/BaseA.vue';
+import BaseB from './components/BaseB.vue';
+
+
+
 
 export default {
+
   name: 'App',
   components: {
     // HelloWorld
@@ -41,7 +59,10 @@ export default {
     BaseTwo,
     BaseCount,
     BaseSon,
-    UserInfo
+    UserInfo,
+    BaseProgress,
+    BaseA,
+    BaseB
   },
   data(){
     return {
@@ -53,6 +74,8 @@ export default {
         brand: '宝马',
       },
       hobby: ['篮球', '足球', '羽毛球'],
+      width:87,
+      count:100
     }
   },
   methods:{
@@ -60,6 +83,10 @@ export default {
     handleChange(newTitle){
       console.log(newTitle);
       this.myTitle=newTitle
+    },
+    handleCount(newCount){
+      console.log(newCount);
+      this.count=newCount
     }
   }
 }
