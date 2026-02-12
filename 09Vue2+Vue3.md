@@ -1229,7 +1229,7 @@ item从1 开始
 
 基于**现有的数据**，计算出来的**新属性**。 **依赖**的数据变化，**自动**重新计算。
 
-### 2.语法
+### 2.computed语法
 
 1. 声明在 **computed 配置项**中，一个计算属性对应一个函数
 2. 使用起来和普通属性一样使用  {{ 计算属性名}}  
@@ -1452,7 +1452,7 @@ item从1 开始
 
 ​ **监视数据变化**，执行一些业务逻辑或异步操作
 
-### 2.语法
+### 2.watch语法
 
 1. watch同样声明在跟data同级的配置项中
 
@@ -1546,7 +1546,7 @@ item从1 开始
 
 ## 十三、watch侦听器
 
-### 1.语法
+### 1.watch完整语法
 
 完整写法 —>添加额外的配置项
 
@@ -1625,7 +1625,7 @@ watch: {// watch 完整写法
     </script>
 ```
 
-### 4.总结
+### 4.watch总结
 
 watch侦听器的写法有几种？
 
@@ -1982,7 +1982,7 @@ Vue生命周期过程中，会**自动运行一些函数**，被称为【**生�
 - 根据数据试试更新饼图 echarts.setOptions({...})
 - echarts <https://echarts.apache.org/zh/index.html>
 
-### 4.总结
+### 4.小黑记账总结
 
 ![案例总结](img/09vue/assets03/Snipaste_2026-02-09_22-06-59.jpg)
 
@@ -2409,7 +2409,7 @@ export default {
 1. 当前组件内标签都被添加**data-v-hash值** 的属性
 2. css选择器都被添加 [**data-v-hash值**] 的属性选择器
 
-最终效果: **必须是当前组件的元素**, 才会有这个自定义属性, 才会被这个样式作用到 
+最终效果: **必须是当前组件的元素**, 才会有这个自定义属性, 才会被这个样式作用到
 
 ![68230651737](img/09vue/assets04/1682306517375.png)
 
@@ -2423,41 +2423,41 @@ export default {
 
 每次创建新的组件实例，都会新**执行一次data 函数**，得到一个新对象。
 
-![68230695207](assets/1682306952078.png)
+![68230695207](img/09vue/assets04/1682306952078.png)
 
-### 2.代码演示
+### 2.data代码演示
 
 BaseCount.vue
 
-```vue
+```html
 <template>
-  <div class="base-count">
+  <div>
     <button @click="count--">-</button>
-    <span>{{ count }}</span>
+    <span>{{ count}}</span>
     <button @click="count++">+</button>
   </div>
 </template>
 
 <script>
-export default {
-  data: function () {
-    return {
-      count: 100,
+  export default {
+    // data必须是一个函数 => 保证每个组件实例,维护独立的一个数据对象
+    data(){
+      return {
+        count:999
+      }
     }
-  },
-}
+    
+  }
 </script>
 
-<style>
-.base-count {
-  margin: 20px;
-}
+<style lang="scss" scoped>
+
 </style>
 ```
 
 App.vue
 
-```vue
+```html
 <template>
   <div class="app">
     <BaseCount></BaseCount>
@@ -2477,11 +2477,7 @@ export default {
 </style>
 ```
 
-### 3.总结
-
-data写成函数的目的是什么？
-
-
+---
 
 ## 四、组件通信
 
@@ -2494,38 +2490,25 @@ data写成函数的目的是什么？
 
 ### 2.组件之间如何通信
 
-![68230890309](assets/1682308903094.png)
-
-思考：
-
-1. 组件之间有哪些关系？
-2. 对应的组件通信方案有哪几类？
+![68230890309](img/09vue/assets04/1682308903094.png)
 
 ### 3.组件关系分类
 
 1. 父子关系
 2. 非父子关系
 
-![68231807380](assets/1682318073803.png)
-
-
+![68231807380](img/09vue/assets04/1682318073803.png)
 
 ### 4.通信解决方案
 
-![68231811109](assets/1682318111090.png)
-
-
-
-
+![68231811109](img/09vue/assets04/1682318111090.png)
 
 ### 5.父子通信流程
 
 1. 父组件通过 **props** 将数据传递给子组件
 2. 子组件利用 **$emit** 通知父组件修改更新
 
-![68231844456](assets/1682318444566.png)
-
-
+![68231844456](img/09vue/assets04/1682318444566.png)
 
 ### 6.父向子通信代码示例
 
@@ -2533,7 +2516,7 @@ data写成函数的目的是什么？
 
 父组件App.vue
 
-```vue
+```html
 <template>
   <div class="app" style="border: 3px solid #000; margin: 10px">
     我是APP组件 
@@ -2560,29 +2543,29 @@ export default {
 </style>
 ```
 
-
-
 子组件Son.vue
 
-```vue
+```html
 <template>
-  <div class="son" style="border:3px solid #000;margin:10px">
-    我是Son组件
+  <div style="border: 3px solid #000; margin: 10px">
+    我是son组件{{title}}
+
   </div>
 </template>
 
 <script>
-export default {
-  name: 'Son-Child',
-}
+  export default {
+    //通过props进行接收
+    props:['title']
+    
+  }
 </script>
 
-<style>
-
+<style scoped>
 </style>
 ```
 
-![68231871178](assets/1682318711785.png)
+![68231871178](img/09vue/assets04/1682318711785.png)
 
 父向子传值步骤
 
@@ -2590,13 +2573,11 @@ export default {
 2. 子组件内部通过props接收
 3. 模板中直接使用 props接收的值
 
-
-
 ### 7.子向父通信代码示例
 
 子组件利用 **$emit** 通知父组件，进行修改更新
 
-![68231896563](assets/1682318965635.png)
+![68231896563](img/09vue/assets04/1682318965635.png)
 
 子向父传值步骤
 
@@ -2604,14 +2585,7 @@ export default {
 2. 父组件监听$emit触发的事件
 3. 提供处理函数，在函数的性参中获取传过来的参数
 
-### 8.总结
-
-1. 组件关系分类有哪两种
-2. 父子组件通信的流程是什么？
-   1. 父向子
-   2. 子向父
-
-
+---
 
 ## 五、什么是props
 
@@ -2628,13 +2602,13 @@ export default {
 1. 可以 传递 **任意数量** 的prop
 2. 可以 传递 **任意类型** 的prop
 
-![68232015691](assets/1682320156914.png)
+![68232015691](img/09vue/assets04/1682320156914.png)
 
 ### 4.代码演示
 
 父组件App.vue
 
-```vue
+```html
 <template>
   <div class="app">
     <UserInfo
@@ -2673,25 +2647,26 @@ export default {
 
 子组件UserInfo.vue
 
-```vue
+```html
 <template>
   <div class="userinfo">
     <h3>我是个人信息组件</h3>
-    <div>姓名：</div>
-    <div>年龄：</div>
-    <div>是否单身：</div>
-    <div>座驾：</div>
-    <div>兴趣爱好：</div>
+    <div>姓名：{{ username }}</div>
+    <div>年龄：{{ age }}</div>
+    <div>是否单身：{{ isSingle?'是':'否' }}</div>
+    <div>座驾：{{car.brand}}</div>
+    <div>兴趣爱好：{{hobby.join('、')}}</div>
   </div>
 </template>
 
 <script>
 export default {
+  props:['username','age','isSingle','car','hobby']
   
 }
 </script>
 
-<style>
+<style scoped>
 .userinfo {
   width: 300px;
   border: 3px solid #000;
@@ -2703,7 +2678,7 @@ export default {
 </style>
 ```
 
-
+---
 
 ## 六、props校验
 
@@ -2722,9 +2697,9 @@ export default {
 - 默认值
 - 自定义校验
 
-![68232068405](assets/1682320684053.png)
+![68232068405](img/09vue/assets04/1682320684053.png)
 
-### 4.代码演示
+### 4.props代码演示
 
 App.vue
 
@@ -2797,11 +2772,11 @@ export default {
 </style>
 ```
 
-
+---
 
 ## 七、props校验完整写法
 
-### 1.语法
+### 1.props校验语法
 
 ```vue
 props: {
@@ -2843,13 +2818,13 @@ export default {
 </script>
 ```
 
-### 3.注意
+### 3.props注意
 
 1.default和required一般不同时写（因为当时必填项时，肯定是有值的）
 
 2.default后面如果是简单类型的值，可以直接写默认。如果是复杂类型的值，则需要以函数的形式return一个默认值
 
-
+---
 
 ## 八、props&data、单向数据流
 
@@ -2866,7 +2841,7 @@ export default {
 
 父级props 的数据更新，会向下流动，影响子组件。这个数据流动是单向的
 
-### 4.代码演示
+### 4.单选数据流代码演示
 
 App.vue
 
@@ -2932,9 +2907,7 @@ export default {
 
 ### 5.口诀
 
-**谁的数据谁负责**
-
-
+==谁的数据谁负责==
 
 ## 九、综合案例-组件拆分
 
