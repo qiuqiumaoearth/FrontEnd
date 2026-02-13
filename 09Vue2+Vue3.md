@@ -2030,6 +2030,7 @@ Vue生命周期过程中，会**自动运行一些函数**，被称为【**生�
 1. 全局安装（只需安装一次即可） `yarn global add @vue/cli 或者 npm i @vue/cli -g`
 2. 查看vue/cli版本： `vue --version`
 3. 创建项目架子：`vue create project-name`(项目名不能使用中文)
+   用`vue ui`新建项目，然后配置个自己的模板
 4. 启动项目：`yarn serve` 或者 `npm run serve`(命令不固定，找package.json)
 
 ## 七、项目目录介绍和运行流程
@@ -2043,6 +2044,33 @@ Vue生命周期过程中，会**自动运行一些函数**，被称为【**生�
 1. main.js  入口文件
 2. App.vue  App根组件
 3. index.html 模板文件
+4. 根目录下.eslintrc.js文件(和.gitignore一个位置)
+    - 这个就是代码校验的，强制校验,为何一个团队里的代码质量和风格统一,比如可以配置不能用箭头函数，那么你如果用了箭头函数，就会报错,你下次用vue ui新建项目，然后配置个自己的模板
+
+    ```js
+    module.exports = {
+      root: true,
+      env: {
+        node: true
+      },
+      extends: [
+        'plugin:vue/essential',
+        'eslint:recommended'
+      ],
+      parserOptions: {
+        parser: '@babel/eslint-parser',
+        // 全局禁用 Babel 配置文件检查（彻底解决所有文件的该报错）
+        requireConfigFile: false,
+        sourceType: 'module'
+      },
+      // 关键：让 ESLint 忽略 babel.config.js，避免循环检查
+      ignorePatterns: ['babel.config.js'],
+      rules: {
+        'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+        'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+      }
+    }
+    ```
 
 ### 2.运行流程
 
@@ -3461,7 +3489,7 @@ export default {
 
 父组件
 
-```vue
+```html
 //.sync写法
 <BaseDialog :visible.sync="isShow" />
 --------------------------------------
@@ -3474,7 +3502,7 @@ export default {
 
 子组件
 
-```vue
+```js
 props: {
   visible: Boolean
 },
@@ -3486,7 +3514,7 @@ this.$emit('update:visible', false)
 
 App.vue
 
-```vue
+```html
 <template>
   <div class="app">
     <button @click="openDialog">退出按钮</button>
@@ -3514,7 +3542,7 @@ export default {
 
 BaseDialog.vue
 
-```vue
+```html
 <template>
   <div class="base-dialog-wrap" v-show="isShow">
     <div class="base-dialog">
@@ -3583,19 +3611,11 @@ export default {
 </style>
 ```
 
-
-
-### 6.总结
-
-1.父组件如果想让子组件修改传过去的值 必须加什么修饰符？
-
-2.子组件要修改父组件的props值 必须使用什么语法？
-
-
+---
 
 ## 二十、ref和$refs
 
-### 1.作用
+### 1.ref和作用
 
 利用ref 和 $refs 可以用于 获取 dom 元素 或 组件实例
 
