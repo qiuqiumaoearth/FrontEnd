@@ -39,6 +39,25 @@
     <!-- 用v-model进行简化 v-model的本质就是 :value + @input -->
     <BaseSelect v-model="selectId"></BaseSelect>
 
+    <br/>
+    <button class="logout" @click="openDialog">退出按钮</button>
+    <BaseDialog :visible.sync="isShow"></BaseDialog>
+
+    <br/>
+    <BaseChart></BaseChart>
+
+    <br/>
+    <BaseForm ref = "baseForm"></BaseForm>
+    <br/>
+    <button @click="handelGet">获取数据</button>
+    <button @click="handelReset">重置数据</button>
+
+    <br/>
+    <br/>
+
+    <BaseAocns></BaseAocns>
+
+
 
 
   </div>
@@ -60,6 +79,14 @@ import VmodelYuan from './components/VmodelYuan.vue';
 
 import BaseSelect from './components/BaseSelect.vue';
 
+import BaseDialog from './components/BaseDialog.vue';
+
+import BaseChart from './components/BaseChart.vue';
+
+import BaseForm from './components/BaseForm.vue';
+
+import BaseAocns from './components/BaseAocns.vue'
+
 
 
 
@@ -79,6 +106,11 @@ export default {
     BaseB,
     VmodelYuan,
     BaseSelect,
+    BaseDialog,
+    BaseChart,
+    BaseForm,
+    BaseAocns
+
     
   },
   data(){
@@ -94,6 +126,7 @@ export default {
       width:87,
       count:100,
       selectId: '102',
+      isShow:false
     }
   },
   methods:{
@@ -105,6 +138,17 @@ export default {
     handleCount(newCount){
       console.log(newCount);
       this.count=newCount
+    },
+    openDialog(){
+      this.isShow=true
+    },
+    handelGet(){
+      console.log(this.$refs.baseForm.getValue());
+      
+    },
+    handelReset(){
+      this.$refs.baseForm.resetValue()
+
     }
   }
 }
