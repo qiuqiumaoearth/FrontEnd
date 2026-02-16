@@ -1,17 +1,20 @@
 <template>
   <div class="dialog">
     <div class="dialog-header">
-      <h3>友情提示</h3>
+
+      
+      <h3><slot name = "head">友情提示</slot></h3>
       <span class="close">✖️</span>
     </div>
 
-    <div class="dialog-content">
+    <div class="dialog-content" style="color: red;">
       <!-- 1.在需要定制的位置,使用slot占位 -->
-      <slot>我是后备内容</slot>
+      <slot name = "content" >内容</slot>
     </div>
+
     <div class="dialog-footer">
-      <button>取消</button>
-      <button>确认</button>
+      <button><slot name = "del" >取消</slot></button>
+      <button><slot name = "com" >确认</slot></button>
     </div>
   </div>
 </template>

@@ -4496,7 +4496,7 @@ App.vue
 
 ### 2.具名插槽语法
 
-- 多个slot使用name属性区分名字 
+- 多个slot使用name属性区分名字
 
   ![68241339172](img/09vue/assets05/1682413391727.png)
 
@@ -4507,6 +4507,41 @@ App.vue
 ### 3.v-slot的简写
 
 v-slot写起来太长，vue给我们提供一个简单写法 **v-slot —> #**
+
+MyDialog.vue
+
+```html
+<template>
+  <div class="dialog">
+    <div class="dialog-header">
+      <h3><slot name = "head">友情提示</slot></h3>
+      <span class="close">✖️</span>
+    </div>
+    <div class="dialog-content" style="color: red;">
+      <!-- 1.在需要定制的位置,使用slot占位 -->
+      <slot name = "content" >内容</slot>
+    </div>
+    <div class="dialog-footer">
+      <button><slot name = "del" >取消</slot></button>
+      <button><slot name = "com" >确认</slot></button>
+    </div>
+  </div>
+</template>
+
+```
+
+App.vue
+
+```html
+    <!-- 2.使用组件时候,组件标签内插入内容 -->
+    <MyDialog>
+      <template v-slot:head>你好</template>
+
+      <template #content>我的世界</template>
+      <template v-slot:del>离开</template>
+      <template v-slot:com>进入</template>
+    </MyDialog>
+```
 
 ---
 
@@ -4528,25 +4563,25 @@ v-slot写起来太长，vue给我们提供一个简单写法 **v-slot —> #**
 
 封装表格组件
 
-![68241434213](assets/1682414342139.png)
+![68241434213](img/09vue/assets05/1682414342139.png)
 
 ### 4.使用步骤
 
 1. 给 slot 标签, 以 添加属性的方式传值
 
-   ```vue
+   ```js
    <slot :id="item.id" msg="测试文本"></slot>
    ```
 
 2. 所有添加的属性, 都会被收集到一个对象中
 
-   ```vue
+   ```js
    { id: 3, msg: '测试文本' }
    ```
 
-3. 在template中, 通过  ` #插槽名= "obj"` 接收，默认插槽名为 default
+3. 在template中, 通过  `#插槽名= "obj"` 接收，默认插槽名为 default
 
-   ```vue
+   ```html
    <MyTable :list="list">
      <template #default="obj">
        <button @click="del(obj.id)">删除</button>
@@ -4558,7 +4593,7 @@ v-slot写起来太长，vue给我们提供一个简单写法 **v-slot —> #**
 
 MyTable.vue
 
-```vue
+```html
 <template>
   <table class="my-table">
     <thead>
@@ -4570,36 +4605,17 @@ MyTable.vue
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>赵小云</td>
-        <td>19</td>
+      <tr v-for="(item,index) in data" :key="item.id">
+        <td>{{ index+1 }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.age }}</td>
         <td>
-          <button>
-            查看    
-        </button>
+          <!-- <button>删除</button> -->
+           <!-- 1.给slot标签,以添加属性的方式传值 -->
+           <slot :rowdata="item" msg="测试数据"></slot>
         </td>
       </tr>
-        <tr>
-        <td>1</td>
-        <td>张小花</td>
-        <td>19</td>
-        <td>
-          <button>
-            查看    
-        </button>
-        </td>
-      </tr>
-        <tr>
-        <td>1</td>
-        <td>孙大明</td>
-        <td>19</td>
-        <td>
-          <button>
-            查看    
-        </button>
-        </td>
-      </tr>
+
     </tbody>
   </table>
 </template>
@@ -4657,11 +4673,24 @@ export default {
 
 App.vue
 
-```vue
+```html
 <template>
   <div>
-    <MyTable :data="list"></MyTable>
-    <MyTable :data="list2"></MyTable>
+    <MyTable :data="list">
+      <!-- 3.通过template #插槽名="变量名" => 进行接收 -->
+      <template #default="obj">
+        <!-- 获得了slot里面的数据 -->
+        <!-- {{obj}} -->
+        <button @click="del(obj.rowdata.id)">删除</button>
+      </template>
+    </MyTable>
+
+    <MyTable :data="list2">
+      <template #default="{rowdata}">
+        <button @click="cheak(rowdata)">查看</button>
+      </template>
+    </MyTable>
+
   </div>
 </template>
 
@@ -4682,6 +4711,17 @@ App.vue
           ]
       }
     },
+      methods:{
+    del(id){
+      // console.log(id);
+      this.list=this.list.filter(item=>item.id!==id)
+    },
+    cheak(item){
+      // console.log(`姓名:${item.name},年龄:${item.age}`);
+      alert(`姓名:${item.name},年龄:${item.age}`)
+    }
+    
+  },
     components: {
       MyTable
     }
@@ -4689,17 +4729,9 @@ App.vue
 </script>
 ```
 
-### 6.总结
-
-1.作用域插槽的作用是什么？
-
-2.作用域插槽的使用步骤是什么？
-
-
-
 ## 九、综合案例 - 商品列表-MyTag组件抽离
 
-![68241640658](assets/1682416406585.png)
+![68241640658](img/09vue/assets05/1682416406585.png)
 
 ### 1.需求说明
 
@@ -4723,7 +4755,7 @@ App.vue
 
 ### 2.代码准备
 
-```vue
+```html
 <template>
   <div class="table-case">
     <table class="my-table">
@@ -4954,319 +4986,7 @@ export default {
  </script>
 ```
 
-
-
-## 十、综合案例-MyTag组件控制显示隐藏
-
-MyTag.vue
-
-```vue
-<template>
-  <div class="my-tag">
-    <input
-      v-if="isEdit"
-      v-focus
-      ref="inp"
-      class="input"
-      type="text"
-      placeholder="输入标签" 
-      @blur="isEdit = false" 
-    />
-    <div 
-      v-else
-      @dblclick="handleClick"
-      class="text">
-       茶具
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  data () {
-    return {
-      isEdit: false
-    }
-  },
-  methods: {
-    handleClick () {
-      this.isEdit = true
-    }
-  }
-}
-</script> 
-```
-
-main.js
-
-```js
-// 封装全局指令 focus
-Vue.directive('focus', {
-  // 指令所在的dom元素，被插入到页面中时触发
-  inserted (el) {
-    el.focus()
-  }
-})
-```
-
-
-
-## 十一、综合案例-MyTag组件进行v-model绑定
-
-App.vue
-
-```vue
-<MyTag v-model="tempText"></MyTag>
-<script>
-    export default {
-        data(){
-            tempText:'水杯'
-        }
-    }
-</script>
-```
-
-MyTag.vue
-
-```
-<template>
-  <div class="my-tag">
-    <input
-      v-if="isEdit"
-      v-focus
-      ref="inp"
-      class="input"
-      type="text"
-      placeholder="输入标签"
-      :value="value"
-      @blur="isEdit = false"
-      @keyup.enter="handleEnter"
-    />
-    <div 
-      v-else
-      @dblclick="handleClick"
-      class="text">
-      {{ value }}
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  props: {
-    value: String
-  },
-  data () {
-    return {
-      isEdit: false
-    }
-  },
-  methods: {
-    handleClick () {
-      this.isEdit = true
-    },
-    handleEnter (e) {
-      // 非空处理
-      if (e.target.value.trim() === '') return alert('标签内容不能为空')
-      this.$emit('input', e.target.value)
-      // 提交完成，关闭输入状态
-      this.isEdit = false
-    }
-  }
-}
-</script> 
-```
-
-
-
-## 十二、综合案例-封装MyTable组件-动态渲染数据
-
-App.vue
-
-```vue
-<template>
-  <div class="table-case">
-    <MyTable :data="goods"></MyTable>
-  </div>
-</template>
-
-<script>
-import MyTable from './components/MyTable.vue'
-export default {
-  name: 'TableCase',
-  components: { 
-    MyTable
-  },
-  data(){
-    return {
-        ....
-    }
-  },
-}
-</script> 
-```
-
-MyTable.vue
-
-```vue
-<template>
-  <table class="my-table">
-    <thead>
-      <tr>
-        <th>编号</th>
-        <th>名称</th>
-        <th>图片</th>
-        <th width="100px">标签</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(item, index) in data" :key="item.id">
-       <td>{{ index + 1 }}</td>
-        <td>{{ item.name }}</td>
-        <td>
-          <img
-            :src="item.picture"
-          />
-        </td>
-        <td>
-          标签内容
-         <!-- <MyTag v-model="item.tag"></MyTag> -->
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</template>
-
-<script>
-export default {
-  props: {
-    data: {
-      type: Array,
-      required: true
-    }
-  }
-};
-</script>
-
-<style lang="less" scoped>
-
-.my-table {
-  width: 100%;
-  border-spacing: 0;
-  img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    vertical-align: middle;
-  }
-  th {
-    background: #f5f5f5;
-    border-bottom: 2px solid #069;
-  }
-  td {
-    border-bottom: 1px dashed #ccc;
-  }
-  td,
-  th {
-    text-align: center;
-    padding: 10px;
-    transition: all .5s;
-    &.red {
-      color: red;
-    }
-  }
-  .none {
-    height: 100px;
-    line-height: 100px;
-    color: #999;
-  }
-}
-
-</style>
-```
-
-
-
-## 十三、综合案例-封装MyTable组件-自定义结构
-
-App.vue
-
-```vue
-<template>
-  <div class="table-case">
-    <MyTable :data="goods">
-      <template #head>
-        <th>编号</th>
-        <th>名称</th>
-        <th>图片</th>
-        <th width="100px">标签</th>
-      </template>
-
-      <template #body="{ item, index }">
-        <td>{{ index + 1 }}</td>
-        <td>{{ item.name }}</td>
-        <td>
-          <img
-            :src="item.picture"
-          />
-        </td>
-        <td>
-          <MyTag v-model="item.tag"></MyTag>
-        </td>
-      </template>
-    </MyTable>
-  </div>
-</template>
-
-<script>
-import MyTag from './components/MyTag.vue'
-import MyTable from './components/MyTable.vue'
-export default {
-  name: 'TableCase',
-  components: {
-    MyTag,
-    MyTable
-  },
-  data () {
-    return {
-      ....
-  }
-}
-</script>
- 
-```
-
-MyTable.vue
-
-```vue
-<template>
-  <table class="my-table">
-    <thead>
-      <tr>
-        <slot name="head"></slot>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(item, index) in data" :key="item.id">
-        <slot name="body" :item="item" :index="index" ></slot>
-      </tr>
-    </tbody>
-  </table>
-</template>
-
-<script>
-export default {
-  props: {
-    data: {
-      type: Array,
-      required: true
-    }
-  }
-};
-</script>
-```
-
-
+---
 
 ## 十四、单页应用程序介绍
 
@@ -5282,21 +5002,13 @@ export default {
 
 ### 3.单页应用 VS 多页面应用
 
-![68244191297](assets/1682441912977.png)
+![68244191297](img/09vue/assets05/1682441912977.png)
 
 单页应用类网站：系统类网站 / 内部网站 / 文档类网站 / 移动端站点
 
 多页应用类网站：公司官网 / 电商类网站 
 
-### 4.总结
-
-1.什么是单页面应用程序?
-
-2.单页面应用优缺点?
-
-3.单页应用场景？
-
-
+---
 
 ## 十五、路由介绍
 
@@ -5306,7 +5018,7 @@ export default {
 
 最大的原因就是：**页面按需更新**
 
-![68244269977](assets/1682442699775.png)
+![68244269977](img/09vue/assets05/1682442699775.png)
 
 比如当点击【发现音乐】和【关注】时，**只是更新下面部分内容**，对于头部是不更新的
 
