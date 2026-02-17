@@ -1,5 +1,16 @@
 <template>
   <div id="app">
+    <div class="top">
+      <!-- tag,默认是a标签,可以渲染成其他标签  tag="h1"-->
+      <router-link to="/find">发现音乐</router-link>
+      <router-link to="/my">我的音乐</router-link>
+      <router-link to="/friend">朋友</router-link>
+
+    </div>
+
+
+    <router-view></router-view>
+
 
     <MyTable :data="list">
       <!-- 3.通过template #插槽名="变量名" => 进行接收 -->
@@ -33,6 +44,8 @@
     <MyDialog>
 
     </MyDialog>
+
+
 
 
 
@@ -88,5 +101,7 @@ export default {
 </script>
 
 <style>
-
+.top a.router-link-active{
+  background-color: pink;
+}
 </style>
