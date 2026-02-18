@@ -5351,7 +5351,7 @@ const router = new VueRouter({
 
 App.vue
 
-```vue
+```html
 <template>
   <div id="app">
     <div class="link">
@@ -5401,9 +5401,9 @@ Home.vue
     </div>
     <div class="hot-link">
       热门搜索：
-      <router-link to="">黑马程序员</router-link>
-      <router-link to="">前端培训</router-link>
-      <router-link to="">如何成为前端大牛</router-link>
+      <router-link to="/search?key=黑马程序员">黑马程序员</router-link>
+      <router-link to="/search?key=前端培训">前端培训</router-link>
+      <router-link to="/search?key=如何成为前端大牛">如何成为前端大牛</router-link>
     </div>
   </div>
 </template>
@@ -5461,7 +5461,7 @@ Search.vue
 ```vue
 <template>
   <div class="search">
-    <p>搜索关键字: 黑马程序员</p>
+    <p>搜索关键字: {{$route.query.key}}</p>
     <p>搜索结果: </p>
     <ul>
       <li>.............</li>
@@ -5477,6 +5477,8 @@ export default {
   name: 'MyFriend',
   created () {
     // 在created中，获取路由参数
+    // this.$route.query.参数名 获取
+    console.log(this.$route.query.key);
   }
 }
 </script>
@@ -5525,7 +5527,7 @@ main.js
   }).$mount('#app')
 ```
 
-
+---
 
 ## 五、声明式导航-动态路由传参
 
@@ -5549,28 +5551,37 @@ main.js
 
 - 配置导航链接
 
-  to="/path/参数值"
+  `to="/path/参数值"`
 
 - 对应页面组件**接受参数**
 
-  $route.**params**.参数名
+  `$route.**params**.参数名`
 
   > params后面的参数名要和动态路由配置的参数保持一致
 
-
-
 ### 2.查询参数传参 VS 动态路由传参
 
-1.  查询参数传参  (比较适合传**多个参数**) 
+1. 查询参数传参  (比较适合传**多个参数**) 
 
-   1. 跳转：to="/path?参数名=值&参数名2=值"
-   2. 获取：$route.query.参数名
+    1. 跳转：to="/path?参数名=值&参数名2=值" eg: "/search?key=黑马程序员"
+    2. 获取：$route.query.参数名 eg：$route.query.key
 
 2. 动态路由传参 (**优雅简洁**，传单个参数比较方便)
 
-   1. 配置动态路由：path: "/path/:参数名" 
-   2. 跳转：to="/path/参数值"
-   3. 获取：$route.params.参数名 
+   1. 配置动态路由：path: "/path/:参数名" eg：path: '/search/:words'
+   2. 跳转：to="/path/参数值"  eg:"/search/黑马程序员"
+   3. 获取：$route.params.参数名 eg:$route.params.words
+
+   ```js
+    // 创建了一个路由对象
+    const router = new VueRouter({
+      routes: [
+        { path: '/home', component: Home },
+        { path: '/search/:words', component: Search }
+      ]
+    })
+
+   ```
 
    注意：动态路由也可以传多个参数，但一般只传一个
 
@@ -5581,15 +5592,17 @@ main.js
 - 查询参数传参（多个参数）
 - 动态路由传参（一个参数，优雅简洁）
 
- 
+---
 
 ## 六、动态路由参数的可选符(了解)
+
+查询参数传参没有这个问题
 
 ### 1.问题
 
 配了路由 path:"/search/:words"  为什么按下面步骤操作，会未匹配到组件，显示空白？
 
-![68249723830](assets/1682497238305.png)
+![68249723830](img/09vue/assets06/1682497238305.png)
 
 ### 2.原因
 
@@ -5604,7 +5617,7 @@ const router = new VueRouter({
 })
 ```
 
-
+---
 
 ## 七、Vue路由-重定向
 
@@ -5612,13 +5625,13 @@ const router = new VueRouter({
 
 网页打开时， url 默认是 / 路径，未匹配到组件时，会出现空白
 
-![68249787282](assets/1682497872821.png)
+![68249787282](img/09vue/assets06/1682497872821.png)
 
 ### 2.解决方案
 
 **重定向** → 匹配 / 后, 强制跳转 /home 路径
 
-
+重定向可做跳转可用于刷新
 
 ### 3.语法
 
@@ -5628,11 +5641,11 @@ const router = new VueRouter({
 { path:'/' ,redirect:'/home' }
 ```
 
-
-
 ### 4.代码演示
 
-```
+router/index.js
+
+```js
 const router = new VueRouter({
   routes: [
     { path: '/', redirect: '/home'},
@@ -5641,7 +5654,7 @@ const router = new VueRouter({
 })
 ```
 
-
+---
 
 ## 八、Vue路由-404
 
@@ -5672,7 +5685,7 @@ const router = new VueRouter({
 
 NotFound.vue
 
-```vue
+```html
 <template>
   <div>
     <h1>404 Not Found</h1>
@@ -5708,7 +5721,7 @@ const router = new VueRouter({
 export default router
 ```
 
-
+---
 
 ## 九、Vue路由-模式设置
 
@@ -5716,8 +5729,8 @@ export default router
 
 路由的路径看起来不自然, 有#，能否切成真正路径形式?
 
-- hash路由(默认)        例如:  http://localhost:8080/#/home
-- history路由(常用)     例如: http://localhost:8080/home   (以后上线需要服务器端支持，开发环境webpack给规避掉了history模式的问题)
+- hash路由(默认)        例如:  <http://localhost:8080/#/home>
+- history路由(常用)     例如: <http://localhost:8080/home>   (以后上线需要服务器端支持，开发环境webpack给规避掉了history模式的问题)
 
 ### 2.语法
 
@@ -5728,7 +5741,7 @@ const router = new VueRouter({
 })
 ```
 
-
+---
 
 ## 十、编程式导航-两种路由跳转方式
 
@@ -5736,7 +5749,7 @@ const router = new VueRouter({
 
 点击按钮跳转如何实现？
 
-![68250048105](assets/1682500481059.png)
+![68250048105](img/09vue/assets06/1682500481059.png)
 
 ### 2.方案
 
@@ -5747,7 +5760,7 @@ const router = new VueRouter({
 两种语法：
 
 - path 路径跳转 （简易方便）
-- name 命名路由跳转 (适合 path 路径长的场景)
+- name 命名路由跳转 (适合 path 路径长的场景)(router配置名字,index.js使用)
 
 ### 4.path路径跳转语法
 
@@ -5766,20 +5779,23 @@ this.$router.push({
 ### 5.代码演示 path跳转方式
 
 
-
 ### 6.name命名路由跳转
 
 特点：适合 path 路径长的场景
 
 语法：
 
-- 路由规则，必须配置name配置项
+- 1.路由规则，必须配置name配置项
 
   ```js
-  { name: '路由名', path: '/path/xxx', component: XXX },
+  routers:[
+    { name: '路由名', path: '/path/xxx', component: XXX },
+  ]
   ```
 
-- 通过name来进行跳转
+- 2.通过name来进行跳转
+
+  index.js
 
   ```js
   this.$router.push({
@@ -5787,17 +5803,24 @@ this.$router.push({
   })
   ```
 
+例子:
 
+  ```js
+
+  methods:{
+    goSearch(){
+      this.$router.push({
+        name:'路由名'
+      })
+    }
+  }
+
+
+  ```
 
 ### 7.代码演示通过name命名路由跳转
 
-
-
-### 8.总结
-
-编程式导航有几种跳转方式？
-
-
+---
 
 ## 十一、编程式导航-path路径跳转传参
 
@@ -5805,15 +5828,13 @@ this.$router.push({
 
 点击搜索按钮，跳转需要把文本框中输入的内容传到下一个页面如何实现？
 
-![68250272058](assets/1682502720585.png)
+![68250272058](img/09vue/assets06/1682502720585.png)
 
 ### 2.两种传参方式
 
-1.查询参数 
+1.查询参数
 
 2.动态路由传参
-
-
 
 ### 3.传参
 
@@ -5822,8 +5843,6 @@ this.$router.push({
 ① path 路径跳转传参
 
 ② name 命名路由跳转传参
-
-
 
 ### 4.path路径跳转传参（query传参）
 
@@ -5844,7 +5863,7 @@ this.$router.push({
 
 ### 5.path路径跳转传参（动态路由传参）
 
-```
+```js
 //简单写法
 this.$router.push('/路径/参数值')
 //完整写法
@@ -5857,7 +5876,7 @@ this.$router.push({
 
 **注意：**path不能配合params使用
 
-
+---
 
 ## 十二、编程式导航-name命名路由传参
 
@@ -5873,6 +5892,8 @@ this.$router.push({
 })
 ```
 
+接受参数的方式依然是：$route.query.参数名
+
 ### 2.name 命名路由跳转传参 (动态路由传参)
 
 ```js
@@ -5883,6 +5904,8 @@ this.$router.push({
   }
 })
 ```
+
+接受参数的方式依然是：$route.params.参数名
 
 ### 3.总结
 

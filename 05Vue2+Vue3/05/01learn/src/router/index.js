@@ -1,23 +1,15 @@
-import FindZu from '@/views/FindZu.vue'
-import MyZu from '@/views/MyZu.vue'
-import FriendZu from '@/views/FriendZu.vue'
-
+import Home from '@/views/Home'
+import Search from '@/views/Search'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+Vue.use(VueRouter) // VueRouter插件初始化
 
-//安装注册
-Vue.use(VueRouter)
-
-//创建路由对象
+// 创建了一个路由对象
 const router = new VueRouter({
-  //routes 路由规则们
-  //{path:'路径',component:组件名}
-  routes:[
-    {path:'/find',component:FindZu},
-    {path:'/my',component:MyZu},
-    {path:'/friend',component:FriendZu},
-
-
+  routes: [
+    { path: '/home', component: Home },
+    { path: '/search', component: Search },
+    {path:'/*',component:Search}
   ]
 })
 
