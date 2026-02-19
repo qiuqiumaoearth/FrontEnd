@@ -1,16 +1,28 @@
 <template>
   <div class="h5-wrapper">
-  <!-- 二级路由出口 -->
-    <keep-alive :include="['LayoutPage']">
-
+    <div class="content">
       <router-view></router-view>
-    </keep-alive>
+       
+    </div>
+    <nav class="tabbar">
+      <router-link to="/article">面经</router-link>
+      <router-link to="/collect">收藏</router-link>
+      <router-link to="/like">喜欢</router-link>
+      <router-link to="/user">我的</router-link>
+    </nav>
   </div>
 </template>
 
 <script>
 export default {
-  name: "h5-wrapper",
+  name: "LayoutPage",  
+  activated(){
+    console.log('看见页面了');
+    alert('欢迎回来')
+  },
+  // created(){
+  //   console.log('created');
+  // }
 }
 </script>
 
@@ -42,9 +54,10 @@ body {
       font-size: 14px;
       color: #333;
       -webkit-tap-highlight-color: transparent;
-      &.router-link-active {
-        color: #fa0;
-      }
+    }
+    a.router-link-active{
+      color: #fff;
+      background-color: #b2f3a5;
     }
   }
 }
