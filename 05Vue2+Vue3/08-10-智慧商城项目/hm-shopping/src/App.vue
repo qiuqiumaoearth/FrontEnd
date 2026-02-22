@@ -1,9 +1,20 @@
+<script setup lang="ts">
+
+</script>
+
 <template>
   <div id="app">
-    <van-button type="primary" color="#7232dd">主要按钮</van-button>
+
+    <router-view></router-view>
+
   </div>
 </template>
 
 <style lang="less">
+.box{
+  width: 200px;
+  height: 100px;
+  background-color: #65ad83;
+}
 
 </style>
