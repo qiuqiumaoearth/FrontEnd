@@ -100,7 +100,8 @@ export default {
       const res = await getModileCode(this.message, this.mobile)
       console.log(res)
       this.$store.commit('user/setUserInfo', res.data)
-      this.$router.push('/')
+      const url = this.$route.query.backUrl || '/'
+      this.$router.replace(url)
       this.$toast('登录成功')
     }
 

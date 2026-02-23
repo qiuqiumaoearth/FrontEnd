@@ -4,7 +4,7 @@
 
     <van-swipe :autoplay="3000" @change="onChange">
       <van-swipe-item v-for="(image, index) in images" :key="index">
-        <img :src="image" />
+        <img :src="image.external_url" />
       </van-swipe-item>
 
       <template #indicator>
@@ -16,13 +16,13 @@
     <div class="info">
       <div class="title">
         <div class="price">
-          <span class="now">￥0.01</span>
-          <span class="oldprice">￥6699.00</span>
+          <span class="now">￥ {{ detailList.goods_price_min }}</span>
+          <span class="oldprice">￥ {{ detailList.goods_price_max  }}</span>
         </div>
-        <div class="sellcount">已售1001件</div>
+        <div class="sellcount">已售 {{detailList.goods_sales}} 件</div>
       </div>
       <div class="msg text-ellipsis-2">
-        三星手机 SAMSUNG Galaxy S23 8GB+256GB 超视觉夜拍系统 超清夜景 悠雾紫 5G手机 游戏拍照旗舰机s23
+        {{ detailList.goods_name }}
       </div>
 
       <div class="service">
@@ -39,33 +39,29 @@
     <!-- 商品评价 -->
     <div class="comment">
       <div class="comment-title">
-        <div class="left">商品评价 (5条)</div>
+        <div class="left">商品评价 ( {{comtotal}} 条)</div>
         <div class="right">查看更多 <van-icon name="arrow" /> </div>
       </div>
       <div class="comment-list">
-        <div class="comment-item" v-for="item in 3" :key="item">
+        <div class="comment-item" v-for="item in comlist" :key="item.comment_id">
           <div class="top">
-            <img src="http://cba.itlike.com/public/uploads/10001/20230321/a0db9adb2e666a65bc8dd133fbed7834.png" alt="">
-            <div class="name">神雕大侠</div>
-            <van-rate :size="16" :value="5" color="#ffd21e" void-icon="star" void-color="#eee"/>
+            <img :src="item.user.avatar_url||defaultAvatar" alt="">
+            <div class="name">{{ item.user.nick_name }}</div>
+            <van-rate :size="16" :value="item.score/2" color="#ffd21e" void-icon="star" void-color="#eee"/>
           </div>
           <div class="content">
-            质量很不错 挺喜欢的
+            {{ item.content }}
           </div>
           <div class="time">
-            2023-03-21 15:01:35
+            {{ item.create_time}}
           </div>
         </div>
       </div>
     </div>
 
     <!-- 商品描述 -->
-    <div class="desc">
-      <img src="https://uimgproxy.suning.cn/uimg1/sop/commodity/kHgx21fZMWwqirkMhawkAw.jpg" alt="">
-      <img src="https://uimgproxy.suning.cn/uimg1/sop/commodity/0rRMmncfF0kGjuK5cvLolg.jpg" alt="">
-      <img src="https://uimgproxy.suning.cn/uimg1/sop/commodity/2P04A4Jn0HKxbKYSHc17kw.jpg" alt="">
-      <img src="https://uimgproxy.suning.cn/uimg1/sop/commodity/MT4k-mPd0veQXWPPO5yTIw.jpg" alt="">
-    </div>
+     <div class="tips">商品描述</div>
+    <div class="desc" v-html="detailList.content"></div>
 
     <!-- 底部 -->
     <div class="footer">
@@ -74,32 +70,134 @@
         <span>首页</span>
       </div>
       <div class="icon-cart">
+        <span v-if="cartTotal > 0" class="num">{{ cartTotal }}</span>
         <van-icon name="shopping-cart-o" />
         <span>购物车</span>
       </div>
-      <div class="btn-add">加入购物车</div>
-      <div class="btn-buy">立刻购买</div>
+      <div class="btn-add" @click="addFn">加入购物车</div>
+      <div class="btn-buy" @click="buyFn">立刻购买</div>
     </div>
+      <!-- 加入购物车 -->
+    <van-action-sheet v-model="showPannel" :title="mode === 'cart' ? '加入购物车' : '立刻购买'">
+      <div class="product">
+        <div class="product-title">
+          <div class="left">
+            <img :src="detailList.goods_image" alt="">
+          </div>
+          <div class="right">
+            <div class="price">
+              <span>¥</span>
+              <span class="nowprice">{{ detailList.goods_price_min }}</span>
+            </div>
+            <div class="count">
+              <span>库存</span>
+              <span>{{ detailList.stock_total }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="num-box">
+          <span>数量</span>
+          <!-- 数字框占位 -->
+           <CountBox v-model="addCount"></CountBox>
+        </div>
+
+        <!-- 有库存才显示购物 -->
+        <div class="showbtn" v-if="detailList.stock_total >0">
+          <div class="btn" v-if="true" @click="addCart">加入购物车</div>
+          <div class="btn now" v-else>立刻购买</div>
+        </div>
+        <div class="btn-none" v-else>该商品已抢完</div>
+      </div>
+    </van-action-sheet>
   </div>
+
 </template>
 
 <script>
+import defaultAvatar from '@/assets/default-avatar.png'
+import { getProDetail, getProComments } from '@/api/product'
+import CountBox from '@/components/CountBox.vue'
+import { addCart } from '@/api/cart'
+
 export default {
   name: 'ProDetail',
   data () {
     return {
-      images: [
-        'https://img01.yzcdn.cn/vant/apple-1.jpg',
-        'https://img01.yzcdn.cn/vant/apple-2.jpg'
-      ],
-      current: 0
+      images: [],
+      current: 0,
+      detailList: [],
+      defaultAvatar,
+      comlist: [],
+      comtotal: null,
+      showPannel: false, // 控制弹层的显示隐藏
+      mode: 'cart', // 标记弹层状态,
+      addCount: 1,
+      cartTotal: 0
+
+    }
+  },
+  created () {
+    this.getDetail()
+    this.getComments()
+  },
+  computed: {
+    goodsId () {
+      return this.$route.params.id
     }
   },
   methods: {
     onChange (index) {
       this.current = index
+    },
+    async getDetail () {
+      const { data: { detail } } = await getProDetail(this.goodsId)
+      console.log(detail)
+      this.detailList = detail
+      this.images = detail.goods_images
+    },
+    async getComments () {
+      const { data: { list, total } } = await getProComments(this.goodsId, 3)
+      this.comlist = list
+      this.comtotal = total
+      // console.log(list)
+    },
+    addFn () {
+      this.mode = 'cart'
+      this.showPannel = true
+    },
+    buyFn () {
+      this.mode = 'buyNow'
+      this.showPannel = true
+    },
+    async addCart () {
+      if (!this.$store.getters.token) {
+        console.log('弹窗')
+        this.$dialog.confirm({
+          title: '温馨提示',
+          message: '此时需要先登录才能继续操作哦',
+          confirmButtonText: '去登录',
+          cancelButtonText: '再逛逛',
+          theme: 'round-button'
+        }).then(() => {
+          this.$router.replace({
+            path: '/login',
+            query: {
+              backUrl: this.$route.fullPath
+            }
+          })
+        }).catch(() => {})
+      }
+      const { data: { cartTotal } } = await addCart(this.detailList.goods_id, this.addCount, this.detailList.skuList[0].goods_sku_id)
+      this.cartTotal = cartTotal
+      this.$toast('加入购物车成功')
+      // console.log(res)
+      // console.log('加入成功')
     }
+  },
+  components: {
+    CountBox
   }
+
 }
 </script>
 
@@ -248,5 +346,70 @@ export default {
 
 .tips {
   padding: 10px;
+}
+
+.product {
+  .product-title {
+    display: flex;
+    .left {
+      img {
+        width: 90px;
+        height: 90px;
+      }
+      margin: 10px;
+    }
+    .right {
+      flex: 1;
+      padding: 10px;
+      .price {
+        font-size: 14px;
+        color: #fe560a;
+        .nowprice {
+          font-size: 24px;
+          margin: 0 5px;
+        }
+      }
+    }
+  }
+
+  .num-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+  }
+
+  .btn, .btn-none {
+    height: 40px;
+    line-height: 40px;
+    margin: 20px;
+    border-radius: 20px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    background-color: rgb(255, 148, 2);
+  }
+  .btn.now {
+    background-color: #fe5630;
+  }
+  .btn-none {
+    background-color: #cccccc;
+  }
+}
+
+.footer .icon-cart {
+  position: relative;
+  padding: 0 6px;
+  .num {
+    z-index: 999;
+    position: absolute;
+    top: -2px;
+    right: 0;
+    min-width: 16px;
+    padding: 0 4px;
+    color: #fff;
+    text-align: center;
+    background-color: #ee0a24;
+    border-radius: 50%;
+  }
 }
 </style>

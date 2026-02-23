@@ -3,7 +3,8 @@ export default {
   namespaced: true,
   state () {
     return {
-      userInfo: getInfo()
+      userInfo: getInfo(),
+      platform: 'h5' // 固定为 h5，也可根据场景动态修改
     }
   },
   mutations: {
@@ -12,6 +13,9 @@ export default {
       state.userInfo = obj
       // console.log(state.userInfo)
       setInfo(obj)
+    },
+    setPlatform (state, platform) {
+      state.platform = platform
     }
   },
   actions: {}

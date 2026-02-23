@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Toast } from 'vant'
+import store from '@/store'
 
 const instance = axios.create({
   baseURL: 'http://smart-shop.itheima.net/index.php?s=/api',
@@ -15,6 +16,19 @@ instance.interceptors.request.use(function (config) {
     loadingType: 'spinner',
     duration: 0
   })
+  const token = store.getters.token
+  if (token) {
+    config.headers['Access-Token'] = token
+    config.headers.platform = 'H5'
+  }
+  const platform = store.state.user.platform // 注意：路径要和你的模块名一致
+  if (platform) {
+    // 添加到请求头（根据后端要求的字段名调整，比如 platform / client-type 等）
+    config.headers.platform = platform
+    // 若后端要求放在参数里，也可这样写：
+    // config.params = { ...config.params, platform }
+  }
+
   return config
 }, function (error) {
   // 对请求错误做些什么
