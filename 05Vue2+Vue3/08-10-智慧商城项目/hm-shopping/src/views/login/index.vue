@@ -9,40 +9,62 @@
 
       <div class="form">
         <div class="form-item">
-          <input class="inp" maxlength="11" placeholder="请输入手机号码" type="text">
+          <input v-model='mobile' class="inp" maxlength="11" placeholder="请输入手机号码" type="text">
         </div>
         <div class="form-item">
           <input class="inp" v-model="picCode" maxlength="5" placeholder="请输入图形验证码" type="text">
           <img v-if="picUrl" :src="picUrl" alt="" @click="getPicCode">
         </div>
         <div class="form-item">
-          <input class="inp" placeholder="请输入短信验证码" type="text">
-          <button>获取验证码</button>
+          <input v-model='message' class="inp" placeholder="请输入短信验证码" type="text">
+          <button @click="getCode">
+            {{totalSecond===second ? '获取验证码':second+'秒后重新发送'}}
+          </button>
         </div>
       </div>
 
-      <div class="login-btn">登录</div>
+      <div class="login-btn" @click="login">登录</div>
     </div>
   </div>
 </template>
 
 <script>
-import { getPicCode } from '@/api/login'
+import { getPicCode, getCode, getModileCode } from '@/api/login'
+import code from '@/assets/code.png'
 // import { Toast } from 'vant'
 
 export default {
   name: 'LoginPage',
   async created () {
-    this.getPicCode()
+    const { data: { base64, key } } = await getPicCode()
+    this.picUrl = base64
+    this.picKey = key
   },
   data () {
     return {
-      picUrl: '',
+      picUrl: code,
       picKey: '',
-      picCode: ''// 用户输入的图像验证码
+      picCode: '', // 用户输入的图像验证码
+      mobile: '',
+      totalSecond: 10, // 总秒数
+      second: 10, // 用来--
+      timer: null,
+      message: ''// 用户输入验证码
+
     }
   },
   methods: {
+    validFn () {
+      if (!/^1[3-9]\d{9}$/.test(this.mobile)) {
+        this.$toast('请输入正确的手机号')
+        return false
+      }
+      if (!/^\w{4}$/.test(this.picCode)) {
+        this.$toast('请输入正确的图形验证码')
+        return false
+      }
+      return true
+    },
     async getPicCode () {
       const { data: { base64, key } } = await getPicCode()
       this.picUrl = base64
@@ -50,10 +72,44 @@ export default {
 
       // Toast('获取图形验证码成功')
       this.$toast('获取图形验证码成功')
+    },
+    async getCode () {
+      if (!this.validFn()) return
+      await getCode(this.picCode, this.picKey, this.mobile)
+      // console.log('获取验证码前', res)
+      this.$toast('发送成功，请注意查收')
+      if (!this.timer && this.totalSecond === this.second) {
+        this.timer = setInterval(() => {
+          this.second--
+          console.log('正在倒计时')
+          if (this.second <= 0) {
+            clearInterval(this.timer)
+            this.timer = null
+            this.second = 10
+          }
+        }, 1000)
+      }
+    },
+
+    async login () {
+      if (!this.validFn()) return
+      if (!/^\d{6}$/.test(this.message)) {
+        this.$toast('请输入正确的手机验证码')
+        return
+      }
+      const res = await getModileCode(this.message, this.mobile)
+      console.log(res)
+      this.$store.commit('user/setUserInfo', res.data)
+      this.$router.push('/')
+      this.$toast('登录成功')
     }
 
-  }
+  },
 
+  // 离开页面清除定时器
+  destroyed () {
+    clearInterval(this.timer)
+  }
 }
 </script>
 
