@@ -19,19 +19,21 @@ instance.interceptors.request.use(function (config) {
   const token = store.getters.token
   if (token) {
     config.headers['Access-Token'] = token
-    config.headers.platform = 'H5'
   }
-  const platform = store.state.user.platform // 注意：路径要和你的模块名一致
-  if (platform) {
-    // 添加到请求头（根据后端要求的字段名调整，比如 platform / client-type 等）
-    config.headers.platform = platform
-    // 若后端要求放在参数里，也可这样写：
-    // config.params = { ...config.params, platform }
-  }
+  config.headers.platform = 'H5'
+  // const platform = store.state.user.platform // 注意：路径要和你的模块名一致
+  // if (platform) {
+  //   // 添加到请求头（根据后端要求的字段名调整，比如 platform / client-type 等）
+  //   config.headers.platform = platform
+  //   // 若后端要求放在参数里，也可这样写：
+  //   // config.params = { ...config.params, platform }
+  // }
 
   return config
 }, function (error) {
   // 对请求错误做些什么
+  Toast.clear() // 清除加载提示
+  Toast('请求发送失败')
   return Promise.reject(error)
 })
 
@@ -40,13 +42,17 @@ instance.interceptors.response.use(function (response) {
   // 2xx 范围内的状态码都会触发该函数。
   // 对响应数据做点什么(默认axios会多一层包装data)
   const res = response.data
+  Toast.clear()
   if (res.status !== 200) {
     // console.log(res.message)
+    // Toast(res.message)
+    if (res.message === '缺少必要的参数token, 请先登录') {
+      // Toast('请先登录后再操作')
+      // 返回空的成功Promise，终止错误传播（关键：避免Vue抛出警告）
+      return Promise.resolve({})
+    }
     Toast(res.message)
-
     return Promise.reject(res.message)
-  } else {
-    Toast.clear()
   }
 
   return res

@@ -65,11 +65,11 @@
 
     <!-- 底部 -->
     <div class="footer">
-      <div class="icon-home">
+      <div class="icon-home" @click="$router.push('/')">
         <van-icon name="wap-home-o" />
         <span>首页</span>
       </div>
-      <div class="icon-cart">
+      <div class="icon-cart" @click="$router.push('/cart')">
         <span v-if="cartTotal > 0" class="num">{{ cartTotal }}</span>
         <van-icon name="shopping-cart-o" />
         <span>购物车</span>
@@ -77,7 +77,7 @@
       <div class="btn-add" @click="addFn">加入购物车</div>
       <div class="btn-buy" @click="buyFn">立刻购买</div>
     </div>
-      <!-- 加入购物车 -->
+      <!-- 加入购物车和立即购买 -->
     <van-action-sheet v-model="showPannel" :title="mode === 'cart' ? '加入购物车' : '立刻购买'">
       <div class="product">
         <div class="product-title">
@@ -103,8 +103,8 @@
 
         <!-- 有库存才显示购物 -->
         <div class="showbtn" v-if="detailList.stock_total >0">
-          <div class="btn" v-if="true" @click="addCart">加入购物车</div>
-          <div class="btn now" v-else>立刻购买</div>
+          <div class="btn" v-if="this.mode === 'cart'" @click="addCart">加入购物车</div>
+          <div class="btn btn-now" @click="goPay" v-else >立刻购买</div>
         </div>
         <div class="btn-none" v-else>该商品已抢完</div>
       </div>
@@ -146,12 +146,48 @@ export default {
     }
   },
   methods: {
+    loginConfirm () {
+      if (!this.$store.getters.token) {
+        // console.log('弹窗')
+        this.$dialog.confirm({
+          title: '温馨提示',
+          message: '此时需要先登录才能继续操作哦',
+          confirmButtonText: '去登录',
+          cancelButtonText: '再逛逛',
+          theme: 'round-button'
+        }).then(() => {
+          this.$router.replace({
+            path: '/login',
+            query: {
+              backUrl: this.$route.fullPath
+            }
+          })
+        }).catch(() => {})
+        return true
+      } else {
+        return false
+      }
+    },
+    goPay () {
+      if (this.loginConfirm()) {
+        return
+      }
+      this.$router.push({
+        path: '/pay',
+        query: {
+          mode: 'buyNow',
+          goodsId: this.detailList.goods_id,
+          goodsSkuId: this.detailList.skuList[0].goods_sku_id,
+          goodsNum: this.addCount
+        }
+      })
+    },
     onChange (index) {
       this.current = index
     },
     async getDetail () {
       const { data: { detail } } = await getProDetail(this.goodsId)
-      console.log(detail)
+      // console.log(detail)
       this.detailList = detail
       this.images = detail.goods_images
     },
@@ -170,22 +206,8 @@ export default {
       this.showPannel = true
     },
     async addCart () {
-      if (!this.$store.getters.token) {
-        console.log('弹窗')
-        this.$dialog.confirm({
-          title: '温馨提示',
-          message: '此时需要先登录才能继续操作哦',
-          confirmButtonText: '去登录',
-          cancelButtonText: '再逛逛',
-          theme: 'round-button'
-        }).then(() => {
-          this.$router.replace({
-            path: '/login',
-            query: {
-              backUrl: this.$route.fullPath
-            }
-          })
-        }).catch(() => {})
+      if (this.loginConfirm()) {
+        return
       }
       const { data: { cartTotal } } = await addCart(this.detailList.goods_id, this.addCount, this.detailList.skuList[0].goods_sku_id)
       this.cartTotal = cartTotal

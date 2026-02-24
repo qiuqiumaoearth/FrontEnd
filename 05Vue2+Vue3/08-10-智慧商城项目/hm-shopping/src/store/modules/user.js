@@ -18,6 +18,13 @@ export default {
       state.platform = platform
     }
   },
-  actions: {}
+  actions: {
+    logout (context) {
+      context.commit('setUserInfo', {})
+
+      // 清空购物车,跨模块提交mutations
+      context.commit('cart/setCartList', [], { root: true })
+    }
+  }
 
 }

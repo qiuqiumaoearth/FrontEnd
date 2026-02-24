@@ -8,3 +8,21 @@ export const addCart = (goodsId, goodsNum, goodsSkuId) => {
     goodsSkuId
   })
 }
+
+export const getCartList = () => {
+  return request.get('/cart/list')
+}
+
+export const deleteSelected = (cartIds) => {
+  return request.post('/cart/clear', {
+    cartIds
+  })
+}
+
+export const updateCart = (goodsId, goodsNum, goodsSkuId) => {
+  return request.post('/cart/update', {
+    goodsId,
+    goodsNum,
+    goodsSkuId
+  })
+}
