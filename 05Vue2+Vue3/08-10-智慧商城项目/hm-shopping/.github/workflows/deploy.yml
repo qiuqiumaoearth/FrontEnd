@@ -1,0 +1,30 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # 触发部署的分支，截图显示你当前在 main 分支
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # 使用 Node.js 18 
+
+      - name: Install dependencies
+        run: yarn install # 你的项目有 yarn.lock，所以使用 yarn 安装依赖
+
+      - name: Build
+        run: yarn build # 执行打包命令
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist # Vue CLI 默认的打包输出目录是 dist
