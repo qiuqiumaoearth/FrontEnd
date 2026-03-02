@@ -302,6 +302,34 @@ export default router
 
 import.meta.env.BASE_URL 是Vite 环境变量：[https://cn.vitejs.dev/guide/env-and-mode.html](https://cn.vitejs.dev/guide/env-and-mode.html)
 
+```vue
+  <script setup>
+  import { useRouter, useRoute } from 'vue-router'
+
+  //在Vue3 CompositionAPI中
+  //1.获取路由对象router
+  //const router useRouter()
+  //2.获取路由参数route
+  //const route = useRoute()
+
+  const router = useRouter()
+  const route = useRoute()
+
+  const goAbout = () => {
+    router.push('/about')
+    console.log(router, route)
+  }
+  </script>
+
+  <template>
+    <div>我是App.vue</div>
+    <button @click="$router.push('/home')">跳转首页</button>
+    <button @click="goAbout">跳转关于页</button>
+  </template>
+
+  <style scoped></style>
+```
+
 ## 引入 element-ui 组件库
 
 **官方文档：** <https://element-plus.org/zh-CN/>
@@ -360,7 +388,8 @@ export default defineConfig({
 
 ![image-20230710225018162](assets/image-20230710225018162.png)
 
-**彩蛋：**默认 components 下的文件也会被自动注册~
+**彩蛋：** 默认 components 下的文件也会被自动注册~
+(默认是全局注册,直接在模板中使用,不需要引入)
 
 ## Pinia - 构建用户仓库 和 持久化
 
@@ -406,15 +435,26 @@ export const useUserStore = defineStore(
 
 pinia 独立维护
 
-\- 现在：初始化代码在 main.js 中，仓库代码在 stores 中，代码分散职能不单一
+- 现在：初始化代码在 main.js 中，仓库代码在 stores 中，代码分散职能不单一
 
-\- 优化：由 stores 统一维护，在 stores/index.js 中完成 pinia 初始化，交付 main.js 使用
+- 优化：由 stores 统一维护，在 stores/index.js 中完成 pinia 初始化，交付 main.js 使用
 
 仓库 统一导出
 
-\- 现在：使用一个仓库 import { useUserStore } from `./stores/user.js` 不同仓库路径不一致
+- 现在：使用一个仓库 import { useUserStore } from `./stores/user.js` 不同仓库路径不一致
 
-\- 优化：由 stores/index.js 统一导出，导入路径统一 `./stores`，而且仓库维护在 stores/modules 中
+- 优化：由 stores/index.js 统一导出，导入路径统一 `./stores`，而且仓库维护在 stores/modules 中
+
+- 在 stores/index.js 中统一导出 user 和 counter 模块的所有内容
+
+```js
+  // 导出user模块的所有内容
+  export * from './modules/user'
+
+  // 导出counter模块的所有内容
+  export * from './modules/counter'
+
+```
 
 ## 数据交互 - 请求工具设计
 
