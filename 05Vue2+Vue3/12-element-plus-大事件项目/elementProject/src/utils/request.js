@@ -1,28 +1,27 @@
 import axios from 'axios'
 import { useUserStore } from '@/stores/modules/user'
-import { ElMessage } from 'element-plus'
+// import { ElMessage } from 'element-plus'
 import router from '@/router'
-
-const userStore = useUserStore()
 
 const baseURL = 'http://big-event-vue-api-t.itheima.net'
 
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
   baseURL,
-  timeout: 10000
+  timeout: 10000,
 })
 
 //请求拦截器
 instance.interceptors.request.use(
   (config) => {
+    const userStore = useUserStore()
     // TODO 2. 携带token
     if (userStore.token) {
       config.headers.Authorization = userStore.token
     }
     return config
   },
-  (err) => Promise.reject(err)
+  (err) => Promise.reject(err),
 )
 
 //响应拦截器
@@ -43,12 +42,13 @@ instance.interceptors.response.use(
     // TODO 5. 处理401错误
     if (err.response.status === 401) {
       ElMessage.error('登录过期,请重新登录')
+      const userStore = useUserStore()
       userStore.token = ''
       userStore.userInfo = {}
       router.push('/login')
     }
     return Promise.reject(err)
-  }
+  },
 )
 
 export default instance

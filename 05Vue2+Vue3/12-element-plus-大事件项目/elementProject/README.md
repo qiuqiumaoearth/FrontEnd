@@ -2,9 +2,9 @@
 
 在线演示：<https://fe-bigevent-web.itheima.net/login>
 
-接口文档:   <https://apifox.com/apidoc/shared-26c67aee-0233-4d23-aab7-08448fdf95ff/api-93850835>
+接口文档: <https://apifox.com/apidoc/shared-26c67aee-0233-4d23-aab7-08448fdf95ff/api-93850835>
 
-**接口根路径：**  <http://big-event-vue-api-t.itheima.net>
+**接口根路径：** <http://big-event-vue-api-t.itheima.net>
 
 本项目的技术栈 本项目技术栈基于 [ES6](http://es6.ruanyifeng.com/)、[vue3](https://cn.vuejs.org/index.html)、[pinia](https://pinia.web3doc.top/)、[vue-router](https://router.vuejs.org/) 、vite 、axios 和 [element-plus](https://element-plus.org/)
 
@@ -55,8 +55,7 @@ pnpm create vue
 
 **配置文件 .eslintrc.cjs**
 
-1. prettier 风格配置 [https://prettier.io](https://prettier.io/docs/en/options.html )
-
+1. prettier 风格配置 [https://prettier.io](https://prettier.io/docs/en/options.html)
    1. 单引号
 
    2. 不使用分号
@@ -90,20 +89,22 @@ export default defineConfig([
   {
     name: 'app/files-to-lint', // 配置名称（便于区分配置模块）
     files: ['**/*.{vue,js,mjs,jsx}'], // 指定需要校验的文件类型
-    ignores: [ // 指定忽略校验的文件/目录（构建产物、测试覆盖率报告等）
+    ignores: [
+      // 指定忽略校验的文件/目录（构建产物、测试覆盖率报告等）
       '**/dist/**',
       '**/dist-ssr/**',
-      '**/coverage/**'
-    ]
+      '**/coverage/**',
+    ],
   },
 
   // 2. 基础语言环境配置
   {
-    languageOptions: { // 语言相关配置项
+    languageOptions: {
+      // 语言相关配置项
       globals: { ...globals.browser }, // 注入浏览器环境的全局变量（如 window、document 等）
       ecmaVersion: 'latest', // 支持最新的 ES 语法特性
-      sourceType: 'module' // 指定代码模块类型为 ESM（适配项目 "type": "module"）
-    }
+      sourceType: 'module', // 指定代码模块类型为 ESM（适配项目 "type": "module"）
+    },
   },
 
   // 3. 优先禁用 ESLint 内置格式化规则
@@ -129,42 +130,42 @@ export default defineConfig([
           semi: false, // 语句末尾不添加分号
           printWidth: 80, // 每行代码最大宽度 80 字符
           trailingComma: 'none', // 对象/数组最后一个元素后不添加逗号
-          endOfLine: 'auto' // 换行符自动适配（兼容 Windows/macOS 不同换行符）
-        }
+          endOfLine: 'auto', // 换行符自动适配（兼容 Windows/macOS 不同换行符）
+        },
       ],
       // Vue 组件命名规则：要求多单词（避免与 HTML 原生标签冲突）
       'vue/multi-word-component-names': [
         'warn', // 级别：warn（警告），不阻断构建/提交
-        { ignores: ['index'] } // 忽略 index.vue 组件（常见的入口组件命名）
+        { ignores: ['index'] }, // 忽略 index.vue 组件（常见的入口组件命名）
       ],
       // 关闭 Vue props 解构限制（允许在 setup 中解构 props，提升开发体验）
       'vue/no-setup-props-destructure': 'off',
       // 未定义变量报错（强制声明变量后使用，避免拼写错误）
-      'no-undef': 'error'
-    }
-  }
+      'no-undef': 'error',
+    },
+  },
 ])
 ```
 
-## 基于 husky  的代码检查工作流
+## 基于 husky 的代码检查工作流
 
-husky 是一个 git hooks 工具  ( git的钩子工具，可以在特定时机执行特定的命令 )
+husky 是一个 git hooks 工具 ( git的钩子工具，可以在特定时机执行特定的命令 )
 
 ### husky 配置
 
 1. git初始化 git init
 
-2. 初始化 husky 工具配置  <https://typicode.github.io/husky/>
+2. 初始化 husky 工具配置 <https://typicode.github.io/husky/>
 
-    ```jsx
-    pnpm dlx husky-init && pnpm install
-    ```
+   ```jsx
+   pnpm dlx husky-init && pnpm install
+   ```
 
 3. 修改 .husky/pre-commit 文件
 
-    ```jsx
-    pnpm lint
-    ```
+   ```jsx
+   pnpm lint
+   ```
 
 **问题**:默认进行的是全量检查，耗时问题，历史问题。
 
@@ -172,35 +173,35 @@ husky 是一个 git hooks 工具  ( git的钩子工具，可以在特定时机�
 
 1. 安装
 
-    ```jsx
-    pnpm i lint-staged -D
-    ```
+   ```jsx
+   pnpm i lint-staged -D
+   ```
 
 2. 配置 `package.json`
 
-    ```jsx
-    {
-      // ... 省略 ...
-      "lint-staged": {
-        "*.{js,ts,vue}": [
-          "eslint --fix"
-        ]
-      }
-    }
+   ```jsx
+   {
+     // ... 省略 ...
+     "lint-staged": {
+       "*.{js,ts,vue}": [
+         "eslint --fix"
+       ]
+     }
+   }
 
-    {
-      "scripts": {
-        // ... 省略 ...
-        "lint-staged": "lint-staged"
-      }
-    }
-    ```
+   {
+     "scripts": {
+       // ... 省略 ...
+       "lint-staged": "lint-staged"
+     }
+   }
+   ```
 
 3. 修改 .husky/pre-commit 文件
 
-    ```jsx
-    pnpm lint-staged
-    ```
+   ```jsx
+   pnpm lint-staged
+   ```
 
 ## 调整项目目录
 
@@ -215,65 +216,64 @@ husky 是一个 git hooks 工具  ( git的钩子工具，可以在特定时机�
 
 2. 修改内容
 
-    `src/router/index.js`
+   `src/router/index.js`
 
-    ```jsx
-    import { createRouter, createWebHistory } from 'vue-router'
+   ```jsx
+   import { createRouter, createWebHistory } from 'vue-router'
 
-    const router = createRouter({
-      history: createWebHistory(import.meta.env.BASE_URL),
-      routes: []
-    })
+   const router = createRouter({
+     history: createWebHistory(import.meta.env.BASE_URL),
+     routes: [],
+   })
 
-    export default router
-    ```
+   export default router
+   ```
 
-    `src/App.vue`
+   `src/App.vue`
 
-    ```jsx
-    <script setup></script>
+   ```jsx
+   <script setup></script>
 
-    <template>
-      <div>
-        <router-view></router-view>
-      </div>
-    </template>
+   <template>
+     <div>
+       <router-view></router-view>
+     </div>
+   </template>
 
-    <style scoped></style>
-    ```
+   <style scoped></style>
+   ```
 
-    `src/main.js`
+   `src/main.js`
 
-    ```jsx
-    import { createApp } from 'vue'
-    import { createPinia } from 'pinia'
+   ```jsx
+   import { createApp } from 'vue'
+   import { createPinia } from 'pinia'
 
-    import App from './App.vue'
-    import router from './router'
+   import App from './App.vue'
+   import router from './router'
 
-    const app = createApp(App)
+   const app = createApp(App)
 
-    app.use(createPinia())
-    app.use(router)
-    app.mount('#app')
+   app.use(createPinia())
+   app.use(router)
+   app.mount('#app')
+   ```
 
-    ```
+3. 新增需要目录 api utils
 
-3. 新增需要目录 api  utils
+   ![image-20230710215822678](assets/image-20230710215822678.png)
 
-    ![image-20230710215822678](assets/image-20230710215822678.png)
+4. 将项目需要的全局样式 和 图片文件，复制到 assets 文件夹中, 并将全局样式在main.js中引入
 
-4. 将项目需要的全局样式 和 图片文件，复制到 assets 文件夹中,  并将全局样式在main.js中引入
-
-    ```jsx
-    import '@/assets/main.scss'
-    ```
+   ```jsx
+   import '@/assets/main.scss'
+   ```
 
 - 安装 sass 依赖
 
-    ```jsx
-    pnpm add sass -D
-    ```
+  ```jsx
+  pnpm add sass -D
+  ```
 
 ## VueRouter4 路由代码解析
 
@@ -294,7 +294,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: []
+  routes: [],
 })
 
 export default router
@@ -303,31 +303,31 @@ export default router
 import.meta.env.BASE_URL 是Vite 环境变量：[https://cn.vitejs.dev/guide/env-and-mode.html](https://cn.vitejs.dev/guide/env-and-mode.html)
 
 ```vue
-  <script setup>
-  import { useRouter, useRoute } from 'vue-router'
+<script setup>
+import { useRouter, useRoute } from 'vue-router'
 
-  //在Vue3 CompositionAPI中
-  //1.获取路由对象router
-  //const router useRouter()
-  //2.获取路由参数route
-  //const route = useRoute()
+//在Vue3 CompositionAPI中
+//1.获取路由对象router
+//const router useRouter()
+//2.获取路由参数route
+//const route = useRoute()
 
-  const router = useRouter()
-  const route = useRoute()
+const router = useRouter()
+const route = useRoute()
 
-  const goAbout = () => {
-    router.push('/about')
-    console.log(router, route)
-  }
-  </script>
+const goAbout = () => {
+  router.push('/about')
+  console.log(router, route)
+}
+</script>
 
-  <template>
-    <div>我是App.vue</div>
-    <button @click="$router.push('/home')">跳转首页</button>
-    <button @click="goAbout">跳转关于页</button>
-  </template>
+<template>
+  <div>我是App.vue</div>
+  <button @click="$router.push('/home')">跳转首页</button>
+  <button @click="goAbout">跳转关于页</button>
+</template>
 
-  <style scoped></style>
+<style scoped></style>
 ```
 
 ## 引入 element-ui 组件库
@@ -425,10 +425,9 @@ export const useUserStore = defineStore(
     return { token, setToken }
   },
   {
-    persist: true // 持久化
-  }
+    persist: true, // 持久化
+  },
 )
-
 ```
 
 ## Pinia - 配置仓库统一管理
@@ -448,12 +447,11 @@ pinia 独立维护
 - 在 stores/index.js 中统一导出 user 和 counter 模块的所有内容
 
 ```js
-  // 导出user模块的所有内容
-  export * from './modules/user'
+// 导出user模块的所有内容
+export * from './modules/user'
 
-  // 导出counter模块的所有内容
-  export * from './modules/counter'
-
+// 导出counter模块的所有内容
+export * from './modules/counter'
 ```
 
 ## 数据交互 - 请求工具设计
@@ -492,7 +490,7 @@ instance.interceptors.request.use(
     // TODO 2. 携带token
     return config
   },
-  (err) => Promise.reject(err)
+  (err) => Promise.reject(err),
 )
 
 instance.interceptors.response.use(
@@ -504,7 +502,7 @@ instance.interceptors.response.use(
   (err) => {
     // TODO 5. 处理401错误
     return Promise.reject(err)
-  }
+  },
 )
 
 export default instance
@@ -522,7 +520,7 @@ const baseURL = 'http://big-event-vue-api-t.itheima.net'
 
 const instance = axios.create({
   baseURL,
-  timeout: 100000
+  timeout: 100000,
 })
 
 instance.interceptors.request.use(
@@ -533,7 +531,7 @@ instance.interceptors.request.use(
     }
     return config
   },
-  (err) => Promise.reject(err)
+  (err) => Promise.reject(err),
 )
 
 instance.interceptors.response.use(
@@ -551,12 +549,11 @@ instance.interceptors.response.use(
       router.push('/login')
     }
     return Promise.reject(err)
-  }
+  },
 )
 
 export default instance
 export { baseURL }
-
 ```
 
 ## 首页整体路由设计
@@ -564,7 +561,7 @@ export { baseURL }
 **实现目标:**
 
 - 完成整体路由规划【搞清楚要做几个页面，它们分别在哪个路由下面，怎么跳转的.....】
-- 通过观察,  点击左侧导航,  右侧区域在切换,  那右侧区域内容一直在变,  那这个地方就是一个路由的出口
+- 通过观察, 点击左侧导航, 右侧区域在切换, 那右侧区域内容一直在变, 那这个地方就是一个路由的出口
 - 我们需要搭建嵌套路由
 
 目标：
@@ -584,6 +581,48 @@ export { baseURL }
 | ├─ /user/password   | views/user/UserPassword.vue      | 重置密码  | UserPassword    | 二级路由 |
 
 明确了路由规则，可以全部配完，也可以边写边配。
+
+> router/index.js 配置路由
+
+```js
+import { createRouter, createWebHistory } from 'vue-router'
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    { path: '/login', component: () => import('@/views/login/LoginPage.vue') }, //登录页
+    {
+      path: '/',
+      component: () => import('@/views/layout/LayoutContainer.vue'),
+      redirect: '/article/manage',
+      children: [
+        {
+          path: '/article/manage',
+          component: () => import('@/views/article/ArticleManage.vue'),
+        }, //文章管理
+        {
+          path: '/article/channel',
+          component: () => import('@/views/article/ArticleChannel.vue'),
+        },
+        {
+          path: '/user/profile',
+          component: () => import('@/views/user/UserProfile.vue'),
+        },
+        {
+          path: '/user/password',
+          component: () => import('@/views/user/UserPassword.vue'),
+        }, //用户密码
+        {
+          path: '/user/avatar',
+          component: () => import('@/views/user/UserAvatar.vue'),
+        },
+      ],
+    },
+  ],
+})
+
+export default router
+```
 
 # 登录注册页面 [element-plus 表单 & 表单校验]
 
@@ -605,6 +644,18 @@ const isRegister = ref(true)
 </script>
 
 <template>
+  <!--
+      el-row表示一行，一行分成12分，
+      el-col表示一列，span表示占用多少分，
+      offset表示偏移多少分
+
+      el-form 表示一个表单，
+      el-form-item 表示表单中的每一项
+      ref 表示表单的引用，
+      size 表示表单的大小，
+      autocomplete 表示是否自动完成表单，
+
+  -->
   <el-row class="login-page">
     <el-col :span="12" class="bg"></el-col>
     <el-col :span="6" :offset="3" class="form">
@@ -718,6 +769,32 @@ const isRegister = ref(true)
 
 【进阶】再次输入密码需要自定义校验规则，和密码框值一致（可选）
 
+校验规则：
+
+```txt
+el-form = > model = "ruleForm" 绑定整个form的数据对象{xxx,xxx,xxx}
+el-form = > rules = "rules" 绑定校验规则对象{xxx,xxx,xxx}
+
+表单元素
+el-input = > v-model = "ruleForm.username" 给表单元素绑定数据对象的子属性username
+el-form-item = > prop = "username" 给表单元素绑定校验规则对象的子属性username
+```
+
+整个表单的校验规则
+
+```txt
+1. 非空校验 required: true, message: '请输入用户名/密码'
+2. 用户名长度校验 min: 5, max: 10, message: '用户名必须是5-10位的字符'
+3. 密码长度校验 pattern: /^\S{6,15}$/, message: '密码必须是6-15位的非空字符'
+4. 再次输入密码校验 validator: (rule, value, callback) => {
+  if (value !== formModel.value.password) {
+    callback(new Error('两次输入密码不一致!'))
+  } else {
+    callback()
+  }
+}, message: '两次输入密码不一致!'
+```
+
 注意：
 
 1. model 属性绑定 form 数据对象
@@ -740,7 +817,7 @@ const formModel = ref({
   :prefix-icon="User"
   placeholder="请输入用户名"
 ></el-input>
-... 
+...
 (其他两个也要绑定)
 ```
 
@@ -748,7 +825,7 @@ const formModel = ref({
 
 ```jsx
 <el-form :rules="rules" >
-    
+
 const rules = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -770,11 +847,13 @@ const rules = {
       trigger: 'blur'
     },
     {
+      // 自定义校验规则，校验两次输入密码是否一致
       validator: (rule, value, callback) => {
         if (value !== formModel.value.password) {
           callback(new Error('两次输入密码不一致!'))
+          // 校验不通过，返回错误信息
         } else {
-          callback()
+          callback() // 校验通过，没有错误信息
         }
       },
       trigger: 'blur'
@@ -793,7 +872,7 @@ const rules = {
     placeholder="请输入用户名"
   ></el-input>
 </el-form-item>
-... 
+...
 (其他两个也要绑定prop)
 ```
 
@@ -852,7 +931,7 @@ const register = async () => {
 }
 ```
 
-1. eslintrc 中声明全局变量名,  解决 ElMessage 报错问题
+1. eslintrc 中声明全局变量名, 解决 ElMessage 报错问题
 
 ```jsx
 module.exports = {
@@ -916,7 +995,7 @@ module.exports = {
     placeholder="请输入用户名"
   ></el-input>
 </el-form-item>
-... 
+...
 ```
 
 1. 切换的时候重置
@@ -926,7 +1005,7 @@ watch(isRegister, () => {
   formModel.value = {
     username: '',
     password: '',
-    repassword: ''
+    repassword: '',
   }
 })
 ```
@@ -946,9 +1025,9 @@ watch(isRegister, () => {
 
 【测试账号】
 
-- 登录的测试账号:  shuaipeng
+- 登录的测试账号: shuaipeng
 
-- 登录测试密码:  123456
+- 登录测试密码: 123456
 
 PS: 每天账号会重置，如果被重置了，可以去注册页，注册一个新号
 
@@ -958,7 +1037,7 @@ PS: 每天账号会重置，如果被重置了，可以去注册页，注册一�
 
 ```jsx
 <el-form ref="form">
-    
+
 const login = async () => {
   await form.value.validate()
   console.log('开始登录')
@@ -997,10 +1076,10 @@ el-container
 - el-aside 左侧
   - el-menu 左侧边栏菜单
 
-- el-container  右侧
-  - el-header  右侧头部
+- el-container 右侧
+  - el-header 右侧头部
     - el-dropdown
-  - el-main  右侧主体
+  - el-main 右侧主体
     - router-view
 
 ```jsx
@@ -1207,7 +1286,7 @@ const onCommand = async (command) => {
     await ElMessageBox.confirm('你确认退出大事件吗？', '温馨提示', {
       type: 'warning',
       confirmButtonText: '确认',
-      cancelButtonText: '取消'
+      cancelButtonText: '取消',
     })
     userStore.removeToken()
     userStore.setUser({})
@@ -1218,7 +1297,7 @@ const onCommand = async (command) => {
 }
 ```
 
-1. pinia  user.js 模块 提供 setUser 方法
+1. pinia user.js 模块 提供 setUser 方法
 
 ```jsx
 const setUser = (obj) => (user.value = obj)
@@ -1261,7 +1340,7 @@ const setUser = (obj) => (user.value = obj)
 1. 考虑到多个页面复用，封装成组件
    - props 定制标题
    - 默认插槽 default 定制内容主体
-   - 具名插槽 extra  定制头部右侧额外的按钮
+   - 具名插槽 extra 定制头部右侧额外的按钮
 
 ```jsx
 <script setup>
@@ -1446,10 +1525,10 @@ const onAddChannel = () => {
 
 添加 和 编辑，可以共用一个弹层，所以可以将弹层封装成一个组件
 
-组件对外暴露一个方法 open,  基于 open 的参数，初始化表单数据，并判断区分是添加 还是 编辑
+组件对外暴露一个方法 open, 基于 open 的参数，初始化表单数据，并判断区分是添加 还是 编辑
 
-1. open({ })                   =>  添加操作，添加表单初始化无数据
-2. open({ id: xx,  ...  })  =>  编辑操作，编辑表单初始化需回显
+1. open({ }) => 添加操作，添加表单初始化无数据
+2. open({ id: xx, ... }) => 编辑操作，编辑表单初始化需回显
 
 具体实现：
 
@@ -1510,7 +1589,7 @@ const onEditChannel = (row) => {
 ```jsx
 const formModel = ref({
   cate_name: '',
-  cate_alias: ''
+  cate_alias: '',
 })
 const rules = {
   cate_name: [
@@ -1518,17 +1597,17 @@ const rules = {
     {
       pattern: /^\S{1,10}$/,
       message: '分类名必须是1-10位的非空字符',
-      trigger: 'blur'
-    }
+      trigger: 'blur',
+    },
   ],
   cate_alias: [
     { required: true, message: '请输入分类别名', trigger: 'blur' },
     {
       pattern: /^[a-zA-Z0-9]{1,15}$/,
       message: '分类别名必须是1-15位的字母数字',
-      trigger: 'blur'
-    }
-  ]
+      trigger: 'blur',
+    },
+  ],
 }
 ```
 
@@ -1575,14 +1654,13 @@ const open = async (row) => {
 
 ### 确认提交
 
-1. `api/article.js`  封装请求 API
+1. `api/article.js` 封装请求 API
 
 ```jsx
 // 添加文章分类
 export const artAddChannelService = (data) => request.post('/my/cate/add', data)
 // 编辑文章分类
-export const artEditChannelService = (data) =>
-  request.put('/my/cate/info', data)
+export const artEditChannelService = (data) => request.put('/my/cate/info', data)
 ```
 
 1. 页面中校验，判断，提交请求
@@ -1600,7 +1678,7 @@ const onSubmit = async () => {
     : await artAddChannelService(formModel.value)
   ElMessage({
     type: 'success',
-    message: formModel.value.id ? '编辑成功' : '添加成功'
+    message: formModel.value.id ? '编辑成功' : '添加成功',
   })
   dialogVisible.value = false
 }
@@ -1635,7 +1713,7 @@ const onSuccess = () => {
 // 删除文章分类
 export const artDelChannelService = (id) =>
   request.delete('/my/cate/del', {
-    params: { id }
+    params: { id },
   })
 ```
 
@@ -1646,7 +1724,7 @@ const onDelChannel = async (row) => {
   await ElMessageBox.confirm('你确认删除该分类信息吗？', '温馨提示', {
     type: 'warning',
     confirmButtonText: '确认',
-    cancelButtonText: '取消'
+    cancelButtonText: '取消',
   })
   await artDelChannelService(row.id)
   ElMessage({ type: 'success', message: '删除成功' })
@@ -1697,15 +1775,15 @@ const articleList = ref([
     title: '新的文章啊',
     pub_date: '2022-07-10 14:53:52.604',
     state: '已发布',
-    cate_name: '体育'
+    cate_name: '体育',
   },
   {
     id: 5962,
     title: '新的文章啊',
     pub_date: '2022-07-10 14:54:30.904',
     state: null,
-    cate_name: '体育'
-  }
+    cate_name: '体育',
+  },
 ])
 ```
 
@@ -1858,8 +1936,7 @@ const params = ref({
 1. `api/article.js`封装接口
 
 ```jsx
-export const artGetListService = (params) =>
-  request.get('/my/article/list', { params })
+export const artGetListService = (params) => request.get('/my/article/list', { params })
 ```
 
 1. 页面中调用保存数据
@@ -1939,7 +2016,7 @@ const loading = ref(false)
 1. el-table上面绑定
 
 ```jsx
-<el-table v-loading="loading" > ... </el-table>
+<el-table v-loading="loading"> ... </el-table>
 ```
 
 1. 发送请求时添加 loading
@@ -1947,9 +2024,9 @@ const loading = ref(false)
 ```jsx
 const getArticleList = async () => {
   loading.value = true
-    
+
   ...
-  
+
   loading.value = false
 }
 getArticleList()
@@ -1996,12 +2073,7 @@ const visibleDrawer = ref(false)
 1. 准备抽屉容器
 
 ```jsx
-<el-drawer
-  v-model="visibleDrawer"
-  title="大标题"
-  direction="rtl"
-  size="50%"
->
+<el-drawer v-model="visibleDrawer" title="大标题" direction="rtl" size="50%">
   <span>Hi there!</span>
 </el-drawer>
 ```
@@ -2021,10 +2093,10 @@ const onAddArticle = () => {
 
 添加 和 编辑，可以共用一个抽屉，所以可以将抽屉封装成一个组件
 
-组件对外暴露一个方法 open,  基于 open 的参数，初始化表单数据，并判断区分是添加 还是 编辑
+组件对外暴露一个方法 open, 基于 open 的参数，初始化表单数据，并判断区分是添加 还是 编辑
 
-1. open({ })                   =>  添加操作，添加表单初始化无数据
-2. open({ id: xx,  ...  })  =>  编辑操作，编辑表单初始化需回显
+1. open({ }) => 添加操作，添加表单初始化无数据
+2. open({ id: xx, ... }) => 编辑操作，编辑表单初始化需回显
 
 具体实现：
 
@@ -2084,7 +2156,7 @@ const formModel = ref({
   cate_id: '',
   cover_img: '',
   content: '',
-  state: ''
+  state: '',
 })
 
 const open = async (row) => {
@@ -2141,7 +2213,7 @@ const defaultForm = {
   cate_id: '',
   cover_img: '',
   content: '',
-  state: ''
+  state: '',
 }
 const formModel = ref({ ...defaultForm })
 
@@ -2255,12 +2327,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 ```jsx
 <div class="editor">
-  <quill-editor
-    theme="snow"
-    v-model:content="formModel.content"
-    contentType="html"
-  >
-  </quill-editor>
+  <quill-editor theme="snow" v-model:content="formModel.content" contentType="html"></quill-editor>
 </div>
 ```
 
@@ -2280,8 +2347,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 1. 封装添加接口
 
 ```jsx
-export const artPublishService = (data) =>
-  request.post('/my/article/add', data)
+export const artPublishService = (data) => request.post('/my/article/add', data)
 ```
 
 1. 注册点击事件调用
@@ -2356,8 +2422,7 @@ const open = async (row) => {
 1. 封装接口，根据 id 获取详情数据
 
 ```jsx
-export const artGetDetailService = (id) =>
-  request.get('my/article/info', { params: { id } })
+export const artGetDetailService = (id) => request.get('my/article/info', { params: { id } })
 ```
 
 1. 页面中调用渲染
@@ -2387,19 +2452,19 @@ chatGPT prompt：封装一个函数，基于 axios， 网络图片地址，转 f
 async function imageUrlToFile(url, fileName) {
   try {
     // 第一步：使用axios获取网络图片数据
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
-    const imageData = response.data;
+    const response = await axios.get(url, { responseType: 'arraybuffer' })
+    const imageData = response.data
 
     // 第二步：将图片数据转换为Blob对象
-    const blob = new Blob([imageData], { type: response.headers['content-type'] });
+    const blob = new Blob([imageData], { type: response.headers['content-type'] })
 
     // 第三步：创建一个新的File对象
-    const file = new File([blob], fileName, { type: blob.type });
+    const file = new File([blob], fileName, { type: blob.type })
 
-    return file;
+    return file
   } catch (error) {
-    console.error('将图片转换为File对象时发生错误:', error);
-    throw error;
+    console.error('将图片转换为File对象时发生错误:', error)
+    throw error
   }
 }
 ```
@@ -2444,7 +2509,7 @@ const onDeleteArticle = async (row) => {
   await ElMessageBox.confirm('你确认删除该文章信息吗？', '温馨提示', {
     type: 'warning',
     confirmButtonText: '确认',
-    cancelButtonText: '取消'
+    cancelButtonText: '取消',
   })
   await artDelService(row.id)
   ElMessage({ type: 'success', message: '删除成功' })
@@ -2458,18 +2523,16 @@ const onDeleteArticle = async (row) => {
 
 认知同步：
 
-1. AI 早已不是新事物 (接受)  =>  语音识别，人脸识别，无人驾驶，智能机器人...    (包括 ChatGPT 也是研发了多年的产物)
-2. AI 本质是智能工具 (认识)  =>  人工智能辅助，可以提升效率，但不具备思想意识，无法从零到一取代人类工作
-3. AI 一定会淘汰掉一部分人  =>  逆水行舟，不进则退；学会拥抱变化，尽早上车
+1. AI 早已不是新事物 (接受) => 语音识别，人脸识别，无人驾驶，智能机器人... (包括 ChatGPT 也是研发了多年的产物)
+2. AI 本质是智能工具 (认识) => 人工智能辅助，可以提升效率，但不具备思想意识，无法从零到一取代人类工作
+3. AI 一定会淘汰掉一部分人 => 逆水行舟，不进则退；学会拥抱变化，尽早上车
 
 两个工具：
 
-1. ChatGPT 3.5 的使用   (4.0 使用方式一致，回答准确度更高，但付费，且每3小时，有次数限制)
-
-   1. 正常注册流程  (IP限制，手机号限制)
+1. ChatGPT 3.5 的使用 (4.0 使用方式一致，回答准确度更高，但付费，且每3小时，有次数限制)
+   1. 正常注册流程 (IP限制，手机号限制)
 
    2. 三方整合产品
-
       - 谷歌搜索：chatgpt 免费网站列表
 
       - <https://github.com/LiLittleCat/awesome-free-chatgpt>
@@ -2513,7 +2576,7 @@ AI 互动的过程中，容易出现的问题：
 
 #### Prompt 优化前
 
-Prompt1:  
+Prompt1:
 
 ```
 前端简历
@@ -2521,7 +2584,7 @@ Prompt1:
 
 #### Prompt 优化后
 
-Prompt1:  
+Prompt1:
 
 ```
 背景：你是一名【具有三年开发经验】的前端开发工程师，这三年期间，前两年，你做的【金融】相关四个项目，最后一年做的是【医疗】相关领域的两个项目，且有一定的管理 10人+ 团队的经验。主要的技术栈：【Vue】 和 【小程序】。由于你是计算机软件工程专业，所以你具备一些Java后台、Mysql数据库的知识，也掌握一些基础的算法。
@@ -2747,7 +2810,7 @@ const onUploadFile = (file) => {
     imgUrl.value = reader.result
   }
 }
-<el-upload ref="uploadRef"></el-upload> 
+<el-upload ref="uploadRef"></el-upload>
 <el-button
   @click="uploadRef.$el.querySelector('input').click()"
   type="primary"
@@ -2777,7 +2840,7 @@ const onUpdateAvatar = async () => {
 
 ## 个人中心项目实战 - 重置密码
 
-chatgpt  prompt
+chatgpt prompt
 
 ```jsx
 请基于 elementPlus 和 Vue3 的语法，生成组件代码

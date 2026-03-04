@@ -12,7 +12,7 @@ export default defineConfig([
   {
     name: 'app/files-to-lint',
     files: ['**/*.{vue,js,mjs,jsx}'],
-    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**']
+    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
   },
 
   // 2. 基础语言配置
@@ -20,8 +20,8 @@ export default defineConfig([
     languageOptions: {
       globals: { ...globals.browser },
       ecmaVersion: 'latest',
-      sourceType: 'module'
-    }
+      sourceType: 'module',
+    },
   },
 
   // 3. 先禁用 ESLint 内置格式化规则（避免与 Prettier 冲突）
@@ -45,12 +45,12 @@ export default defineConfig([
           semi: false,
           printWidth: 80,
           trailingComma: 'none',
-          endOfLine: 'auto'
-        }
+          endOfLine: 'auto',
+        },
       ],
       'vue/multi-word-component-names': ['warn', { ignores: ['index'] }],
       'vue/no-setup-props-destructure': 'off',
-      'no-undef': 'error'
-    }
-  }
+      'no-undef': 'error',
+    },
+  },
 ])
