@@ -18,6 +18,7 @@ export const useUserStore = defineStore(
     const getUserInfo = async () => {
       const res = await userGetInfoService()
       userInfo.value = res.data
+      // console.log(res.data)
     }
 
     const setUser = (newUserInfo) => {
