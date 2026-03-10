@@ -171,3 +171,9 @@ const onSuccess = (type) => {
     <article-edit ref="articleEditRef" @success="onSuccess" />
   </page-container>
 </template>
+
+<style scoped>
+:deep(.el-select__input-wrapper.is-hidden) {
+  position: static;
+}
+</style>

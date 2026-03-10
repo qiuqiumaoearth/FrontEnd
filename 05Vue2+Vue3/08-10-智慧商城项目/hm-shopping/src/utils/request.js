@@ -3,7 +3,7 @@ import { Toast } from 'vant'
 import store from '@/store'
 
 const instance = axios.create({
-  baseURL: 'http://smart-shop.itheima.net/index.php?s=/api',
+  baseURL: 'https://smart-shop.itheima.net/index.php?s=/api',
   timeout: 5000
 })
 

@@ -3,7 +3,7 @@ import { useUserStore } from '@/stores/modules/user'
 // import { ElMessage } from 'element-plus'
 import router from '@/router'
 
-const baseURL = 'http://big-event-vue-api-t.itheima.net'
+const baseURL = 'https://big-event-vue-api-t.itheima.net'
 
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
@@ -59,7 +59,9 @@ async function imageUrlToFile(url, fileName) {
     const imageData = response.data
 
     // 第二步：将图片数据转换为Blob对象
-    const blob = new Blob([imageData], { type: response.headers['content-type'] })
+    const blob = new Blob([imageData], {
+      type: response.headers['content-type'],
+    })
 
     // 第三步：创建一个新的File对象
     const file = new File([blob], fileName, { type: blob.type })

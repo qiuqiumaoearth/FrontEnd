@@ -22,7 +22,11 @@ getChannelList()
 </script>
 
 <template>
-  <el-select :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)">
+  <el-select
+    :model-value="modelValue"
+    @update:model-value="emit('update:modelValue', $event)"
+    placeholder="请选择文章分类"
+  >
     <el-option
       v-for="item in channelList"
       :label="item.cate_name"
@@ -31,3 +35,9 @@ getChannelList()
     ></el-option>
   </el-select>
 </template>
+
+<style scoped>
+:deep(.el-select__input-wrapper.is-hidden) {
+  position: static;
+}
+</style>
